@@ -1,4 +1,4 @@
-package com.example.forumproject.models;
+package com.example.forumproject.models.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -31,6 +31,9 @@ public class User {
     @Column(name = "is_admin")
     private boolean isAdmin;
 
+    @Column(name = "is_blocked")
+    private boolean isBlocked;
+
     @Column(name = "profile_photo")
     private String photo;
 
@@ -53,6 +56,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.isAdmin = false;
+        this.isBlocked = false;
     }
 
     public int getId() {
@@ -109,6 +113,14 @@ public class User {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
     }
 
     public String getPhoto() {

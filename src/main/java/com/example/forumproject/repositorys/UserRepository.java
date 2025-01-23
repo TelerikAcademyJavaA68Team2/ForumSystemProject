@@ -1,6 +1,6 @@
 package com.example.forumproject.repositorys;
 
-import com.example.forumproject.models.User;
+import com.example.forumproject.models.entitys.User;
 
 import java.util.List;
 
@@ -25,16 +25,4 @@ public interface UserRepository {
     void blockUser(int userId);
 
     void unblockUser(int userId);
-
-    // Search and filtering
-/*    List<User> searchUsers(String firstName, String lastName, String email);
-
-    List<Post> findUsersPosts(Long userId, PostFilterCriteria filter);
-
-    // Authentication and profile management
-    User authenticateUser(String usernameOrEmail, String password);
-
-    void updateUserProfile(User user);
-
-    void uploadProfilePicture(Long userId, String imagePath);*/
 }
