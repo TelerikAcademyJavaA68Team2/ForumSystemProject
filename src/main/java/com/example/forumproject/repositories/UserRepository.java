@@ -1,6 +1,6 @@
 package com.example.forumproject.repositories;
 
-import com.example.forumproject.models.entitys.User;
+import com.example.forumproject.models.User;
 
 import java.util.List;
 

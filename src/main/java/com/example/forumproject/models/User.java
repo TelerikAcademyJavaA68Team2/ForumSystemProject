@@ -1,4 +1,4 @@
-package com.example.forumproject.models.entitys;
+package com.example.forumproject.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
 package com.example.forumproject.services;
 
 
-import com.example.forumproject.models.entitys.User;
+import com.example.forumproject.models.User;
 
 import java.util.List;
 
