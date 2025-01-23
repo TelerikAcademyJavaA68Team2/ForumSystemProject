@@ -40,26 +40,12 @@ public class PostRepositoryImpl implements PostRepository{
     }
 
     @Override
-    public Post get(String title) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Post> query = session.createQuery("from Post where title = :title", Post.class);
-            query.setParameter("title", title);
-            List<Post> result = query.list();
-            if (result.isEmpty()) {
-                throw new EntityNotFoundException("Post", "title", title);
-            }
-            return result.get(0);
-        }
-    }
-
-    @Override
     public void create(Post post) {
             try (Session session = sessionFactory.openSession()) {
                 session.beginTransaction();
                 session.persist(post);
                 session.getTransaction().commit();
             }
-
     }
 
     @Override
@@ -88,7 +74,7 @@ public class PostRepositoryImpl implements PostRepository{
 
     @Override
     public void delete(int id) {
-        Post postToDelete = get(id);
+        Post postToDelete = getById(id);
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.remove(postToDelete);
