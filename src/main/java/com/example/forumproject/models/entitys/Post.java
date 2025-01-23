@@ -1,9 +1,6 @@
-package com.example.forumproject.models;
+package com.example.forumproject.models.entitys;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
-import java.util.Set;
 
 @Entity
 @Table(name = "posts")
