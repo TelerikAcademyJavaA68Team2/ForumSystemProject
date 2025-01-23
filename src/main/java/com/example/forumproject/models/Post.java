@@ -1,6 +1,9 @@
 package com.example.forumproject.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -8,6 +11,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -20,8 +24,15 @@ public class Post {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "likes_count")
-    private int likesCount;
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "post_tags",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> postTags;
+
 
     public Post() {
     }
@@ -29,13 +40,11 @@ public class Post {
     public Post(int id,
                 User author,
                 String title,
-                String content,
-                int likesCount) {
+                String content) {
         this.id = id;
         this.author = author;
         this.title = title;
         this.content = content;
-        this.likesCount = likesCount;
     }
 
     public int getId() {
@@ -70,11 +79,4 @@ public class Post {
         this.content = content;
     }
 
-    public int getLikesCount() {
-        return likesCount;
-    }
-
-    public void setLikesCount(int likesCount) {
-        this.likesCount = likesCount;
-    }
 }

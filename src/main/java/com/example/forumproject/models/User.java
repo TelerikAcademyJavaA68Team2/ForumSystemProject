@@ -53,8 +53,6 @@ public class User {
         this.username = username;
         this.password = password;
         this.isAdmin = false;
-        this.photo = "No photo";
-        this.phoneNumber = "No phone number";
     }
 
     public int getId() {

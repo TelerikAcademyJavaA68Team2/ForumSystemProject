@@ -8,6 +8,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -18,7 +19,7 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
+    @Column(name = "content")
     private String content;
 
     public Comment() {

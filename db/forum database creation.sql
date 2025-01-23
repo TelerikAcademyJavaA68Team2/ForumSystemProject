@@ -23,6 +23,7 @@ create table users
     username      varchar(50)          not null,
     password      varchar(50)          not null,
     is_admin      tinyint(1) default 0 not null,
+    is_blocked    tinyint(1)           not null,
     profile_photo text                 null,
     phone_number  varchar(20)          null,
     constraint users_pk_2
