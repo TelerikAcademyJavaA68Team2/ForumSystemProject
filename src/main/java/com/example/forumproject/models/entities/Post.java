@@ -1,4 +1,4 @@
-package com.example.forumproject.models.entitys;
+package com.example.forumproject.models.entities;
 
 import jakarta.persistence.*;
 
