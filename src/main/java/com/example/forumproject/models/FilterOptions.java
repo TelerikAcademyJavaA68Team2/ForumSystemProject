@@ -3,22 +3,22 @@ package com.example.forumproject.models;
 import java.util.Optional;
 
 public class FilterOptions {
-    private Optional<String> likes;
-    private Optional<String> dislikes;
+    private Optional<Integer> Minlikes;
+    private Optional<Integer> Maxlikes;
     private Optional<String> title;
 
-    public FilterOptions(String likes, String dislikes, String title) {
-        this.likes = Optional.ofNullable(likes);
-        this.dislikes = Optional.ofNullable(dislikes);
+    public FilterOptions(Integer Minlikes, Integer Maxlikes, String title) {
+        this.Minlikes = Optional.ofNullable(Minlikes);
+        this.Maxlikes = Optional.ofNullable(Maxlikes);
         this.title = Optional.ofNullable(title);
     }
 
-    public Optional<String> getLikes() {
-        return likes;
+    public Optional<Integer> getMinlikes() {
+        return Minlikes;
     }
 
-    public Optional<String> getDislikes() {
-        return dislikes;
+    public Optional<Integer> getMaxlikes() {
+        return Maxlikes;
     }
 
     public Optional<String> getTitle() {
