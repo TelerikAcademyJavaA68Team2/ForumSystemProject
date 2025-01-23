@@ -24,15 +24,6 @@ public class Post {
     @Column(name = "content")
     private String content;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "post_tags",
-            joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    private Set<Tag> postTags;
-
 
     public Post() {
     }

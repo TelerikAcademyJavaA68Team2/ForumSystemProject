@@ -23,8 +23,6 @@ public class PostTag {
     }
 
 
-
-
     public Post getPost() {
         return post;
     }
