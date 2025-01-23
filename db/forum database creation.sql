@@ -1,3 +1,7 @@
+CREATE SCHEMA forum_management_system;
+
+USE forum_management_system;
+
 create table tags
 (
     id   int auto_increment
