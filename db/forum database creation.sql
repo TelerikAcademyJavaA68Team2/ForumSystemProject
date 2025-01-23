@@ -35,12 +35,11 @@ create table users
 
 create table posts
 (
-    id          int auto_increment
+    id      int auto_increment
         primary key,
-    user_id     int           not null,
-    title       varchar(100)  not null,
-    content     text          not null,
-    likes_count int default 0 null,
+    user_id int          not null,
+    title   varchar(100) not null,
+    content text         not null,
     constraint posts_pk_2
         unique (title),
     constraint posts_users_id_fk
@@ -61,6 +60,26 @@ create table comments
         foreign key (user_id) references users (id)
 );
 
+create table post_likes_dislikes
+(
+    id      bigint unsigned auto_increment
+        primary key,
+    post_id int        not null,
+    user_id int        not null,
+    is_like tinyint(1) not null,
+    constraint post_id
+        unique (post_id, user_id),
+    constraint post_likes_dislikes_ibfk_1
+        foreign key (post_id) references posts (id)
+            on delete cascade,
+    constraint post_likes_dislikes_ibfk_2
+        foreign key (user_id) references users (id)
+            on delete cascade
+);
+
+create index user_id
+    on post_likes_dislikes (user_id);
+
 create table post_tags
 (
     post_id int not null,
@@ -72,3 +91,4 @@ create table post_tags
         foreign key (tag_id) references tags (id)
             on delete cascade
 );
+
