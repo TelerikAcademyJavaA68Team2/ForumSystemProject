@@ -2,6 +2,8 @@ package com.example.forumproject.models;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "comments")
 public class Comment {
@@ -17,7 +19,7 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User author;
 
     @Column(name = "content")
     private String content;
@@ -25,10 +27,10 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int id, Post post, User user, String content) {
+    public Comment(int id, Post post, User author, String content) {
         this.id = id;
         this.post = post;
-        this.user = user;
+        this.author = author;
         this.content = content;
     }
 
@@ -48,12 +50,12 @@ public class Comment {
         this.post = post;
     }
 
-    public User getUser() {
-        return user;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(User author) {
+        this.author = author;
     }
 
     public String getContent() {
@@ -62,5 +64,19 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return id == comment.id && author.equals(comment.author);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, author);
+
     }
 }
