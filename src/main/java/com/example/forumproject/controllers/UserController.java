@@ -1,9 +1,13 @@
 package com.example.forumproject.controllers;
 
+import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
-import com.example.forumproject.helpers.UserMapper;
+import com.example.forumproject.exceptions.InvalidEmailFormatException;
+
+import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.UserDto;
+
+import com.example.forumproject.models.dtos.UserDto;
 import com.example.forumproject.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +52,10 @@ public class UserController {
             User user = userMapper.registrationFromDto(userDto);
             userService.createUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("registration successful");
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (DuplicateEntityException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (InvalidEmailFormatException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 }
