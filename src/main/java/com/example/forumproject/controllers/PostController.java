@@ -20,10 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api/posts")
 public class PostController {
 
-    public static final String UNAUTHORIZED_CREATE_POST_MESSAGE =
-            "Invalid username or password, only existing users can create new beers!";
-    public static final String POST_ID_NOT_FOUND = "Post with id %d not found.";
-
     private final PostService postService;
 
     private final PostMapper postMapper;
@@ -44,7 +40,7 @@ public class PostController {
             return postService.getById(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException
-                    (HttpStatus.NOT_FOUND, String.format(POST_ID_NOT_FOUND, id));
+                    (HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -57,8 +53,21 @@ public class PostController {
             return postToCreate;
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    UNAUTHORIZED_CREATE_POST_MESSAGE);
+                    e.getMessage());
         }
 
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            postService.delete(id, user);
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedAccessException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    e.getMessage());
+        }
     }
 }
