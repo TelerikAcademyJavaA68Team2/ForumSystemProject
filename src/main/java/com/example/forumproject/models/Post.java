@@ -24,7 +24,6 @@ public class Post {
     @Column(name = "content")
     private String content;
 
-
     //A potential way of how post tags could be handled
 
 //    @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -35,7 +34,6 @@ public class Post {
 //            inverseJoinColumns = @JoinColumn(name = "tag_id")
 //    )
 //    private Set<Tag> tags;
-
 
     public Post() {
     }
