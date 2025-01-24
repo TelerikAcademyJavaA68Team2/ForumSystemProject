@@ -1,4 +1,4 @@
-package com.example.forumproject.models;
+package com.example.forumproject.models.dtos;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
