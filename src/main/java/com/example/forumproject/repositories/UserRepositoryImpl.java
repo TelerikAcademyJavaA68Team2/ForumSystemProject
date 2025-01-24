@@ -20,7 +20,6 @@ public class UserRepositoryImpl implements UserRepository {
         this.sessionFactory = sessionFactory;
     }
 
-
     @Override
     public List<User> getAllUsers() {
         try (Session session = sessionFactory.openSession()) {

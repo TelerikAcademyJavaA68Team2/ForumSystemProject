@@ -9,6 +9,8 @@ public interface PostService {
 
    // List<Post> get(FilterOptions filterOptions);
 
+    List<Post> getAll();
+
     Post getById(int id);
 
     void create(Post beer, User user);
