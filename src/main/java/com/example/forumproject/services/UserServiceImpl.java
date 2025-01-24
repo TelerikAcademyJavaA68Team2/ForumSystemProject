@@ -1,5 +1,6 @@
 package com.example.forumproject.services;
 
+import com.example.forumproject.helpers.ValidationHelpers;
 import com.example.forumproject.models.User;
 import com.example.forumproject.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(User user) {
+        ValidationHelpers.validateEmailAndUsername(user, userRepository);
+
         userRepository.createUser(user);
     }
+
 
     @Override
     public User getById(int userId) {
