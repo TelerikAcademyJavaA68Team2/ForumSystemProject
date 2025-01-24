@@ -1,7 +1,7 @@
-package com.example.forumproject.helpers;
+package com.example.forumproject.mappers;
 
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.UserDto;
+import com.example.forumproject.models.dtos.UserDto;
 import org.springframework.stereotype.Component;
 
 @Component
