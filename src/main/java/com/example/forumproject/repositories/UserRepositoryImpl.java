@@ -42,7 +42,7 @@ public class UserRepositoryImpl implements UserRepository {
         try (Session session = sessionFactory.openSession()) {
             User user = session.get(User.class, userId);
             if (user == null) {
-                throw new EntityNotFoundException("Beer", userId);
+                throw new EntityNotFoundException("User", userId);
             }
             return user;
         }
