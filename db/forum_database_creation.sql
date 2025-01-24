@@ -29,9 +29,7 @@ create table users
     constraint users_pk_2
         unique (email),
     constraint users_pk_3
-        unique (username),
-    constraint email
-        check (`email` like '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$')
+        unique (username)
 );
 
 create table posts
