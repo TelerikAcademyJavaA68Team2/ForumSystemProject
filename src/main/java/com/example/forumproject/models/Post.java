@@ -1,6 +1,9 @@
 package com.example.forumproject.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -20,6 +23,18 @@ public class Post {
 
     @Column(name = "content")
     private String content;
+
+
+    //A potential way of how post tags could be handled
+
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "post_tags",
+//            joinColumns = @JoinColumn(name = "post_id"),
+//            inverseJoinColumns = @JoinColumn(name = "tag_id")
+//    )
+//    private Set<Tag> tags;
 
 
     public Post() {
