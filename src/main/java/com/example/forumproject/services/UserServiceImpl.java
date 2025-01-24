@@ -10,7 +10,6 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-
     private final UserRepository userRepository;
 
     @Autowired
@@ -20,32 +19,52 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<User> getAll() {
-        return List.of();
+    public List<User> getAllUsers() {
+        return userRepository.getAllUsers();
     }
 
     @Override
-    public User getUserById(int id) {
-        return null;
+    public void createUser(User user) {
+        userRepository.createUser(user);
+    }
+
+    @Override
+    public User getById(int userId) {
+        return userRepository.getById(userId);
     }
 
     @Override
     public User getByEmail(String email) {
-        return null;
+        return userRepository.getByEmail(email);
     }
 
     @Override
-    public void create(User user) {
-
+    public User getByUsername(String username) {
+        return userRepository.getByUsername(username);
     }
 
     @Override
-    public void update(User user, int id) {
-
+    public void updateUser(User user) {
+        userRepository.updateUser(user);
     }
 
     @Override
-    public void delete(int id) {
+    public void deleteUser(int userId) {
+        userRepository.deleteUser(userId);
+    }
 
+    @Override
+    public void promoteToAdmin(int userId) {
+        userRepository.promoteToAdmin(userId);
+    }
+
+    @Override
+    public void blockUser(int userId) {
+        userRepository.blockUser(userId);
+    }
+
+    @Override
+    public void unblockUser(int userId) {
+        userRepository.unblockUser(userId);
     }
 }
