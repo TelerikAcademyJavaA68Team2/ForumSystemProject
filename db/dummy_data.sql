@@ -21,21 +21,23 @@ VALUES ('Georgi', 'Benchev', 'GeogriBenchev@gmail.com', 'georgi', '$2a$10$ML33hI
 
 -- Insert dummy data into the 'posts' table (car-related posts)
 INSERT INTO posts (user_id, title, content)
-VALUES (8, 'Top 10 Sports Cars of 2025',
-        'Sports cars are constantly evolving. Here are the top 10 sports cars of 2025 that every car enthusiast should check out.',
-        'In this post, we cover the most iconic sports cars for 2025 including the Porsche 911 Turbo, Ferrari 488 GTB, and Lamborghini Huracán.'),
-       (8, 'Electric Cars vs Gasoline Cars: Which is Better?',
-        'Electric vehicles are becoming more popular, but how do they compare to traditional gasoline-powered cars?',
-        'We dive deep into the pros and cons of electric cars, covering aspects such as range, charging infrastructure, and environmental impact.'),
-       (6, 'How to Maintain Your Classic Car',
-        'Classic car maintenance can be tricky, but with the right tools and knowledge, you can keep your vintage car in top condition.',
-        'In this article, we explore the best tips and techniques for keeping your classic car running smoothly and ensuring it holds its value.'),
-       (7, 'Tuning Your Car: Everything You Need to Know',
-        'Tuning a car can make a huge difference in performance. Let’s break down the basics of car tuning and how it can improve your ride.',
-        'We’ll discuss everything from engine tuning to suspension modifications, helping you achieve the perfect balance of power and handling.'),
-       (7, 'Formula 1: The Future of Racing',
-        'Formula 1 continues to innovate, with new technologies and rules making the sport more exciting than ever. What does the future hold for F1?',
-        'From hybrid engines to autonomous tech, we explore what the future of Formula 1 racing could look like and how it will change the sport.');
+VALUES
+    (2, 'Top 10 Sports Cars of 2025',
+     CONCAT('Sports cars are constantly evolving. Here are the top 10 sports cars of 2025 that every car enthusiast should check out. ',
+            'In this post, we cover the most iconic sports cars for 2025 including the Porsche 911 Turbo, Ferrari 488 GTB, and Lamborghini Huracán.')),
+    (2, 'Electric Cars vs Gasoline Cars: Which is Better?',
+     CONCAT('Electric vehicles are becoming more popular, but how do they compare to traditional gasoline-powered cars? ',
+            'We dive deep into the pros and cons of electric cars, covering aspects such as range, charging infrastructure, and environmental impact.')),
+    (3, 'How to Maintain Your Classic Car',
+     CONCAT('Classic car maintenance can be tricky, but with the right tools and knowledge, you can keep your vintage car in top condition. ',
+            'In this article, we explore the best tips and techniques for keeping your classic car running smoothly and ensuring it holds its value.')),
+    (3, 'Tuning Your Car: Everything You Need to Know',
+     CONCAT('Tuning a car can make a huge difference in performance. Let’s break down the basics of car tuning and how it can improve your ride. ',
+            'We’ll discuss everything from engine tuning to suspension modifications, helping you achieve the perfect balance of power and handling.')),
+    (2, 'Formula 1: The Future of Racing',
+     CONCAT('Formula 1 continues to innovate, with new technologies and rules making the sport more exciting than ever. What does the future hold for F1? ',
+            'From hybrid engines to autonomous tech, we explore what the future of Formula 1 racing could look like and how it will change the sport.'));
+
 
 -- Insert dummy data into the 'comments' table (comments on posts)
 INSERT INTO comments (post_id, user_id, content)

@@ -8,9 +8,7 @@ create table tags
         primary key,
     name varchar(50) not null,
     constraint tags_pk_2
-        unique (name),
-    constraint check_name
-        check (octet_length(`name` > 0))
+        unique (name)
 );
 
 create table users
