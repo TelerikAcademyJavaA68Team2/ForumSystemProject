@@ -9,12 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.example.forumproject.helpers.ValidationHelpers.validateUserIsAdminOrPostAuthor;
+import static com.example.forumproject.helpers.ValidationHelpers.validateUserIsNotBlocked;
+
 @Service
 public class PostServiceImpl implements PostService {
-
-    public static final String MODIFY_POSTS = "Only admins or the post's creator can modify posts!";
-    private static final String BLOCKED_USER_ERROR_MESSAGE =
-            "Your account is currently blocked! Your permissions to create or edit posts are restricted!";
 
     private final PostRepository postRepository;
 
@@ -42,30 +41,19 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void update(Post post, User user) {
-        Post postToUpdate = postRepository.getById(post.getId());
         validateUserIsNotBlocked(user);
-        validateUserIsAdminOrAuthor(postToUpdate.getId(), user);
+        Post postToUpdate = postRepository.getById(post.getId());
+        validateUserIsAdminOrPostAuthor(postToUpdate, user);
         postRepository.update(postToUpdate);
     }
 
     @Override
     public void delete(int id, User user) {
         validateUserIsNotBlocked(user);
-        validateUserIsAdminOrAuthor(id, user);
+        Post postToDelete = postRepository.getById(id);
+        validateUserIsAdminOrPostAuthor(postToDelete, user);
         postRepository.delete(id);
     }
 
-    private void validateUserIsAdminOrAuthor(int postId, User user) {
-        Post post = postRepository.getById(postId);
-        if (!(user.isAdmin() || post.getAuthor().equals(user))) {
-            throw new UnauthorizedAccessException(MODIFY_POSTS);
-        }
-    }
-
-    private static void validateUserIsNotBlocked(User user) {
-        if (user.isBlocked()) {
-            throw new UnauthorizedAccessException(BLOCKED_USER_ERROR_MESSAGE);
-        }
-    }
 
 }

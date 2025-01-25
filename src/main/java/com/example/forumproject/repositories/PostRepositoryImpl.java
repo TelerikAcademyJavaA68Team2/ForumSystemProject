@@ -1,7 +1,6 @@
 package com.example.forumproject.repositories;
 
 import com.example.forumproject.exceptions.EntityNotFoundException;
-import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository{
