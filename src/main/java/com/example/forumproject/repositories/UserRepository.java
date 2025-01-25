@@ -4,19 +4,17 @@ import com.example.forumproject.models.User;
 
 import java.util.List;
 
-public interface UserRepository {
+public interface UserRepository{
 
     List<User> getAllUsers();
 
-    void createUser(User user);
-
     User getById(int userId);
-
-    User getByEmail(String email);
 
     User getByUsername(String username);
 
-    void updateUser(User user);
+    User getByEmail(String email);
+
+    void save(User user);
 
     void deleteUser(int userId);
 
