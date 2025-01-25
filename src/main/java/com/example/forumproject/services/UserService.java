@@ -27,4 +27,6 @@ public interface UserService extends UserDetailsService {
     void unblockUser(int userId);
 
     User loadUserByUsername(String username);
+
+    User getAuthenticatedUser();
 }
