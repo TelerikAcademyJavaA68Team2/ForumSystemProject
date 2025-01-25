@@ -26,7 +26,7 @@ public class Post {
 
     //A potential way of how post tags could be handled
 
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
+    //    @JsonInclude(JsonInclude.Include.NON_NULL)
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinTable(
 //            name = "post_tags",

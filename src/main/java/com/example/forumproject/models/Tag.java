@@ -3,6 +3,7 @@ package com.example.forumproject.models;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tags")
@@ -15,6 +16,10 @@ public class Tag {
 
     @Column(name = "name")
     private String tagName;
+
+// potential way for posts
+//    @ManyToMany
+//    private Set<Post> posts;
 
     public Tag() {
 
