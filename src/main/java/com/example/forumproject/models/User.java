@@ -1,6 +1,7 @@
 package com.example.forumproject.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +25,7 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
+    @Email
     @Column(name = "email")
     private String email;
 
@@ -159,6 +161,12 @@ public class User implements UserDetails {
     }
 
     @Override
+    public String toString() {
+        return String.format("User{id=%d, firstName='%s', lastName='%s', email='%s', username='%s', isAdmin=%b, isBlocked=%b, photo='%s', phoneNumber='%s'}",
+                id, firstName, lastName, email, username, isAdmin, isBlocked, photo, phoneNumber);
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(id, email, username);
     }
@@ -185,6 +193,6 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(isAdmin() ? "ROLE_ADMIN" : "ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority(isAdmin() ? "ADMIN" : "USER"));
     }
 }
