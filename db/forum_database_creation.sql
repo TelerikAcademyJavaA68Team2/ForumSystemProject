@@ -21,7 +21,7 @@ create table users
     last_name     varchar(50)          not null,
     email         varchar(255)         not null,
     username      varchar(50)          not null,
-    password      varchar(50)          not null,
+    password      varchar(255)          not null,
     is_admin      tinyint(1) default 0 not null,
     is_blocked    tinyint(1)           not null,
     profile_photo text                 null,
