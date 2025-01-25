@@ -2,22 +2,21 @@ package com.example.forumproject.services;
 
 
 import com.example.forumproject.models.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
     List<User> getAllUsers();
 
-    void createUser(User user);
+    void save(User user);
 
     User getById(int userId);
 
     User getByEmail(String email);
 
     User getByUsername(String username);
-
-    void updateUser(User user);
 
     void deleteUser(int userId);
 
@@ -26,4 +25,6 @@ public interface UserService {
     void blockUser(int userId);
 
     void unblockUser(int userId);
+
+    User loadUserByUsername(String username);
 }
