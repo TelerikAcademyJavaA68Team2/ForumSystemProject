@@ -54,7 +54,7 @@ public class Comment {
         return author;
     }
 
-    public void setUser(User author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
