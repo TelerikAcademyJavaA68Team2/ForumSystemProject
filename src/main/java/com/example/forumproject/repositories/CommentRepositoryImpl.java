@@ -44,7 +44,7 @@ public class CommentRepositoryImpl implements CommentRepository{
     public Comment getById(int postId, int id) {
        try (Session session = sessionFactory.openSession()) {
            Query<Comment> query = session.createQuery(
-                   "FROM Comment c WHERE c.post.id = :postId AND c.id = id",
+                   "FROM Comment c WHERE c.post.id = :postId AND c.id = :id",
                    Comment.class
            );
            query.setParameter("postId", postId);

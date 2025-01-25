@@ -28,7 +28,6 @@ public class CommentController {
 
     private final CommentService commentService;
 
-
     private final CommentMapper commentMapper;
 
     private final AuthenticationHelper authenticationHelper;
