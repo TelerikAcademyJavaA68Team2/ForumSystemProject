@@ -28,10 +28,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void createUser(User user) {
+    public void save(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.persist(user);
+            session.merge(user);
             session.getTransaction().commit();
         }
     }
@@ -71,14 +71,6 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    @Override
-    public void updateUser(User user) {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            session.merge(user);
-            session.getTransaction().commit();
-        }
-    }
 
     @Override
     public void deleteUser(int userId) {
