@@ -1,6 +1,7 @@
 package com.example.forumproject.config;
 
 import com.example.forumproject.helpers.JwtAuthorizationFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,18 +33,22 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests
-                        (req -> req.requestMatchers
-                                        ("/api/login",
-                                                "/api/register",
-                                                "/error")
-                                .permitAll()
-                                .requestMatchers("/api/admin/**", "/api/users/{id}").hasAnyAuthority("ADMIN") // Admin-only endpoint
-                                .anyRequest()
-                                .authenticated())
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(req -> req
+                        .requestMatchers("/api/login", "/api/register", "/error").permitAll()
+                        .requestMatchers("/api/admin/**", "/api/users/{id}").hasAnyAuthority("ADMIN") // Admin-only endpoint
+                        .anyRequest().authenticated())
                 .userDetailsService(userDetailsService)
                 .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint((request, response, authException) -> { // Handle 401 (Unauthorized)
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: No valid token provided");
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> { // Handle 403 (Forbidden)
+                            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden: You don't have permission to access this resource");
+                        })
+                )
                 .build();
     }
 
