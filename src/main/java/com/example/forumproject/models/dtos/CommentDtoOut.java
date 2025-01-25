@@ -1,7 +1,5 @@
 package com.example.forumproject.models.dtos;
 
-import com.example.forumproject.models.User;
-
 public class CommentDtoOut {
 
     private int comment_id;
@@ -11,11 +9,10 @@ public class CommentDtoOut {
     private String content;
 
     public CommentDtoOut() {
-
     }
 
     public CommentDtoOut(int comment_id, String author, String content) {
-        this.comment_id=comment_id;
+        this.comment_id = comment_id;
         this.author = author;
         this.content = content;
     }

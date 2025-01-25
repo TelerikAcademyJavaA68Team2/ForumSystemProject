@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/posts/{postId}/comments")
@@ -40,10 +41,14 @@ public class CommentController {
     }
 
     @GetMapping
-    public List<Comment> getAllComments(@PathVariable int postId) {
-        try{
-            return commentService.getAll(postId);
-        } catch (EntityNotFoundException e){
+    public List<CommentDtoOut> getAllComments(@PathVariable int postId) {
+        try {
+            return commentService.getAll(postId)
+                    .stream()
+                    .map(commentMapper::objectToDto)
+                    .collect(Collectors.toList());
+
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
 
@@ -68,28 +73,41 @@ public class CommentController {
             Comment comment = commentMapper.dtoToObject(commentDTO, user);
             commentService.create(postId, comment, user);
             return comment;
-        }  catch (UnauthorizedAccessException e) {
+        } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
 
     }
 
-//    @PutMapping("/{id}")
-//    public void updateComment(@RequestHeader HttpHeaders headers, @PathVariable int postId,
-//                              @PathVariable int id, @Valid @RequestBody String content) {
-//
-//        try {
-//            User user = authenticationHelper.tryGetUser(headers);
-//            Comment comment = new Comment();
-//
-//            commentService.update(postId, id, user);
-//        } catch (EntityNotFoundException e) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-//        } catch (UnauthorizedOperationException u) {
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, u.getMessage());
-//        }
-//    }
+    @PutMapping("/{id}")
+    public Comment updateComment(@RequestHeader HttpHeaders headers, @PathVariable int postId,
+                                 @PathVariable int id, @Valid @RequestBody CommentDto commentDTO) {
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            Comment comment = commentMapper.updateDtoToObject(commentDTO, postId, id);
+            commentService.update(postId, comment, user);
+           return comment;
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedAccessException u) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, u.getMessage());
+        }
+    }
 
-
-
+    @DeleteMapping("/{id}")
+    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int postId, @PathVariable int id) {
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            commentService.delete(postId, id, user);
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedAccessException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    e.getMessage());
+        }
+    }
 }
+
+
+
+
