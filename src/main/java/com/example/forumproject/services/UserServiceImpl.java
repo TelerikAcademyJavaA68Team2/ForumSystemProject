@@ -4,6 +4,7 @@ import com.example.forumproject.helpers.ValidationHelpers;
 import com.example.forumproject.models.User;
 import com.example.forumproject.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,19 +19,17 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-
     @Override
     public List<User> getAllUsers() {
         return userRepository.getAllUsers();
     }
 
     @Override
-    public void createUser(User user) {
+    public void save(User user) {
         ValidationHelpers.validateEmailAndUsername(user, userRepository);
 
-        userRepository.createUser(user);
+        userRepository.save(user);
     }
-
 
     @Override
     public User getById(int userId) {
@@ -48,27 +47,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
-        userRepository.updateUser(user);
-    }
-
-    @Override
     public void deleteUser(int userId) {
         userRepository.deleteUser(userId);
     }
 
     @Override
     public void promoteToAdmin(int userId) {
-        userRepository.promoteToAdmin(userId);
+        User user = getById(userId);
+        user.setAdmin(true);
+        userRepository.save(user);
     }
 
     @Override
     public void blockUser(int userId) {
-        userRepository.blockUser(userId);
+        User user = getById(userId);
+        user.setBlocked(true);
+        userRepository.save(user);
     }
 
     @Override
     public void unblockUser(int userId) {
-        userRepository.unblockUser(userId);
+        User user = getById(userId);
+        user.setBlocked(false);
+        userRepository.save(user);
+    }
+
+    @Override
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.getByUsername(username);
     }
 }
