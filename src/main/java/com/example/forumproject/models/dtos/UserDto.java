@@ -13,22 +13,20 @@ public class UserDto {
     @Size(min = 2, max = 20, message = "Last name should be between 2 and 20 symbols!")
     private String lastName;
 
-    @NotNull(message = "email can't be empty")
+    @NotNull(message = "Email can't be empty")
     @Size(min = 2, max = 20, message = "Email should be between 2 and 20 symbols!")
     private String email;
 
-    @NotNull(message = "username can't be empty")
+    @NotNull(message = "Username can't be empty")
     @Size(min = 2, max = 20, message = "username should be between 2 and 20 symbols!")
     private String username;
 
-    @NotNull(message = "password can't be empty")
+    @NotNull(message = "Password can't be empty")
     @Size(min = 2, max = 20, message = "password should be between 2 and 20 symbols!")
     private String password;
 
-
     public UserDto() {
     }
-
 
     public UserDto(String firstName, String lastName, String email, String username, String password) {
         this.firstName = firstName;
