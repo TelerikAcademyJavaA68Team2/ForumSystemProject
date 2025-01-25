@@ -3,13 +3,13 @@ package com.example.forumproject.controllers;
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
-import com.example.forumproject.helpers.AuthenticationHelper;
 import com.example.forumproject.mappers.PostMapper;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.CreatePostDto;
 import com.example.forumproject.models.dtos.UpdatePostDto;
 import com.example.forumproject.services.PostService;
+import com.example.forumproject.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -26,14 +26,16 @@ public class PostController {
     private final PostService postService;
 
     private final PostMapper postMapper;
+    private final UserService userService;
 
-    private final AuthenticationHelper authenticationHelper;
+    /*private final AuthenticationHelper authenticationHelper;*/
 
     @Autowired
-    public PostController(PostService postService, PostMapper postMapper, AuthenticationHelper authenticationHelper) {
+    public PostController(PostService postService, PostMapper postMapper, UserService userService/*, AuthenticationHelper authenticationHelper*/) {
         this.postService = postService;
         this.postMapper = postMapper;
-        this.authenticationHelper = authenticationHelper;
+        /*this.authenticationHelper = authenticationHelper;*/
+        this.userService = userService;
     }
 
     @GetMapping
@@ -52,9 +54,10 @@ public class PostController {
     }
 
     @PostMapping
-    public Post create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CreatePostDto postDto) {
+    public Post create(@Valid @RequestBody CreatePostDto postDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            User user = userService.getAuthenticatedUser();
+            /*User user = authenticationHelper.tryGetUser(headers);*/
             Post postToCreate = postMapper.createPostFromDto(postDto, user);
             postService.create(postToCreate, user);
             return postToCreate;
@@ -69,7 +72,7 @@ public class PostController {
     public Post update(@RequestHeader HttpHeaders headers,
                        @PathVariable int id, @Valid @RequestBody UpdatePostDto postDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            User user = userService.getAuthenticatedUser();
             Post postToUpdate = postMapper.UpdatePostFromDto(postDto, id);
             postService.update(postToUpdate, user);
             return postToUpdate;
@@ -86,9 +89,9 @@ public class PostController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            User user = userService.getAuthenticatedUser();
             postService.delete(id, user);
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
