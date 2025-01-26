@@ -1,7 +1,8 @@
-package com.example.forumproject.repositories;
+package com.example.forumproject.repositories.implementation;
 
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.models.User;
+import com.example.forumproject.repositories.contracts.UserRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

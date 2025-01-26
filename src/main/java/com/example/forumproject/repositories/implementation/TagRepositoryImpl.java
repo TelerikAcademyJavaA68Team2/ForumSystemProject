@@ -1,7 +1,8 @@
-package com.example.forumproject.repositories;
+package com.example.forumproject.repositories.implementation;
 
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.Tag;
+import com.example.forumproject.repositories.contracts.TagRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

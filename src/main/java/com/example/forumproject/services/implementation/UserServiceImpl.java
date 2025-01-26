@@ -1,8 +1,8 @@
-package com.example.forumproject.services;
+package com.example.forumproject.services.implementation;
 
 import com.example.forumproject.helpers.ValidationHelpers;
 import com.example.forumproject.models.User;
-import com.example.forumproject.repositories.UserRepository;
+import com.example.forumproject.repositories.contracts.UserRepository;
 import com.example.forumproject.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

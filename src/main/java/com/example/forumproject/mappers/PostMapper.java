@@ -4,7 +4,7 @@ import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.CreatePostDto;
 import com.example.forumproject.models.dtos.UpdatePostDto;
-import com.example.forumproject.repositories.PostRepository;
+import com.example.forumproject.repositories.contracts.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,9 +1,9 @@
-package com.example.forumproject.services;
+package com.example.forumproject.services.implementation;
 
 import com.example.forumproject.models.Like;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
-import com.example.forumproject.repositories.LikesRepository;
+import com.example.forumproject.repositories.contracts.LikesRepository;
 import com.example.forumproject.services.contracts.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

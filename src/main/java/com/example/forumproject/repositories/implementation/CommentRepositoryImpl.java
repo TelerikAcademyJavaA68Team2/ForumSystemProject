@@ -1,10 +1,10 @@
-package com.example.forumproject.repositories;
+package com.example.forumproject.repositories.implementation;
 
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.models.Comment;
+import com.example.forumproject.repositories.contracts.CommentRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class CommentRepositoryImpl implements CommentRepository{
+public class CommentRepositoryImpl implements CommentRepository {
 
     private final SessionFactory sessionFactory;
 

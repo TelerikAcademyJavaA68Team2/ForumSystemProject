@@ -1,4 +1,4 @@
-package com.example.forumproject.repositories;
+package com.example.forumproject.repositories.contracts;
 
 import com.example.forumproject.models.Post;
 

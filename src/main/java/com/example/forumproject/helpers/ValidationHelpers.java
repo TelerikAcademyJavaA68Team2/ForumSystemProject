@@ -7,7 +7,7 @@ import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
-import com.example.forumproject.repositories.UserRepository;
+import com.example.forumproject.repositories.contracts.UserRepository;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

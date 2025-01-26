@@ -1,8 +1,8 @@
-package com.example.forumproject.services;
+package com.example.forumproject.services.implementation;
 
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.Tag;
-import com.example.forumproject.repositories.TagRepository;
+import com.example.forumproject.repositories.contracts.TagRepository;
 import com.example.forumproject.services.contracts.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
