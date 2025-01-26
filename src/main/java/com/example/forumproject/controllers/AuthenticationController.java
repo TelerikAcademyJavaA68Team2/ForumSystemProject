@@ -2,7 +2,6 @@ package com.example.forumproject.controllers;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.InvalidEmailFormatException;
-import com.example.forumproject.models.AuthenticationResponse;
 import com.example.forumproject.models.User;
 import com.example.forumproject.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody User request) {
+    public ResponseEntity<String> register(@RequestBody User request) {
         try {
             return ResponseEntity.ok(authService.register(request));
         } catch (DuplicateEntityException e) {
@@ -40,7 +39,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody User request) {
+    public ResponseEntity<String> login(@RequestBody User request) {
         return ResponseEntity.ok(authService.authenticate(request));
     }
 }

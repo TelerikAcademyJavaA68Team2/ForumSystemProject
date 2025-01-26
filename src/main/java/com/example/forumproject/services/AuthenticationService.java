@@ -1,6 +1,5 @@
 package com.example.forumproject.services;
 
-import com.example.forumproject.models.AuthenticationResponse;
 import com.example.forumproject.models.User;
 import com.example.forumproject.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticationService {
+public class AuthenticationService implements AuthenticationServiceInterface {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -29,24 +28,22 @@ public class AuthenticationService {
     }
 
 
-    public AuthenticationResponse register(User request) {
+    public String register(User request) {
 
         User user = createUserFromRequest(request);
         userService.save(user);
 
-        String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token);
+        return jwtService.generateToken(user);
     }
 
-    public AuthenticationResponse authenticate(User request) {
+    public String authenticate(User request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(), request.getPassword()));
 
         User user = userService.loadUserByUsername(request.getUsername());
-        String token = jwtService.generateToken(user);
 
-        return new AuthenticationResponse(token);
+        return jwtService.generateToken(user);
     }
 
     private User createUserFromRequest(User request) {
