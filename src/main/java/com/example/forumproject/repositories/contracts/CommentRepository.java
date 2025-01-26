@@ -10,6 +10,8 @@ public interface CommentRepository {
 
     Comment getById(int postId, int id);
 
+    List<Comment> getAllCommentsByPostId(int postId);
+
     List<Comment> getCommentsByAuthor(int postId, int userId);
 
     void create(int postId, Comment comment);
