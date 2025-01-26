@@ -48,11 +48,15 @@ public class User implements UserDetails {
     private String phoneNumber;
 
     public User() {
+        this.isAdmin = false;
+        this.isBlocked = false;
     }
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.isAdmin = false;
+        this.isBlocked = false;
     }
 
     public User(
