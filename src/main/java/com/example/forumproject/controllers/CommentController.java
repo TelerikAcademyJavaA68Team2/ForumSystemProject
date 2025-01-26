@@ -2,14 +2,13 @@ package com.example.forumproject.controllers;
 
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
-import com.example.forumproject.helpers.AuthenticationHelper;
 import com.example.forumproject.mappers.CommentMapper;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.CommentDto;
 import com.example.forumproject.models.dtos.CommentDtoOut;
-import com.example.forumproject.services.CommentService;
-import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.contracts.CommentService;
+import com.example.forumproject.services.contracts.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -4,8 +4,7 @@ import com.example.forumproject.models.Like;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.repositories.LikesRepository;
-import com.example.forumproject.repositories.PostRepository;
-import com.example.forumproject.repositories.UserRepository;
+import com.example.forumproject.services.contracts.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

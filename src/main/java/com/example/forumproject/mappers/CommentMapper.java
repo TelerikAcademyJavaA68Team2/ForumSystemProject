@@ -6,8 +6,6 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.CommentDto;
 import com.example.forumproject.models.dtos.CommentDtoOut;
 import com.example.forumproject.repositories.CommentRepository;
-import com.example.forumproject.repositories.UserRepository;
-import com.example.forumproject.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

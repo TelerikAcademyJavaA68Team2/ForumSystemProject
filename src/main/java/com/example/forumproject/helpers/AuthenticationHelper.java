@@ -3,7 +3,7 @@ package com.example.forumproject.helpers;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.models.User;
-import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;

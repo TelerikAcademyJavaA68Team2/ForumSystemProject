@@ -63,7 +63,7 @@ public class JwtService {
         String token = Jwts.builder()
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 24 * 101 * 60 * 60 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000 * 24 * 101)) // 101 days
                 .signWith(getSigninKey())
                 .compact();
         return token;

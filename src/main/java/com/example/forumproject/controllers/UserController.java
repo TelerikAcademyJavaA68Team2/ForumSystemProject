@@ -3,7 +3,7 @@ package com.example.forumproject.controllers;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
-import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;

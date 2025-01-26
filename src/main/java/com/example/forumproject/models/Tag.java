@@ -3,7 +3,6 @@ package com.example.forumproject.models;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "tags")
@@ -25,8 +24,7 @@ public class Tag {
 
     }
 
-    public Tag(int id, String tagName) {
-        this.id = id;
+    public Tag(String tagName) {
         this.tagName = tagName;
     }
 

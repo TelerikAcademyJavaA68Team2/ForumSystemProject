@@ -1,4 +1,4 @@
-package com.example.forumproject.services;
+package com.example.forumproject.services.contracts;
 
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;

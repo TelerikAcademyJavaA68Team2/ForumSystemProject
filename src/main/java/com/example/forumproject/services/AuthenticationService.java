@@ -2,6 +2,7 @@ package com.example.forumproject.services;
 
 import com.example.forumproject.models.AuthenticationResponse;
 import com.example.forumproject.models.User;
+import com.example.forumproject.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

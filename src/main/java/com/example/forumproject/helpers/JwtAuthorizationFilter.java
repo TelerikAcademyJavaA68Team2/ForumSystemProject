@@ -2,7 +2,7 @@ package com.example.forumproject.helpers;
 
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.services.JwtService;
-import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.contracts.UserService;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
