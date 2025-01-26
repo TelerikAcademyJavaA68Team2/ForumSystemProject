@@ -20,7 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api")
 public class PostController {
 
     private final PostService postService;
@@ -36,12 +36,12 @@ public class PostController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/posts")
     public List<Post> getAllPosts() {
         return postService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/posts/{id}")
     public Post getById(@PathVariable int id) {
         try {
             return postService.getById(id);
@@ -51,7 +51,7 @@ public class PostController {
         }
     }
 
-    @GetMapping("/{id}/like")
+    @GetMapping("/posts/{id}/like")
     public String likePost(@PathVariable int id) {
         try {
             User user = userService.getAuthenticatedUser();
@@ -64,7 +64,7 @@ public class PostController {
         }
     }
 
-    @GetMapping("/{id}/dislike")
+    @GetMapping("/posts/{id}/dislike")
     public String dislikePost(@PathVariable int id) {
         try {
             User user = userService.getAuthenticatedUser();
@@ -79,7 +79,7 @@ public class PostController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/posts")
     public Post create(@Valid @RequestBody CreatePostDto postDto) {
         try {
             User user = userService.getAuthenticatedUser();
@@ -93,7 +93,7 @@ public class PostController {
 
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/posts/{id}")
     public Post update(@PathVariable int id, @Valid @RequestBody UpdatePostDto postDto) {
         try {
             User user = userService.getAuthenticatedUser();
@@ -110,7 +110,7 @@ public class PostController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/posts/{id}")
     public void delete(@PathVariable int id) {
         try {
             User user = userService.getAuthenticatedUser();

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/posts/{postId}/comments")
+@RequestMapping("/api/posts/{postId}")
 public class CommentController {
 
     private final CommentService commentService;
@@ -35,7 +35,7 @@ public class CommentController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/comments")
     public List<CommentDtoOut> getAllComments(@PathVariable int postId) {
         try {
             return commentService.getAll(postId)
@@ -49,7 +49,7 @@ public class CommentController {
 
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/comments/{id}")
     public CommentDtoOut getById(@PathVariable int postId, @PathVariable int id) {
         try {
             Comment comment = commentService.getById(postId, id);
@@ -60,7 +60,7 @@ public class CommentController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/comments")
     public Comment createComment(@PathVariable int postId,
                                  @Valid @RequestBody CommentDto commentDTO) {
         try {
@@ -74,7 +74,7 @@ public class CommentController {
 
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/comments/{id}")
     public Comment updateComment(@PathVariable int postId,
                                  @PathVariable int id, @Valid @RequestBody CommentDto commentDTO) {
         try {
@@ -89,7 +89,7 @@ public class CommentController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/comments/{id}")
     public void delete(@PathVariable int postId, @PathVariable int id) {
         try {
             User user = userService.getAuthenticatedUser();
