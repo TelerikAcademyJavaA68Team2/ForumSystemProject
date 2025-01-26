@@ -1,13 +1,15 @@
 package com.example.forumproject.mappers;
 
 
-import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.CommentDto;
-import com.example.forumproject.models.dtos.CommentDtoOut;
+import com.example.forumproject.models.Comment;
 import com.example.forumproject.repositories.contracts.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class CommentMapper {
@@ -33,11 +35,14 @@ public class CommentMapper {
     }
 
 
-    public CommentDtoOut objectToDto(Comment comment) {
-        CommentDtoOut commentDtoOut = new CommentDtoOut();
-        commentDtoOut.setComment_id(comment.getId());
-        commentDtoOut.setAuthor(comment.getAuthor().getUsername());
+    public CommentDto commentToCommentDto(Comment comment) {
+        CommentDto commentDtoOut = new CommentDto();
         commentDtoOut.setContent(comment.getContent());
         return commentDtoOut;
     }
+
+    public List<CommentDto> commentsToCommentDtos(List<Comment> comments) {
+        return comments.stream().map(this::commentToCommentDto).collect(Collectors.toList());
+    }
+
 }
