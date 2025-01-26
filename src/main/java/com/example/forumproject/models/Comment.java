@@ -71,12 +71,12 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return id == comment.id && author.equals(comment.author);
+        return id == comment.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, author);
+        return Objects.hash(id);
 
     }
 }
