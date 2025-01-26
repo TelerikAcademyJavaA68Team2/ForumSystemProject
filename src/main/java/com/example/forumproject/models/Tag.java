@@ -49,12 +49,12 @@ public class Tag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tag tag = (Tag) o;
-        return id == tag.id && tagName.equals(tag.tagName);
+        return id == tag.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tagName);
+        return Objects.hash(id);
     }
 
 }

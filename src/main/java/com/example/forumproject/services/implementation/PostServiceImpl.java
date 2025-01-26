@@ -1,5 +1,6 @@
 package com.example.forumproject.services.implementation;
 
+import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.repositories.contracts.PostRepository;
@@ -9,11 +10,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.forumproject.helpers.ValidationHelpers.validateUserIsAdminOrPostAuthor;
-import static com.example.forumproject.helpers.ValidationHelpers.validateUserIsNotBlocked;
+import static com.example.forumproject.helpers.ValidationHelpers.*;
 
 @Service
 public class PostServiceImpl implements PostService {
+
+    public static final String DUPLICATE_POST_MESSAGE = "The post already has the same title and content";
 
     private final PostRepository postRepository;
 
@@ -39,10 +41,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void update(Post post, User user) {
+    public void update(Post newPost, User user) {
         validateUserIsNotBlocked(user);
-        Post postToUpdate = postRepository.getById(post.getId());
+        Post postToUpdate = postRepository.getById(newPost.getId());
         validateUserIsAdminOrPostAuthor(postToUpdate, user);
+        if (isDuplicatePost(newPost, postToUpdate)){
+            throw new DuplicateEntityException(DUPLICATE_POST_MESSAGE);
+        }
+        postToUpdate.setTitle(newPost.getTitle());
+        postToUpdate.setContent(newPost.getContent());
         postRepository.update(postToUpdate);
     }
 

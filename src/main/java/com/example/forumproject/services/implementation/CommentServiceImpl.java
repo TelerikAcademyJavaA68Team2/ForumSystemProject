@@ -1,5 +1,6 @@
 package com.example.forumproject.services.implementation;
 
+import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
@@ -11,12 +12,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.forumproject.helpers.ValidationHelpers.validateUserIsAdminOrCommentAuthor;
-import static com.example.forumproject.helpers.ValidationHelpers.validateUserIsNotBlocked;
+import static com.example.forumproject.helpers.ValidationHelpers.*;
 
 @Service
 public class CommentServiceImpl implements CommentService {
 
+    public static final String DUPLICATE_COMMENT_MESSAGE = "The comment already has the same content";
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
@@ -52,11 +53,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void update(int postId, Comment comment, User user) {
+    public void update(int postId, Comment newComment, User user) {
         validateUserIsNotBlocked(user);
-        Comment commentToUpdate = commentRepository.getById(postId, comment.getId());
+        Comment commentToUpdate = commentRepository.getById(postId, newComment.getId());
         validateUserIsAdminOrCommentAuthor(commentToUpdate, user);
-        commentRepository.update(postId, comment);
+        if (isDuplicateComment(newComment, commentToUpdate)){
+            throw new DuplicateEntityException(DUPLICATE_COMMENT_MESSAGE);
+        }
+        commentToUpdate.setContent(newComment.getContent());
+        commentRepository.update(postId, commentToUpdate);
     }
 
     @Override

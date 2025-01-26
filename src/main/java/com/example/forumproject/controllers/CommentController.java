@@ -1,5 +1,6 @@
 package com.example.forumproject.controllers;
 
+import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.CommentMapper;
@@ -84,6 +85,8 @@ public class CommentController {
            return comment;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (DuplicateEntityException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (UnauthorizedAccessException u) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, u.getMessage());
         }

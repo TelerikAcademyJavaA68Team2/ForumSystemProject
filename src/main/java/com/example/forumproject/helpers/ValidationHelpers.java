@@ -70,4 +70,13 @@ public class ValidationHelpers {
             throw new UnauthorizedAccessException(BLOCKED_USER_ERROR_MESSAGE);
         }
     }
+
+    public static boolean isDuplicatePost(Post newPost, Post postToUpdate) {
+        return newPost.getContent().trim().equalsIgnoreCase(postToUpdate.getContent().trim()) &&
+                newPost.getTitle().trim().equalsIgnoreCase(postToUpdate.getTitle().trim());
+    }
+
+    public static boolean isDuplicateComment(Comment newComment, Comment commentToUpdate) {
+        return newComment.getContent().trim().equalsIgnoreCase(commentToUpdate.getContent().trim());
+    }
 }
