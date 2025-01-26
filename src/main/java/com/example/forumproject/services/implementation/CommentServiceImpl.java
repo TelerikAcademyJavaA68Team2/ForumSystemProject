@@ -4,6 +4,7 @@ import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
+import com.example.forumproject.models.dtos.CommentDto;
 import com.example.forumproject.repositories.contracts.CommentRepository;
 import com.example.forumproject.repositories.contracts.PostRepository;
 import com.example.forumproject.services.contracts.CommentService;
@@ -30,6 +31,13 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getAll(int postId) {
         return commentRepository.getAll(postId);
+    }
+
+    @Override
+    public List<CommentDto> getAllCommentDtos(int postId) {
+        //List<CommentDto> comments = commentRepository.getAllCommentsByPostId(postId)
+
+        return null;
     }
 
     @Override
