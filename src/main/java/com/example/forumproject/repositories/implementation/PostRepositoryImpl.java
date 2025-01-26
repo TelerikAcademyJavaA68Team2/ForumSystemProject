@@ -21,8 +21,16 @@ public class PostRepositoryImpl implements PostRepository {
         this.sessionFactory = sessionFactory;
     }
 
+    @Override
+    public int getTotalNumberOfPosts() {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Long> query = session.createQuery("SELECT COUNT(p) FROM Post p", Long.class);
+            return query.uniqueResult() != null ? query.uniqueResult().intValue() : 0;
+        }
+    }
+
     public List<Post> getAll() {
-        try (Session session = sessionFactory.openSession() ) {
+        try (Session session = sessionFactory.openSession()) {
             Query<Post> query = session.createQuery("from Post", Post.class);
             return query.list();
         }
@@ -41,11 +49,11 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public void create(Post post) {
-            try (Session session = sessionFactory.openSession()) {
-                session.beginTransaction();
-                session.persist(post);
-                session.getTransaction().commit();
-            }
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.persist(post);
+            session.getTransaction().commit();
+        }
     }
 
     @Override

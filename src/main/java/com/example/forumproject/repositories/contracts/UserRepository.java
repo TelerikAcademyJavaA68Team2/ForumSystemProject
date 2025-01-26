@@ -4,9 +4,11 @@ import com.example.forumproject.models.User;
 
 import java.util.List;
 
-public interface UserRepository{
+public interface UserRepository {
 
     List<User> getAllUsers();
+
+    int getNumberOfActiveUsers();
 
     User getById(int userId);
 

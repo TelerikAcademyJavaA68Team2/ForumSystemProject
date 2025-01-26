@@ -56,8 +56,8 @@ public class HomepageResponseFactory {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(String.format("Active users: %d%n", userRepository.getAllUsers().stream().count()));
-        sb.append(String.format("Posts created: %d%n%n", postRepository.getAll().stream().count()));
+        sb.append(String.format("Active users: %d%n", userRepository.getNumberOfActiveUsers()));
+        sb.append(String.format("Posts created: %d%n%n", postRepository.getTotalNumberOfPosts()));
 
         sb.append("Possible Endpoints:").append(System.lineSeparator()).append(System.lineSeparator());
 

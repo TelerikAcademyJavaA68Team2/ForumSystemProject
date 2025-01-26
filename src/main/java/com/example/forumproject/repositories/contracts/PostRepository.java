@@ -8,6 +8,8 @@ public interface PostRepository {
 
     // List<Post> get(FilterOptions filterOptions);
 
+    int getTotalNumberOfPosts();
+
     List<Post> getAll();
 
     Post getById(int id);
