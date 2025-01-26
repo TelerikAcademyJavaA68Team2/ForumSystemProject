@@ -64,4 +64,9 @@ public class HomepageController {
     public ResponseEntity<String> getLoginInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getLoginInfo());
     }
+
+    @GetMapping("/posts")
+    public ResponseEntity<String> getPosts() {
+        return ResponseEntity.ok(homepageResponseFactory.getLoginInfo());
+    }
 }
