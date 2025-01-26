@@ -4,17 +4,14 @@ import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.helpers.AuthenticationHelper;
 import com.example.forumproject.mappers.CommentMapper;
-import com.example.forumproject.mappers.PostMapper;
 import com.example.forumproject.models.Comment;
-import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.CommentDto;
 import com.example.forumproject.models.dtos.CommentDtoOut;
 import com.example.forumproject.services.CommentService;
-import com.example.forumproject.services.PostService;
+import com.example.forumproject.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,11 +29,15 @@ public class CommentController {
 
     private final AuthenticationHelper authenticationHelper;
 
+    private final UserService userService;
+
     @Autowired
-    public CommentController(CommentService commentService, CommentMapper commentMapper, AuthenticationHelper authenticationHelper) {
+    public CommentController(CommentService commentService, CommentMapper commentMapper,
+                             AuthenticationHelper authenticationHelper, UserService userService) {
         this.commentService = commentService;
         this.commentMapper = commentMapper;
         this.authenticationHelper = authenticationHelper;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -65,10 +66,10 @@ public class CommentController {
     }
 
     @PostMapping
-    public Comment createComment(@RequestHeader HttpHeaders headers, @PathVariable int postId,
+    public Comment createComment(@PathVariable int postId,
                                  @Valid @RequestBody CommentDto commentDTO) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            User user = userService.getAuthenticatedUser();
             Comment comment = commentMapper.dtoToObject(commentDTO, user);
             commentService.create(postId, comment, user);
             return comment;
@@ -79,10 +80,10 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public Comment updateComment(@RequestHeader HttpHeaders headers, @PathVariable int postId,
+    public Comment updateComment(@PathVariable int postId,
                                  @PathVariable int id, @Valid @RequestBody CommentDto commentDTO) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            User user = userService.getAuthenticatedUser();
             Comment comment = commentMapper.updateDtoToObject(commentDTO, postId, id);
             commentService.update(postId, comment, user);
            return comment;
@@ -94,9 +95,9 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int postId, @PathVariable int id) {
+    public void delete(@PathVariable int postId, @PathVariable int id) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            User user = userService.getAuthenticatedUser();
             commentService.delete(postId, id, user);
         } catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

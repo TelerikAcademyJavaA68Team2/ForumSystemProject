@@ -13,7 +13,6 @@ import com.example.forumproject.services.PostService;
 import com.example.forumproject.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -84,7 +83,6 @@ public class PostController {
     public Post create(@Valid @RequestBody CreatePostDto postDto) {
         try {
             User user = userService.getAuthenticatedUser();
-            /*User user = authenticationHelper.tryGetUser(headers);*/
             Post postToCreate = postMapper.createPostFromDto(postDto, user);
             postService.create(postToCreate, user);
             return postToCreate;
@@ -96,8 +94,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public Post update(@RequestHeader HttpHeaders headers,
-                       @PathVariable int id, @Valid @RequestBody UpdatePostDto postDto) {
+    public Post update(@PathVariable int id, @Valid @RequestBody UpdatePostDto postDto) {
         try {
             User user = userService.getAuthenticatedUser();
             Post postToUpdate = postMapper.UpdatePostFromDto(postDto, id);
@@ -114,7 +111,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public void delete(@PathVariable int id) {
         try {
             User user = userService.getAuthenticatedUser();
             postService.delete(id, user);
