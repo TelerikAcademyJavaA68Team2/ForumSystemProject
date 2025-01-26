@@ -8,6 +8,7 @@ import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.CreatePostDto;
 import com.example.forumproject.models.dtos.UpdatePostDto;
+import com.example.forumproject.services.LikeService;
 import com.example.forumproject.services.PostService;
 import com.example.forumproject.services.UserService;
 import jakarta.validation.Valid;
@@ -24,17 +25,15 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-
     private final PostMapper postMapper;
     private final UserService userService;
-
-    /*private final AuthenticationHelper authenticationHelper;*/
+    private final LikeService likeService;
 
     @Autowired
-    public PostController(PostService postService, PostMapper postMapper, UserService userService/*, AuthenticationHelper authenticationHelper*/) {
+    public PostController(PostService postService, PostMapper postMapper, UserService userService, LikeService likeService) {
         this.postService = postService;
         this.postMapper = postMapper;
-        /*this.authenticationHelper = authenticationHelper;*/
+        this.likeService = likeService;
         this.userService = userService;
     }
 
@@ -50,6 +49,34 @@ public class PostController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException
                     (HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}/like")
+    public String likePost(@PathVariable int id) {
+        try {
+            User user = userService.getAuthenticatedUser();
+            Post post = postService.getById(id);
+            return likeService.save(post, user, true) ? "Post LIKED successfully!" : "LIKE removed successfully!";
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (DuplicateEntityException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}/dislike")
+    public String dislikePost(@PathVariable int id) {
+        try {
+            User user = userService.getAuthenticatedUser();
+            Post post = postService.getById(id);
+            return likeService.save(post, user, false) ? "Post DISLIKED successfully!" : "DISLIKE removed successfully!";
+
+
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (DuplicateEntityException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
