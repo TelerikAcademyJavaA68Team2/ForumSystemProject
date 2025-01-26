@@ -7,7 +7,6 @@ import com.example.forumproject.mappers.CommentMapper;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.CommentDto;
-import com.example.forumproject.models.dtos.CommentDtoOut;
 import com.example.forumproject.services.contracts.CommentService;
 import com.example.forumproject.services.contracts.UserService;
 import jakarta.validation.Valid;
@@ -37,13 +36,12 @@ public class CommentController {
     }
 
     @GetMapping("/comments")
-    public List<CommentDtoOut> getAllComments(@PathVariable int postId) {
+    public List<CommentDto> getAllComments(@PathVariable int postId) {
         try {
             return commentService.getAll(postId)
                     .stream()
-                    .map(commentMapper::objectToDto)
+                    .map(commentMapper::commentToCommentDto)
                     .collect(Collectors.toList());
-
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -51,10 +49,10 @@ public class CommentController {
     }
 
     @GetMapping("/comments/{id}")
-    public CommentDtoOut getById(@PathVariable int postId, @PathVariable int id) {
+    public CommentDto getById(@PathVariable int postId, @PathVariable int id) {
         try {
             Comment comment = commentService.getById(postId, id);
-            return commentMapper.objectToDto(comment);
+            return commentMapper.commentToCommentDto(comment);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException
                     (HttpStatus.NOT_FOUND, e.getMessage());
@@ -63,7 +61,7 @@ public class CommentController {
 
     @PostMapping("/comments")
     public Comment createComment(@PathVariable int postId,
-                                 @Valid @RequestBody CommentDto commentDTO) {
+                                                                 @Valid @RequestBody CommentDto commentDTO) {
         try {
             User user = userService.getAuthenticatedUser();
             Comment comment = commentMapper.dtoToObject(commentDTO, user);
