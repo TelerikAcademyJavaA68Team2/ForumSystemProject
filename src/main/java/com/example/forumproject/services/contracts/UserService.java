@@ -22,11 +22,15 @@ public interface UserService extends UserDetailsService {
 
     void promoteToAdmin(int userId);
 
+    void demoteAdminToUser(int userId);
+
     void blockUser(int userId);
 
     void unblockUser(int userId);
 
     User loadUserByUsername(String username);
+
+    void updatePhoneNumber(User user, String phoneNumber);
 
     User getAuthenticatedUser();
 }

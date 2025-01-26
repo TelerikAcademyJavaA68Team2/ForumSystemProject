@@ -1,5 +1,6 @@
 package com.example.forumproject.services.implementation;
 
+import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.helpers.ValidationHelpers;
 import com.example.forumproject.models.User;
 import com.example.forumproject.repositories.contracts.UserRepository;
@@ -33,6 +34,17 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+
+    @Override
+    public void updatePhoneNumber(User user, String phoneNumber) {
+        ValidationHelpers.validatePhoneNumber(phoneNumber);
+        if (user.getPhoneNumber() != null && user.getPhoneNumber().equals(phoneNumber)) {
+            throw new InvalidUserInputException("You provided the phone number that's already in your profile info!");
+        }
+        user.setPhoneNumber(phoneNumber);
+        userRepository.save(user);
+    }
+
     @Override
     public User getById(int userId) {
         return userRepository.getById(userId);
@@ -56,13 +68,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public void promoteToAdmin(int userId) {
         User user = getById(userId);
+        if (user.isAdmin()) {
+            throw new InvalidUserInputException(String.format(
+                    "Admin with id: %d is already Admin! To demote him to User try /make-user", userId));
+        }
         user.setAdmin(true);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void demoteAdminToUser(int userId) {
+        User user = getById(userId);
+        if (!user.isAdmin()) {
+            throw new InvalidUserInputException(String.format("User with id: %d is already User!", userId));
+        }
+        user.setAdmin(false);
         userRepository.save(user);
     }
 
     @Override
     public void blockUser(int userId) {
         User user = getById(userId);
+        if (user.isBlocked()) {
+            throw new InvalidUserInputException(String.format(
+                    "User with id: %d is already blocked! To unblock him try /unblock", userId));
+        }
         user.setBlocked(true);
         userRepository.save(user);
     }
@@ -70,6 +100,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void unblockUser(int userId) {
         User user = getById(userId);
+        if (!user.isBlocked()) {
+            throw new InvalidUserInputException(String.format
+                    ("User with id: %d is not currently blocked!", userId));
+        }
         user.setBlocked(false);
         userRepository.save(user);
     }
