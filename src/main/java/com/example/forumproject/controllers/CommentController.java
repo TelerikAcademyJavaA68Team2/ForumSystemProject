@@ -27,16 +27,12 @@ public class CommentController {
 
     private final CommentMapper commentMapper;
 
-    private final AuthenticationHelper authenticationHelper;
-
     private final UserService userService;
 
     @Autowired
-    public CommentController(CommentService commentService, CommentMapper commentMapper,
-                             AuthenticationHelper authenticationHelper, UserService userService) {
+    public CommentController(CommentService commentService, CommentMapper commentMapper, UserService userService) {
         this.commentService = commentService;
         this.commentMapper = commentMapper;
-        this.authenticationHelper = authenticationHelper;
         this.userService = userService;
     }
 
