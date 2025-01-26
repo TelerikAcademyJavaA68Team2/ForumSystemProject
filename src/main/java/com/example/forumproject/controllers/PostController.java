@@ -7,6 +7,7 @@ import com.example.forumproject.mappers.PostMapper;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.CreatePostDto;
+import com.example.forumproject.models.dtos.PostOutDto;
 import com.example.forumproject.models.dtos.UpdatePostDto;
 import com.example.forumproject.services.contracts.LikeService;
 import com.example.forumproject.services.contracts.PostService;
@@ -42,9 +43,9 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public Post getById(@PathVariable int id) {
+    public PostOutDto getById(@PathVariable int id) {
         try {
-            return postService.getById(id);
+            return postService.getByIdDto(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException
                     (HttpStatus.NOT_FOUND, e.getMessage());

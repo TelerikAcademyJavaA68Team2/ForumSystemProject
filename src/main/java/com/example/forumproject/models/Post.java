@@ -1,10 +1,8 @@
 package com.example.forumproject.models;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -24,6 +22,8 @@ public class Post {
 
     @Column(name = "content")
     private String content;
+
+  //  private List<Comment> comments;
 
     //A potential way of how post tags could be handled
 

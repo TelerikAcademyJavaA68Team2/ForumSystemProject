@@ -1,8 +1,12 @@
 package com.example.forumproject.services.implementation;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
+import com.example.forumproject.mappers.PostMapper;
+import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
+import com.example.forumproject.models.dtos.PostOutDto;
+import com.example.forumproject.repositories.contracts.CommentRepository;
 import com.example.forumproject.repositories.contracts.PostRepository;
 import com.example.forumproject.services.contracts.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +23,25 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
 
+    private final CommentRepository commentRepository;
+
+    private final PostMapper postMapper;
+
     @Autowired
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, CommentRepository commentRepository, PostMapper postMapper) {
         this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
+        this.postMapper = postMapper;
     }
 
     @Override
     public List<Post> getAll(){
         return postRepository.getAll();
+    }
+
+    @Override
+    public PostOutDto getByIdDto(int id) {
+        return postMapper.postOutDtoToPost(postRepository.getById(id));
     }
 
     @Override
