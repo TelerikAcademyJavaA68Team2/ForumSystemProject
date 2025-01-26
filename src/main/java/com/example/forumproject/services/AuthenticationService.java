@@ -37,9 +37,9 @@ public class AuthenticationService implements AuthenticationServiceInterface {
     }
 
     public String authenticate(User request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(), request.getPassword()));
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken
+                        (request.getUsername(), request.getPassword()));
 
         User user = userService.loadUserByUsername(request.getUsername());
 
