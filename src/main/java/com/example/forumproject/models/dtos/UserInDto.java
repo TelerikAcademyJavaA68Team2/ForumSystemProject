@@ -3,7 +3,7 @@ package com.example.forumproject.models.dtos;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class UserDto {
+public class UserInDto {
 
     @NotNull(message = "First name can't be empty")
     @Size(min = 2, max = 20, message = "First name should be between 2 and 20 symbols!")
@@ -25,10 +25,10 @@ public class UserDto {
     @Size(min = 2, max = 20, message = "password should be between 2 and 20 symbols!")
     private String password;
 
-    public UserDto() {
+    public UserInDto() {
     }
 
-    public UserDto(String firstName, String lastName, String email, String username, String password) {
+    public UserInDto(String firstName, String lastName, String email, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
