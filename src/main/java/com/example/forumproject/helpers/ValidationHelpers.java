@@ -43,7 +43,7 @@ public class ValidationHelpers {
         checkEmail(user.getEmail());
     }
 
-    public static void checkEmail(String email) {
+    private static void checkEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
