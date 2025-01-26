@@ -1,9 +1,6 @@
 package com.example.forumproject.helpers;
 
-import com.example.forumproject.exceptions.DuplicateEntityException;
-import com.example.forumproject.exceptions.EntityNotFoundException;
-import com.example.forumproject.exceptions.InvalidEmailFormatException;
-import com.example.forumproject.exceptions.UnauthorizedAccessException;
+import com.example.forumproject.exceptions.*;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
@@ -78,5 +75,16 @@ public class ValidationHelpers {
 
     public static boolean isDuplicateComment(Comment newComment, Comment commentToUpdate) {
         return newComment.getContent().trim().equalsIgnoreCase(commentToUpdate.getContent().trim());
+    }
+
+    public static void validatePhoneNumber(String phoneNumber) {
+        String regex = "^[\\d+\\- ]{6,20}$";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phoneNumber);
+
+        if (!matcher.matches()) {
+            throw new InvalidUserInputException("You provided wrong phone number -> 6-20 chars allowed symbols -> {+/{space}/-}");
+        }
     }
 }
