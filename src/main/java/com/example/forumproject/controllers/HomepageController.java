@@ -3,7 +3,7 @@ package com.example.forumproject.controllers;
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.InvalidEmailFormatException;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.HomepageResponseFactory;
+import com.example.forumproject.mappers.HomepageResponseFactory;
 import com.example.forumproject.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

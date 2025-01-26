@@ -1,4 +1,4 @@
-package com.example.forumproject.models.dtos;
+package com.example.forumproject.mappers;
 
 import com.example.forumproject.repositories.contracts.PostRepository;
 import com.example.forumproject.repositories.contracts.UserRepository;
