@@ -37,8 +37,6 @@ create table posts
     user_id int          not null,
     title   varchar(100) not null,
     content text         not null,
-    constraint posts_pk_2
-        unique (title),
     constraint posts_users_id_fk
         foreign key (user_id) references users (id)
 );
