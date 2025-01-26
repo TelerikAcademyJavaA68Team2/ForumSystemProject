@@ -35,7 +35,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public void create(Post post, User user) {
         validateUserIsNotBlocked(user);
-        post.setAuthor(user);
         postRepository.create(post);
     }
 
