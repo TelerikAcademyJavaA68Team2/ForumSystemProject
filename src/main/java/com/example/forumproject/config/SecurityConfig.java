@@ -35,7 +35,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/api/login", "/api/register", "/error").permitAll()
+                        .requestMatchers("/api/login", "/api/register", "/error", "/api/posts").permitAll()
                         .requestMatchers("/api/admin/**", "/api/users/{id}").hasAnyAuthority("ADMIN") // Admin-only endpoint
                         .anyRequest().authenticated())
                 .userDetailsService(userDetailsService)
