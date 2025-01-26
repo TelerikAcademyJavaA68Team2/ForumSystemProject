@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.forumproject.helpers.ValidationHelpers.validateUserIsAdminOrPostAuthor;
-import static com.example.forumproject.helpers.ValidationHelpers.validateUserIsNotBlocked;
+import static com.example.forumproject.helpers.ValidationHelpers.*;
 
 @Service
 public class PostServiceImpl implements PostService {
+
+    public static final String DUPLICATE_POST_MESSAGE = "The post already has the same title and content";
 
     private final PostRepository postRepository;
 
@@ -44,8 +45,8 @@ public class PostServiceImpl implements PostService {
         validateUserIsNotBlocked(user);
         Post postToUpdate = postRepository.getById(newPost.getId());
         validateUserIsAdminOrPostAuthor(postToUpdate, user);
-        if (newPost.equals(postToUpdate)){
-            throw new DuplicateEntityException("The post already has the same title and content");
+        if (isDuplicatePost(newPost, postToUpdate)){
+            throw new DuplicateEntityException(DUPLICATE_POST_MESSAGE);
         }
         postToUpdate.setTitle(newPost.getTitle());
         postToUpdate.setContent(newPost.getContent());
