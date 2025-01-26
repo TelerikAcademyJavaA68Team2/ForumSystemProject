@@ -1,5 +1,6 @@
 package com.example.forumproject.services.implementation;
 
+import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.repositories.contracts.PostRepository;
@@ -39,10 +40,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void update(Post post, User user) {
+    public void update(Post newPost, User user) {
         validateUserIsNotBlocked(user);
-        Post postToUpdate = postRepository.getById(post.getId());
+        Post postToUpdate = postRepository.getById(newPost.getId());
         validateUserIsAdminOrPostAuthor(postToUpdate, user);
+        if (newPost.equals(postToUpdate)){
+            throw new DuplicateEntityException("The post already has the same title and content");
+        }
+        postToUpdate.setTitle(newPost.getTitle());
+        postToUpdate.setContent(newPost.getContent());
         postRepository.update(postToUpdate);
     }
 
