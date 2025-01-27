@@ -80,12 +80,12 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public Post create(@Valid @RequestBody CreatePostDto postDto) {
+    public PostOutDto create(@Valid @RequestBody CreatePostDto postDto) {
         try {
             User user = userService.getAuthenticatedUser();
             Post postToCreate = postMapper.createPostFromDto(postDto, user);
             postService.create(postToCreate, user);
-            return postToCreate;
+            return postMapper.postToPostOutDto(postToCreate);
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                     e.getMessage());
