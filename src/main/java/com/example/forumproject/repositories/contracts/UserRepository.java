@@ -8,7 +8,7 @@ public interface UserRepository {
 
     List<User> getAllUsers();
 
-    int getNumberOfActiveUsers();
+    int getNumberOfRegisteredUsers();
 
     User getById(int userId);
 

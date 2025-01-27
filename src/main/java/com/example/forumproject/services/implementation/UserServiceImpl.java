@@ -28,6 +28,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int getNumberOfRegisteredUsers() {
+        return userRepository.getNumberOfRegisteredUsers();
+    }
+
+    @Override
     public void save(User user) {
         ValidationHelpers.validateEmailAndUsername(user, userRepository);
         userRepository.save(user);

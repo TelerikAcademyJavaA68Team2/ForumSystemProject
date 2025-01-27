@@ -23,7 +23,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int getNumberOfActiveUsers() {
+    public int getNumberOfRegisteredUsers() {
         try (Session session = sessionFactory.openSession()) {
             Query<Long> query = session.createQuery("SELECT COUNT(u) FROM User u", Long.class);
             return query.uniqueResult() != null ? query.uniqueResult().intValue() : 0;
