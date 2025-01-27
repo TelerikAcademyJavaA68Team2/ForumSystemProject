@@ -43,7 +43,6 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public boolean save(Post post, User user, boolean like) {
 
-
         if (likesRepository.checkIfLikeExists(post.getId(), user.getId())) {
             if (like) {
                 likesRepository.delete(new Like(post, user, true));

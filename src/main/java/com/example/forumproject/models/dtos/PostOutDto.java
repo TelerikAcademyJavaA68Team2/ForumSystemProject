@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PostOutDto {
 
-    private int id;
+    private int post_id;
 
     private String author;
 
@@ -14,19 +14,36 @@ public class PostOutDto {
 
     private String content;
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CommentDto> comments;
-
     private int likes;
 
     private int dislikes;
 
-    public int getId() {
-        return id;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<CommentDto> comments;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> tags;
+
+    public PostOutDto() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public PostOutDto(int dislikes, int likes, List<String> tags, List<CommentDto> comments, String content, String title, String author, int post_id) {
+        this.dislikes = dislikes;
+        this.likes = likes;
+        this.tags = tags;
+        this.comments = comments;
+        this.content = content;
+        this.title = title;
+        this.author = author;
+        this.post_id = post_id;
+    }
+
+    public int getPost_id() {
+        return post_id;
+    }
+
+    public void setPost_id(int post_id) {
+        this.post_id = post_id;
     }
 
     public String getAuthor() {
@@ -75,5 +92,13 @@ public class PostOutDto {
 
     public void setDislikes(int dislikes) {
         this.dislikes = dislikes;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }
