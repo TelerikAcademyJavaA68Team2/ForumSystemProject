@@ -45,7 +45,8 @@ public class PostController {
     @GetMapping("/posts/{id}")
     public PostOutDto getById(@PathVariable int id) {
         try {
-            return postService.getByIdDto(id);
+            Post post = postService.getById(id);
+            return postMapper.postToPostOutDto(post);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException
                     (HttpStatus.NOT_FOUND, e.getMessage());
@@ -71,8 +72,6 @@ public class PostController {
             User user = userService.getAuthenticatedUser();
             Post post = postService.getById(id);
             return likeService.save(post, user, false) ? "Post DISLIKED successfully!" : "DISLIKE removed successfully!";
-
-
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
@@ -91,16 +90,16 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                     e.getMessage());
         }
-
     }
 
     @PutMapping("/posts/{id}")
-    public Post update(@PathVariable int id, @Valid @RequestBody UpdatePostDto postDto) {
+    public PostOutDto update(@PathVariable int id, @Valid @RequestBody UpdatePostDto postDto) {
         try {
             User user = userService.getAuthenticatedUser();
             Post postToUpdate = postMapper.UpdatePostFromDto(postDto, id);
             postService.update(postToUpdate, user);
-            return postToUpdate;
+            Post updatedPost = postService.getById(id);
+            return postMapper.postToPostOutDto(updatedPost);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
