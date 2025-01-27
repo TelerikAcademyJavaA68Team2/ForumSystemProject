@@ -1,3 +1,4 @@
+/*
 package com.example.forumproject.helpers;
 
 import com.example.forumproject.exceptions.EntityNotFoundException;
@@ -40,7 +41,7 @@ public class AuthenticationHelper {
 
             String username = userParameters[0];
             String password = userParameters[1];
-            User userToCheck = userService.getByUsername(username);
+            User userToCheck = userService.loadUserByUsername(username);
 
             if (userToCheck == null
                     || userToCheck.getPassword() == null
@@ -57,3 +58,4 @@ public class AuthenticationHelper {
     }
 }
 
+*/
