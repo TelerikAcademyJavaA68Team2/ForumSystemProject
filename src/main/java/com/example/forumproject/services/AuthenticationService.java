@@ -1,6 +1,8 @@
 package com.example.forumproject.services;
 
 import com.example.forumproject.models.User;
+import com.example.forumproject.models.dtos.LoginDto;
+import com.example.forumproject.models.dtos.UserInDto;
 import com.example.forumproject.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +30,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
     }
 
 
-    public String register(User request) {
+    public String register(UserInDto request) {
 
         User user = createUserFromRequest(request);
         userService.save(user);
@@ -36,17 +38,16 @@ public class AuthenticationService implements AuthenticationServiceInterface {
         return jwtService.generateToken(user);
     }
 
-    public String authenticate(User request) {
+    public String authenticate(LoginDto request) {
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken
                         (request.getUsername(), request.getPassword()));
 
         User user = userService.loadUserByUsername(request.getUsername());
-
         return jwtService.generateToken(user);
     }
 
-    private User createUserFromRequest(User request) {
+    private User createUserFromRequest(UserInDto request) {
         User user = new User();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
