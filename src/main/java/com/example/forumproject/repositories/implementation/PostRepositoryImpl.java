@@ -48,81 +48,64 @@ public class PostRepositoryImpl implements PostRepository {
         }
     }
 
-    public List<Post> qdqd() {
-
-
-        try (Session session = sessionFactory.openSession()) {
-
-            Query<Post> posts = session.createQuery("FROM Post p WHERE p.id IN (SELECT pt.post.id FROM PostTag pt JOIN pt.tag t WHERE t.name LIKE :tags) ", Post.class);
-
-            return posts.list();
-        }
-    }
-
     public List<Post> getAll(PostFilterOptions filterOptions) {
         try (Session session = sessionFactory.openSession()) {
-            StringBuilder hql = new StringBuilder("FROM Post p ");
-            boolean hasConditions = false;
+            StringBuilder sb = new StringBuilder("FROM Post p ");
 
-            // Build dynamic WHERE clause
             if (filterOptions.getTitle().isPresent() || filterOptions.getContent().isPresent() ||
                     filterOptions.getTags().isPresent() || filterOptions.getMinLikes().isPresent() ||
                     filterOptions.getMaxLikes().isPresent()) {
 
-                hql.append("WHERE ");
-                hasConditions = true;
-
-                // Filtering by title
+                sb.append("WHERE ");
                 filterOptions.getTitle().ifPresent(title -> {
-                    hql.append("p.title LIKE :title ");
-                    hql.append("AND ");
+                    sb.append("p.title LIKE :title ");
+                    sb.append("AND ");
                 });
 
-                // Filtering by content
                 filterOptions.getContent().ifPresent(content -> {
-                    hql.append("p.content LIKE :content ");
-                    hql.append("AND ");
+                    sb.append("p.content LIKE :content ");
+                    sb.append("AND ");
                 });
 
-                // Filtering by tags
                 filterOptions.getTags().ifPresent(tags -> {
-                    hql.append("p.id IN (SELECT pt.post.id FROM PostTag pt JOIN pt.tag t WHERE t.name LIKE :tags) ");
-                    hql.append("AND ");
+                    sb.append("p.id IN (SELECT pt.post.id FROM PostTag pt JOIN pt.tag t WHERE t.tagName LIKE :tags) ");
+                    sb.append("AND ");
                 });
 
-                // Filtering by min likes
                 filterOptions.getMinLikes().ifPresent(minLikes -> {
-                    hql.append("p.id IN (SELECT pl.post.id FROM PostLikesDislikes pl WHERE pl.isLike = 1 GROUP BY pl.post.id HAVING COUNT(pl.id) >= :minLikes) ");
-                    hql.append("AND ");
+                    sb.append("p.id IN (SELECT pl.post.id FROM PostLikesDislikes pl WHERE pl.isLike = true GROUP BY pl.post.id HAVING COUNT(pl.id) >= :minLikes) ");
+                    sb.append("AND ");
                 });
 
-                // Filtering by max likes
                 filterOptions.getMaxLikes().ifPresent(maxLikes -> {
-                    hql.append("p.id IN (SELECT pl.post.id FROM PostLikesDislikes pl WHERE pl.isLike = 1 GROUP BY pl.post.id HAVING COUNT(pl.id) <= :maxLikes) ");
-                    hql.append("AND ");
+                    sb.append("p.id IN (SELECT pl.post.id FROM PostLikesDislikes pl WHERE pl.isLike = true GROUP BY pl.post.id HAVING COUNT(pl.id) <= :maxLikes) ");
+                    sb.append("AND ");
                 });
-
-                // Remove the trailing "AND"
-                hql.setLength(hql.length() - 4);
+                sb.setLength(sb.length() - 4);
             }
 
-            // Add sorting
-          /*  filterOptions.getSortBy().ifPresent(sortBy -> {
-                if ("title".equalsIgnoreCase(sortBy)) {
-                    hql.append("ORDER BY p.title ");
-                } else if ("date".equalsIgnoreCase(sortBy)) {
-                    hql.append("ORDER BY p.createdAt ");
-                }
-            });*/
-
-            // Add order (ascending or descending)
+            boolean orderByIsPresent = false;
             if (filterOptions.getOrderBy().isPresent()) {
-                hql.append(filterOptions.getOrderBy().get().equalsIgnoreCase("desc") ? "DESC" : "ASC");
+                String orderBy = filterOptions.getOrderBy().get();
+                if ("title".equalsIgnoreCase(orderBy)) {
+                    sb.append("ORDER BY p.title ");
+                    orderByIsPresent = true;
+                } else if ("id".equalsIgnoreCase(orderBy)) {
+                    sb.append("ORDER BY p.id ");
+                    orderByIsPresent = true;
+                } else if ("likes".equalsIgnoreCase(orderBy)) {
+                    sb.append("ORDER BY (SELECT COUNT(pld.id) FROM PostLikesDislikes pld WHERE pld.post.id = p.id AND pld.isLike = true) DESC");
+                    if (filterOptions.getOrderType().isPresent() && filterOptions.getOrderType().get().equalsIgnoreCase("desc")) {
+                        sb.setLength(sb.length() - 5);
+                    }
+                }
             }
 
-            Query<Post> query = session.createQuery(hql.toString(), Post.class);
+            if (filterOptions.getOrderType().isPresent() && orderByIsPresent) {
+                sb.append(filterOptions.getOrderType().get().equalsIgnoreCase("desc") ? "DESC" : "ASC");
+            }
 
-            // Set parameters for dynamic HQL
+            Query<Post> query = session.createQuery(sb.toString(), Post.class);
             filterOptions.getTitle().ifPresent(title -> query.setParameter("title", "%" + title + "%"));
             filterOptions.getContent().ifPresent(content -> query.setParameter("content", "%" + content + "%"));
             filterOptions.getTags().ifPresent(tags -> query.setParameter("tags", "%" + tags + "%"));
@@ -131,18 +114,7 @@ public class PostRepositoryImpl implements PostRepository {
 
             return query.list();
         }
-
-       /* try (
-                Session session = sessionFactory.openSession()) {
-
-
-            Query<Post> query = session.createQuery("from Post where title like :title and content like :content", Post.class);
-            query.setParameter("title", "pesho");
-            query.setParameter("content", "conteeens");
-            return query.list();
-        }*/
     }
-
 
     @Override
     public Post getById(Long id) {
