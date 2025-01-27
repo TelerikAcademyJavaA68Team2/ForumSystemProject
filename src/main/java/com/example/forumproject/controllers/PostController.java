@@ -6,7 +6,7 @@ import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.PostMapper;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.CreatePostDto;
+import com.example.forumproject.models.dtos.PostInDto;
 import com.example.forumproject.models.dtos.PostOutDto;
 import com.example.forumproject.models.dtos.UpdatePostDto;
 import com.example.forumproject.services.contracts.LikeService;
@@ -37,6 +37,7 @@ public class PostController {
         this.userService = userService;
     }
 
+    //ToDo Filtering !
     @GetMapping("/posts")
     public List<Post> getAllPosts() {
         return postService.getAll();
@@ -53,6 +54,7 @@ public class PostController {
         }
     }
 
+    //ToDo PostMapping?
     @GetMapping("/posts/{id}/like")
     public String likePost(@PathVariable int id) {
         try {
@@ -66,6 +68,7 @@ public class PostController {
         }
     }
 
+    //ToDo PostMapping?
     @GetMapping("/posts/{id}/dislike")
     public String dislikePost(@PathVariable int id) {
         try {
@@ -80,7 +83,7 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public PostOutDto create(@Valid @RequestBody CreatePostDto postDto) {
+    public PostOutDto create(@Valid @RequestBody PostInDto postDto) {
         try {
             User user = userService.getAuthenticatedUser();
             Post postToCreate = postMapper.createPostFromDto(postDto, user);
