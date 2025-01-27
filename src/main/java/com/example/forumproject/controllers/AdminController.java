@@ -1,8 +1,12 @@
 package com.example.forumproject.controllers;
 
 
+import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.mappers.HomepageResponseFactory;
+import com.example.forumproject.mappers.UserMapper;
+import com.example.forumproject.models.User;
+import com.example.forumproject.models.dtos.UserOutDto;
 import com.example.forumproject.services.contracts.CommentService;
 import com.example.forumproject.services.contracts.PostService;
 import com.example.forumproject.services.contracts.UserService;
@@ -12,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
@@ -20,10 +26,12 @@ public class AdminController {
     private final UserService userService;
     private final PostService postService;
     private final CommentService commentService;
+    private final UserMapper userMapper;
 
     @Autowired
     public AdminController(
             HomepageResponseFactory homepageResponseFactory,
+            UserMapper userMapper,
             UserService userService,
             PostService postService,
             CommentService commentService) {
@@ -31,6 +39,7 @@ public class AdminController {
         this.userService = userService;
         this.postService = postService;
         this.commentService = commentService;
+        this.userMapper = userMapper;
     }
 
     @GetMapping
@@ -49,10 +58,15 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/profile/phone")
-    public ResponseEntity<String> getUpdatePhoneInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getUpdatePhoneInfo());
-    }
+  /*  @GetMapping("/profile")
+    public ResponseEntity<String> getAdminProfile() {
+        try {
+            userService.updatePhoneNumber(userService.getAuthenticatedUser(), number);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Phone updated successfully!");
+        } catch (InvalidUserInputException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }*/
 
     @PostMapping("/users/{userId}/block")
     public ResponseEntity<String> blockUser(@PathVariable int userId) {
@@ -62,11 +76,6 @@ public class AdminController {
         } catch (InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-    }
-
-    @GetMapping("/users/{userId}/block")
-    public ResponseEntity<String> getBlockUserInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getBlockUserInfo());
     }
 
     @PostMapping("/users/{userId}/unblock")
@@ -79,11 +88,6 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/users/{userId}/unblock")
-    public ResponseEntity<String> getUnblockUserInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getUnblockUserInfo());
-    }
-
     @PostMapping("/users/{userId}/make-admin")
     public ResponseEntity<String> updateToAdmin(@PathVariable int userId) {
         try {
@@ -92,11 +96,6 @@ public class AdminController {
         } catch (InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-    }
-
-    @GetMapping("/users/{userId}/make-admin")
-    public ResponseEntity<String> getUpdateToAdminInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getUpdateToAdminInfo());
     }
 
     @PostMapping("/users/{userId}/make-user")
@@ -109,11 +108,6 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/users/{userId}/make-user")
-    public ResponseEntity<String> getDemoteToUserInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getDemoteToUserInfo());
-    }
-
     @PostMapping("/posts/{postId}/delete")
     public ResponseEntity<String> deletePost(@PathVariable int postId) {
         try {
@@ -122,11 +116,6 @@ public class AdminController {
         } catch (InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-    }
-
-    @GetMapping("/posts/{postId}/delete")
-    public ResponseEntity<String> getDeletePostInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getDeletePostInfo());
     }
 
     @PostMapping("/posts/{postId}/comments/{commentId}/delete")
@@ -140,8 +129,55 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/users") // only admins can check users
+    public List<UserOutDto> getAllUsers() {
+
+        List<User> users = userService.getAllUsers();
+        return users.stream().map(userMapper::mapUserToDtoOut).toList();
+    }
+
+    @GetMapping("/users/{id}")
+    public Object getUserById(@PathVariable int id) {
+        try {
+            User user = userService.getById(id);
+            return userMapper.mapUserToUserFullProfileOutDto(user);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
     @GetMapping("/posts/{postId}/comments/{commentId}/delete")
     public ResponseEntity<String> getDeleteCommentInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getDeleteCommentInfo());
+    }
+
+    @GetMapping("/posts/{postId}/delete")
+    public ResponseEntity<String> getDeletePostInfo() {
+        return ResponseEntity.ok(homepageResponseFactory.getDeletePostInfo());
+    }
+
+    @GetMapping("/users/{userId}/make-admin")
+    public ResponseEntity<String> getUpdateToAdminInfo() {
+        return ResponseEntity.ok(homepageResponseFactory.getUpdateToAdminInfo());
+    }
+
+    @GetMapping("/users/{userId}/make-user")
+    public ResponseEntity<String> getDemoteToUserInfo() {
+        return ResponseEntity.ok(homepageResponseFactory.getDemoteToUserInfo());
+    }
+
+    @GetMapping("/users/{userId}/unblock")
+    public ResponseEntity<String> getUnblockUserInfo() {
+        return ResponseEntity.ok(homepageResponseFactory.getUnblockUserInfo());
+    }
+
+    @GetMapping("/users/{userId}/block")
+    public ResponseEntity<String> getBlockUserInfo() {
+        return ResponseEntity.ok(homepageResponseFactory.getBlockUserInfo());
+    }
+
+    @GetMapping("/profile/phone")
+    public ResponseEntity<String> getUpdatePhoneInfo() {
+        return ResponseEntity.ok(homepageResponseFactory.getUpdatePhoneInfo());
     }
 }
