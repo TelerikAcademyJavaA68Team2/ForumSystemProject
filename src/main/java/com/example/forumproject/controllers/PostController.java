@@ -46,11 +46,11 @@ public class PostController {
                                         @RequestParam(required = false) String tags,
                                         @RequestParam(required = false) Long minLikes,
                                         @RequestParam(required = false) Long maxLikes,
-                                        @RequestParam(required = false) String sortBy,
-                                        @RequestParam(required = false) String orderBy) {
+                                        @RequestParam(required = false) String orderBy,
+                                        @RequestParam(required = false) String orderType) {
 
 
-        PostFilterOptions filterOptions = new PostFilterOptions(title, content, tags, minLikes, maxLikes, sortBy, orderBy);
+        PostFilterOptions filterOptions = new PostFilterOptions(title, content, tags, minLikes, maxLikes, orderBy, orderType);
         List<Post> inPosts = postService.getAll(filterOptions);
         return inPosts.stream().map(postMapper::postToPostOutDto).toList();
     }
