@@ -8,20 +8,20 @@ import java.util.List;
 
 public interface CommentService {
 
-    List<Comment> getAll(int postId);
+    List<Comment> getAll(Long postId);
 
-    List<CommentDto> getAllCommentDtos(int postId);
+    List<CommentDto> getAllCommentDtos(Long postId);
 
-    List<Comment> getAllCommentsByPostId(int postId);
+    List<Comment> getAllCommentsByPostId(Long postId);
 
-    Comment getById(int postId, int id);
+    Comment getById(Long postId, Long id);
 
-    List<Comment> getCommentsByAuthor(int postId);
+    List<Comment> getCommentsByAuthor(Long postId);
 
-    void create(int postId, Comment comment, User user);
+    void create(Long postId, Comment comment, User user);
 
-    void update(int postId, Comment comment, User user);
+    void update(Long postId, Comment comment, User user);
 
-    void delete(int postId, int id, User user);
+    void delete(Long postId, Long id, User user);
 
 }

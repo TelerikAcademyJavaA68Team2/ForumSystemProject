@@ -1,5 +1,6 @@
 package com.example.forumproject.mappers;
 
+import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.dtos.HomepagePostsDto;
 import com.example.forumproject.services.contracts.PostService;
 import com.example.forumproject.services.contracts.UserService;
@@ -158,15 +159,19 @@ public class HomepageResponseFactory {
         return sb.toString();
     }
 
+    //todo
     public HomepagePostsDto getHomepagePosts() {
         HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums top commented posts!");
-        homepagePosts.setPosts(postService.getAll().stream().map(postMapper::postToPostOutDto).toList());
+        PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, null, null);
+        homepagePosts.setPosts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
         return homepagePosts;
     }
 
+    //todo
     public HomepagePostsDto getHomepageRecentPosts() {
         HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums newest posts!");
-        homepagePosts.setPosts(postService.getAll().stream().map(postMapper::postToPostOutDto).toList());
+        PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, null, null);
+        homepagePosts.setPosts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
         return homepagePosts;
     }
 }

@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int getNumberOfRegisteredUsers() {
+    public Long getNumberOfRegisteredUsers() {
         return userRepository.getNumberOfRegisteredUsers();
     }
 
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getById(int userId) {
+    public User getById(Long userId) {
         return userRepository.getById(userId);
     }
 
@@ -54,12 +54,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(int userId) {
+    public void deleteUser(Long userId) {
         userRepository.deleteUser(userId);
     }
 
     @Override
-    public void promoteToAdmin(int userId) {
+    public void promoteToAdmin(Long userId) {
         User user = getById(userId);
         if (user.isAdmin()) {
             throw new InvalidUserInputException(String.format(
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void demoteAdminToUser(int userId) {
+    public void demoteAdminToUser(Long userId) {
         User user = getById(userId);
         if (!user.isAdmin()) {
             throw new InvalidUserInputException(String.format("User with id: %d is already User!", userId));
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void blockUser(int userId) {
+    public void blockUser(Long userId) {
         User user = getById(userId);
         if (user.isBlocked()) {
             throw new InvalidUserInputException(String.format(
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void unblockUser(int userId) {
+    public void unblockUser(Long userId) {
         User user = getById(userId);
         if (!user.isBlocked()) {
             throw new InvalidUserInputException(String.format

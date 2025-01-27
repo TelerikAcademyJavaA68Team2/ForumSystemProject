@@ -11,7 +11,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id")
@@ -27,18 +27,18 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int id, Post post, User author, String content) {
+    public Comment(Long id, Post post, User author, String content) {
         this.id = id;
         this.post = post;
         this.author = author;
         this.content = content;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

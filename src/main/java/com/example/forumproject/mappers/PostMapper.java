@@ -41,7 +41,7 @@ public class PostMapper {
         return post;
     }
 
-    public Post UpdatePostFromDto(UpdatePostDto updatePostDTO, int id){
+    public Post UpdatePostFromDto(UpdatePostDto updatePostDTO, Long id){
         Post postToBeUpdate = postService.getById(id);
         postToBeUpdate.setTitle(updatePostDTO.getTitle());
         postToBeUpdate.setContent(updatePostDTO.getContent());

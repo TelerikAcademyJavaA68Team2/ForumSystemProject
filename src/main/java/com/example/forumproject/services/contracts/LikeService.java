@@ -6,13 +6,13 @@ import com.example.forumproject.models.User;
 import java.util.List;
 
 public interface LikeService {
-    int getLikesByPostId(int post_id);
+    Long getLikesByPostId(Long post_id);
 
-    int getDislikesByPostId(int post_id);
+    Long getDislikesByPostId(Long post_id);
 
-    List<Post> getAllLikedPosts(int user_id);
+    List<Post> getAllLikedPosts(Long user_id);
 
-    List<Post> getAllDislikedPosts(int user_id);
+    List<Post> getAllDislikedPosts(Long user_id);
 
     boolean save(Post post, User user, boolean like);
 }

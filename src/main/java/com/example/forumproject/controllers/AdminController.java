@@ -69,7 +69,7 @@ public class AdminController {
     }*/
 
     @PostMapping("/users/{userId}/block")
-    public ResponseEntity<String> blockUser(@PathVariable int userId) {
+    public ResponseEntity<String> blockUser(@PathVariable Long userId) {
         try {
             userService.blockUser(userId);
             return ResponseEntity.status(HttpStatus.CREATED).body(String.format("User with id: %d was blocked successfully!", userId));
@@ -81,7 +81,7 @@ public class AdminController {
     }
 
     @PostMapping("/users/{userId}/unblock")
-    public ResponseEntity<String> unblockUser(@PathVariable int userId) {
+    public ResponseEntity<String> unblockUser(@PathVariable Long userId) {
         try {
             userService.unblockUser(userId);
             return ResponseEntity.status(HttpStatus.CREATED).body(String.format("User with id: %d was unblocked successfully!", userId));
@@ -93,7 +93,7 @@ public class AdminController {
     }
 
     @PostMapping("/users/{userId}/make-admin")
-    public ResponseEntity<String> updateToAdmin(@PathVariable int userId) {
+    public ResponseEntity<String> updateToAdmin(@PathVariable Long userId) {
         try {
             userService.promoteToAdmin(userId);
             return ResponseEntity.status(HttpStatus.CREATED).body(String.format("User with id: %d was promoted to Admin successfully!", userId));
@@ -105,7 +105,7 @@ public class AdminController {
     }
 
     @PostMapping("/users/{userId}/make-user")
-    public ResponseEntity<String> demoteToUser(@PathVariable int userId) {
+    public ResponseEntity<String> demoteToUser(@PathVariable Long userId) {
         try {
             userService.demoteAdminToUser(userId);
             return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Admin with id: %d was demoted to User successfully!", userId));
@@ -117,7 +117,7 @@ public class AdminController {
     }
 
     @PostMapping("/posts/{postId}/delete")
-    public ResponseEntity<String> deletePost(@PathVariable int postId) {
+    public ResponseEntity<String> deletePost(@PathVariable Long postId) {
         try {
             postService.delete(postId, userService.getAuthenticatedUser());
             return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Post with id: %d was deleted successfully!", postId));
@@ -129,7 +129,7 @@ public class AdminController {
     }
 
     @PostMapping("/posts/{postId}/comments/{commentId}/delete")
-    public ResponseEntity<String> deleteComment(@PathVariable int postId, @PathVariable int commentId) {
+    public ResponseEntity<String> deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
         try {
             commentService.delete(postId, commentId, userService.getAuthenticatedUser());
             return ResponseEntity.status(HttpStatus.CREATED).body(String.format
@@ -142,7 +142,7 @@ public class AdminController {
     }
 
     @GetMapping("/users/{id}")
-    public Object getUserById(@PathVariable int id) {
+    public Object getUserById(@PathVariable Long id) {
         try {
             User user = userService.getById(id);
             return userMapper.mapUserToUserFullProfileOutDto(user);

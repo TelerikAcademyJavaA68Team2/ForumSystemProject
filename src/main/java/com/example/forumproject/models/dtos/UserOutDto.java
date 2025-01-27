@@ -2,16 +2,16 @@ package com.example.forumproject.models.dtos;
 
 public class UserOutDto {
 
-    private int user_id;
+    private Long user_id;
     private String first_name;
     private String username;
     private String email;
-    private int numberOfPosts;
+    private Long numberOfPosts;
     private String account_type;
     private String account_status;
 
 
-    public UserOutDto(int user_id, String first_name, String username, String email, String account_type, String account_status) {
+    public UserOutDto(Long user_id, String first_name, String username, String email, String account_type, String account_status) {
         this.user_id = user_id;
         this.first_name = first_name;
         this.username = username;
@@ -20,11 +20,11 @@ public class UserOutDto {
         this.account_status = account_status;
     }
 
-    public int getUser_id() {
+    public Long getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(Long user_id) {
         this.user_id = user_id;
     }
 
@@ -52,11 +52,11 @@ public class UserOutDto {
         this.email = email;
     }
 
-    public int getNumberOfPosts() {
+    public Long getNumberOfPosts() {
         return numberOfPosts;
     }
 
-    public void setNumberOfPosts(int numberOfPosts) {
+    public void setNumberOfPosts(Long numberOfPosts) {
         this.numberOfPosts = numberOfPosts;
     }
 

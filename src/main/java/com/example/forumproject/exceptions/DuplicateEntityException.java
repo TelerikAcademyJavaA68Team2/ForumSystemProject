@@ -5,7 +5,7 @@ public class DuplicateEntityException extends RuntimeException {
         super(String.format("%s with %s %s already exists.", type, attribute, value));
     }
 
-    public DuplicateEntityException(String type, int id) {
+    public DuplicateEntityException(String type, Long id) {
         super(String.format("%s with id %d already exists.", type, id));
     }
 

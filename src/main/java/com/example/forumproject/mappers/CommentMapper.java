@@ -29,7 +29,7 @@ public class CommentMapper {
         return comment;
     }
 
-    public Comment updateDtoToObject(CommentInDto commentDTO, int postId, int commentId) {
+    public Comment updateDtoToObject(CommentInDto commentDTO, Long postId, Long commentId) {
         Comment comment = commentService.getById(postId, commentId);
         comment.setContent(commentDTO.getContent());
         return comment;

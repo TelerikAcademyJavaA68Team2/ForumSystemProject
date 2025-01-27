@@ -1,29 +1,27 @@
 package com.example.forumproject.services.contracts;
 
+import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.PostOutDto;
 
 import java.util.List;
 
 public interface PostService {
 
-    // List<Post> get(FilterOptions filterOptions);
+    List<Post> getAll(PostFilterOptions filterOptions);
 
-    int getNumberOfPostsByUser(int user_id);
+    Long getNumberOfPostsByUser(Long user_id);
 
-    List<Post> getAllPostsFromUser(int user_id);
+    List<Post> getAllPostsFromUser(Long user_id);
 
-    int getTotalNumberOfPosts();
+    Long getTotalNumberOfPosts();
 
-    List<Post> getAll();
-
-    Post getById(int id);
+    Post getById(Long id);
 
     void create(Post beer, User user);
 
     void update(Post beer, User user);
 
-    void delete(int id, User user);
+    void delete(Long id, User user);
 
 }

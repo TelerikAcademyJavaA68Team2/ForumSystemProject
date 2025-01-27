@@ -21,22 +21,22 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public int getLikesByPostId(int post_id) {
+    public Long getLikesByPostId(Long post_id) {
         return likesRepository.getLikesByPostId(post_id);
     }
 
     @Override
-    public int getDislikesByPostId(int post_id) {
+    public Long getDislikesByPostId(Long post_id) {
         return likesRepository.getDislikesByPostId(post_id);
     }
 
     @Override
-    public List<Post> getAllLikedPosts(int user_id) {
+    public List<Post> getAllLikedPosts(Long user_id) {
         return likesRepository.getAllLikedPosts(user_id);
     }
 
     @Override
-    public List<Post> getAllDislikedPosts(int user_id) {
+    public List<Post> getAllDislikedPosts(Long user_id) {
         return likesRepository.getAllDislikedPosts(user_id);
     }
 

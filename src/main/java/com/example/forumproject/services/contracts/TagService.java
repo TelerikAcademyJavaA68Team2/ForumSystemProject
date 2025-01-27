@@ -13,9 +13,9 @@ public interface TagService {
     Tag getTag(int post_id, int tag_id);
 */
 
-    List<Tag> getTagsByPostId(int post_id);
+    List<Tag> getTagsByPostId(Long post_id);
 
-    List<Post> getAllPostsByTag(int tag_id);
+    List<Post> getAllPostsByTag(Long tag_id);
 
     void create(Tag tag);
 

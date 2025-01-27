@@ -24,9 +24,7 @@ import java.util.stream.Collectors;
 public class CommentController {
 
     private final CommentService commentService;
-
     private final CommentMapper commentMapper;
-
     private final UserService userService;
 
     @Autowired
@@ -37,7 +35,7 @@ public class CommentController {
     }
 
     @GetMapping("/comments")
-    public List<CommentDto> getAllComments(@PathVariable int postId) {
+    public List<CommentDto> getAllComments(@PathVariable Long postId) {
         try {
             return commentService.getAll(postId)
                     .stream()
@@ -50,8 +48,8 @@ public class CommentController {
     }
 
     @GetMapping("/comments/{id}")
-    public CommentDto getById(@PathVariable int postId,
-                              @PathVariable int id) {
+    public CommentDto getById(@PathVariable Long postId,
+                              @PathVariable Long id) {
         try {
             Comment comment = commentService.getById(postId, id);
             return commentMapper.commentToCommentDto(comment);
@@ -62,7 +60,7 @@ public class CommentController {
     }
 
     @PostMapping("/comments")
-    public CommentDto createComment(@PathVariable int postId,
+    public CommentDto createComment(@PathVariable Long postId,
                                     @Valid @RequestBody CommentInDto commentDTO) {
         try {
             User user = userService.getAuthenticatedUser();
@@ -76,8 +74,8 @@ public class CommentController {
     }
 
     @PutMapping("/comments/{id}")
-    public CommentDto updateComment(@PathVariable int postId,
-                                    @PathVariable int id,
+    public CommentDto updateComment(@PathVariable Long postId,
+                                    @PathVariable Long id,
                                     @Valid @RequestBody CommentInDto commentDTO) {
         try {
             User user = userService.getAuthenticatedUser();
@@ -94,7 +92,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/comments/{id}")
-    public void delete(@PathVariable int postId, @PathVariable int id) {
+    public void delete(@PathVariable Long postId, @PathVariable Long id) {
         try {
             User user = userService.getAuthenticatedUser();
             commentService.delete(postId, id, user);

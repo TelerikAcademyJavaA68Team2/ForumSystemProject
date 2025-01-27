@@ -6,18 +6,18 @@ import java.util.List;
 
 public interface CommentRepository {
 
-    List<Comment> getAll(int postId);
+    List<Comment> getAll(Long postId);
 
-    Comment getById(int postId, int id);
+    Comment getById(Long postId, Long id);
 
-    List<Comment> getAllCommentsByPostId(int postId);
+    List<Comment> getAllCommentsByPostId(Long postId);
 
-    List<Comment> getCommentsByAuthor(int postId, int userId);
+    List<Comment> getCommentsByAuthor(Long postId, Long userId);
 
-    void create(int postId, Comment comment);
+    void create(Long postId, Comment comment);
 
-    void update(int postId, Comment comment);
+    void update(Long postId, Comment comment);
 
-    void delete(int postId, int id);
+    void delete(Long postId, Long id);
 
 }

@@ -8,9 +8,9 @@ public interface UserRepository {
 
     List<User> getAllUsers();
 
-    int getNumberOfRegisteredUsers();
+    Long getNumberOfRegisteredUsers();
 
-    User getById(int userId);
+    User getById(Long userId);
 
     User getByUsername(String username);
 
@@ -18,11 +18,11 @@ public interface UserRepository {
 
     void save(User user);
 
-    void deleteUser(int userId);
+    void deleteUser(Long userId);
 
-    void promoteToAdmin(int userId);
+    void promoteToAdmin(Long userId);
 
-    void blockUser(int userId);
+    void blockUser(Long userId);
 
-    void unblockUser(int userId);
+    void unblockUser(Long userId);
 }

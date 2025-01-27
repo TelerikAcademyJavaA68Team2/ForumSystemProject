@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface TagRepository {
 
-    boolean checkIfPostIsTagged(int post_id, int tag_id);
+    boolean checkIfPostIsTagged(Long post_id, Long tag_id);
 
-    Tag getTag(int post_id, int tag_id);
+    Tag getTag(Long post_id, Long tag_id);
 
-    List<Tag> getTagsByPostId(int post_id);
+    List<Tag> getTagsByPostId(Long post_id);
 
-    List<Post> getAllPostsByTag(int tag_id);
+    List<Post> getAllPostsByTag(Long tag_id);
 
     void create(Tag tag);
 

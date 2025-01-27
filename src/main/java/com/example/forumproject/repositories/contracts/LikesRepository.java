@@ -7,19 +7,19 @@ import java.util.List;
 
 public interface LikesRepository {
 
-    Like getLike(int postId, int userId);
+    Like getLike(Long postId, Long userId);
 
-    int getLikesByPostId(int post_id);
+    Long getLikesByPostId(Long post_id);
 
-    int getDislikesByPostId(int post_id);
+    Long getDislikesByPostId(Long post_id);
 
-    boolean checkIfLikeExists(int post_id, int user_id);
+    boolean checkIfLikeExists(Long post_id, Long user_id);
 
-    boolean checkIfDislikeExists(int post_id, int user_id);
+    boolean checkIfDislikeExists(Long post_id, Long user_id);
 
-    List<Post> getAllLikedPosts(int user_id);
+    List<Post> getAllLikedPosts(Long user_id);
 
-    List<Post> getAllDislikedPosts(int user_id);
+    List<Post> getAllDislikedPosts(Long user_id);
 
     void create(Like like);
 

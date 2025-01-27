@@ -20,12 +20,12 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<Tag> getTagsByPostId(int post_id) {
+    public List<Tag> getTagsByPostId(Long post_id) {
         return tagRepository.getTagsByPostId(post_id);
     }
 
     @Override
-    public List<Post> getAllPostsByTag(int tag_id) {
+    public List<Post> getAllPostsByTag(Long tag_id) {
         return tagRepository.getAllPostsByTag(tag_id);
     }
 

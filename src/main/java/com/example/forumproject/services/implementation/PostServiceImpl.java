@@ -1,11 +1,9 @@
 package com.example.forumproject.services.implementation;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
-import com.example.forumproject.mappers.PostMapper;
+import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.PostOutDto;
-import com.example.forumproject.repositories.contracts.CommentRepository;
 import com.example.forumproject.repositories.contracts.PostRepository;
 import com.example.forumproject.services.contracts.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,27 +27,27 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public int getNumberOfPostsByUser(int user_id) {
+    public Long getNumberOfPostsByUser(Long user_id) {
         return postRepository.getNumberOfPostsByUser(user_id);
     }
 
     @Override
-    public List<Post> getAllPostsFromUser(int user_id) {
+    public List<Post> getAllPostsFromUser(Long user_id) {
         return postRepository.getAllPostsFromUser(user_id);
     }
 
     @Override
-    public int getTotalNumberOfPosts() {
+    public Long getTotalNumberOfPosts() {
         return postRepository.getTotalNumberOfPosts();
     }
 
     @Override
-    public List<Post> getAll() {
-        return postRepository.getAll();
+    public List<Post> getAll(PostFilterOptions filterOptions) {
+        return postRepository.getAll(filterOptions);
     }
 
     @Override
-    public Post getById(int id) {
+    public Post getById(Long id) {
         return postRepository.getById(id);
     }
 
@@ -71,7 +69,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void delete(int id, User user) {
+    public void delete(Long id, User user) {
         Post postToDelete = postRepository.getById(id);
         validateUserIsAdminOrPostAuthor(postToDelete, user);
         postRepository.delete(id);

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class FullProfileAdminDto {
 
-    private int id;
+    private Long id;
     private String first_name;
     private String last_name;
     private String username;
@@ -15,7 +15,7 @@ public class FullProfileAdminDto {
     private String phone_number;
     private List<PostOutDto> user_posts;
 
-    public FullProfileAdminDto(int id, String first_name, String last_name, String username, String email, String account_type, String account_status, String profile_photo, String phone_number) {
+    public FullProfileAdminDto(Long id, String first_name, String last_name, String username, String email, String account_type, String account_status, String profile_photo, String phone_number) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -28,11 +28,11 @@ public class FullProfileAdminDto {
     }
 
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

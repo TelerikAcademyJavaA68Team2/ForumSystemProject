@@ -22,27 +22,27 @@ public class LikeRepositoryImpl implements LikesRepository {
     }
 
     @Override
-    public int getLikesByPostId(int post_id) {
+    public Long getLikesByPostId(Long post_id) {
         try (Session session = sessionFactory.openSession()) {
             String hql = "SELECT COUNT(pld) FROM Like pld WHERE pld.post.id = :postId AND pld.isLike = true";
             Query<Long> query = session.createQuery(hql, Long.class);
             query.setParameter("postId", post_id);
-            return query.getSingleResult().intValue();
+            return query.uniqueResult() != null ? query.uniqueResult() : 0;
         }
     }
 
     @Override
-    public int getDislikesByPostId(int post_id) {
+    public Long getDislikesByPostId(Long post_id) {
         try (Session session = sessionFactory.openSession()) {
             String hql = "SELECT COUNT(pld) FROM Like pld WHERE pld.post.id = :postId AND pld.isLike = false ";
             Query<Long> query = session.createQuery(hql, Long.class);
             query.setParameter("postId", post_id);
-            return query.getSingleResult().intValue();
+            return query.uniqueResult() != null ? query.uniqueResult() : 0;
         }
     }
 
     @Override
-    public boolean checkIfLikeExists(int post_id, int user_id) {
+    public boolean checkIfLikeExists(Long post_id, Long user_id) {
         try (Session session = sessionFactory.openSession()) {
             String query = "FROM Like lk WHERE lk.user.id = :userId AND lk.post.id = :postId AND lk.isLike = true";
             Query<Like> likes = session.createQuery(query, Like.class);
@@ -53,7 +53,7 @@ public class LikeRepositoryImpl implements LikesRepository {
     }
 
     @Override
-    public boolean checkIfDislikeExists(int post_id, int user_id) {
+    public boolean checkIfDislikeExists(Long post_id, Long user_id) {
         try (Session session = sessionFactory.openSession()) {
 
             String query = "FROM Like lk WHERE lk.user.id = :userId AND lk.post.id = :postId AND lk.isLike = false ";
@@ -67,7 +67,7 @@ public class LikeRepositoryImpl implements LikesRepository {
 
 
     @Override
-    public List<Post> getAllLikedPosts(int user_id) {
+    public List<Post> getAllLikedPosts(Long user_id) {
         try (Session session = sessionFactory.openSession()) {
             String queryString = "SELECT post FROM Post post " +
                     "JOIN Like like ON post.id = like.post.id " +
@@ -80,7 +80,7 @@ public class LikeRepositoryImpl implements LikesRepository {
     }
 
     @Override
-    public List<Post> getAllDislikedPosts(int user_id) {
+    public List<Post> getAllDislikedPosts(Long user_id) {
         try (Session session = sessionFactory.openSession()) {
             String queryString = "SELECT post FROM Post post " +
                     "JOIN Like like ON post.id = like.post.id " +
@@ -121,7 +121,7 @@ public class LikeRepositoryImpl implements LikesRepository {
     }
 
 
-    public Like getLike(int post_id, int user_id) {
+    public Like getLike(Long post_id, Long user_id) {
         try (Session session = sessionFactory.openSession()) {
 
             Query<Like> likes = session.createQuery("FROM Like l WHERE l.post.id = :postId AND l.user.id = :userId", Like.class);

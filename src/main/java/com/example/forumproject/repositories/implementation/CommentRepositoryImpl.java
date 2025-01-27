@@ -22,7 +22,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> getAll(int postId) {
+    public List<Comment> getAll(Long postId) {
         try(Session session = sessionFactory.openSession()) {
             Query<Comment> query = session.createQuery(
                     "FROM Comment c WHERE c.post.id = :postId",
@@ -41,7 +41,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public Comment getById(int postId, int id) {
+    public Comment getById(Long postId, Long id) {
        try (Session session = sessionFactory.openSession()) {
            Query<Comment> query = session.createQuery(
                    "FROM Comment c WHERE c.post.id = :postId AND c.id = :id",
@@ -55,7 +55,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> getAllCommentsByPostId(int postId) {
+    public List<Comment> getAllCommentsByPostId(Long postId) {
         try (Session session = sessionFactory.openSession()) {
             Query<Comment> query = session.createQuery(
                     " from Comment WHERE post.id = :postId ",
@@ -67,7 +67,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> getCommentsByAuthor(int postId, int userId) {
+    public List<Comment> getCommentsByAuthor(Long postId, Long userId) {
         try (Session session = sessionFactory.openSession()) {
             Query<Comment> query = session.createQuery(
                     "from Comment WHERE post.id = :postId AND author.id = :userId",
@@ -80,7 +80,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public void create(int postId, Comment comment) {
+    public void create(Long postId, Comment comment) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.persist(comment);
@@ -89,7 +89,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public void update(int postId, Comment comment) {
+    public void update(Long postId, Comment comment) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.merge(comment);
@@ -98,7 +98,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public void delete(int postId, int id) {
+    public void delete(Long postId, Long id) {
         Comment commentToDelete = getById(postId, id);
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();

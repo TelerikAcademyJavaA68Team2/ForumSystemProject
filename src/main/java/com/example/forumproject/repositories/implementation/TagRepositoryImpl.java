@@ -23,20 +23,19 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public boolean checkIfPostIsTagged(int post_id, int tag_id) {
+    public boolean checkIfPostIsTagged(Long post_id, Long tag_id) {
         try (Session session = sessionFactory.openSession()) {
             String sql = "SELECT COUNT(*) FROM forum_management_system.post_tags WHERE post_id = :post_id AND tag_id = :tag_id";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("post_id", post_id);
             query.setParameter("tag_id", tag_id);
 
-            long count = query.uniqueResult();
-            return count > 0;
+            return query.uniqueResult() != null;
         }
     }
 
     @Override
-    public Tag getTag(int post_id, int tag_id) {
+    public Tag getTag(Long post_id, Long tag_id) {
         try (Session session = sessionFactory.openSession()) {
             String sql = "SELECT t.* FROM forum_management_system.post_tags pt " +
                     "JOIN forum_management_system.tags t ON pt.tag_id = t.id " +
@@ -50,7 +49,7 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public List<Tag> getTagsByPostId(int post_id) {
+    public List<Tag> getTagsByPostId(Long post_id) {
         try (Session session = sessionFactory.openSession()) {
             String sql = "SELECT t.* FROM forum_management_system.post_tags pt " +
                     "JOIN forum_management_system.tags t ON pt.tag_id = t.id " +
@@ -63,7 +62,7 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public List<Post> getAllPostsByTag(int tag_id) {
+    public List<Post> getAllPostsByTag(Long tag_id) {
         try (Session session = sessionFactory.openSession()) {
             String sql = "SELECT p.* FROM forum_management_system.post_tags pt " +
                     "JOIN forum_management_system.posts p ON pt.post_id = p.id " +

@@ -23,10 +23,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int getNumberOfRegisteredUsers() {
+    public Long getNumberOfRegisteredUsers() {
         try (Session session = sessionFactory.openSession()) {
             Query<Long> query = session.createQuery("SELECT COUNT(u) FROM User u", Long.class);
-            return query.uniqueResult() != null ? query.uniqueResult().intValue() : 0;
+            return query.uniqueResult() != null ? query.uniqueResult() : 0;
         }
     }
 
@@ -48,7 +48,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getById(int userId) {
+    public User getById(Long userId) {
         try (Session session = sessionFactory.openSession()) {
             User user = session.get(User.class, userId);
             if (user == null) {
@@ -84,7 +84,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public void deleteUser(int userId) {
+    public void deleteUser(Long userId) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.remove(getById(userId));
@@ -93,7 +93,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void promoteToAdmin(int userId) {
+    public void promoteToAdmin(Long userId) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             User user = getById(userId);
@@ -104,7 +104,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void blockUser(int userId) {
+    public void blockUser(Long userId) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             User user = getById(userId);
@@ -115,7 +115,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void unblockUser(int userId) {
+    public void unblockUser(Long userId) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             User user = getById(userId);

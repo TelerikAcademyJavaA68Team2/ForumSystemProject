@@ -10,25 +10,25 @@ public interface UserService extends UserDetailsService {
 
     List<User> getAllUsers();
 
-    int getNumberOfRegisteredUsers();
+    Long getNumberOfRegisteredUsers();
 
     void save(User user);
 
-    User getById(int userId);
+    User getById(Long userId);
 
     User getByEmail(String email);
 
     User loadUserByUsername(String username);
 
-    void deleteUser(int userId);
+    void deleteUser(Long userId);
 
-    void promoteToAdmin(int userId);
+    void promoteToAdmin(Long userId);
 
-    void demoteAdminToUser(int userId);
+    void demoteAdminToUser(Long userId);
 
-    void blockUser(int userId);
+    void blockUser(Long userId);
 
-    void unblockUser(int userId);
+    void unblockUser(Long userId);
 
     void updatePhoneNumber(User user, String phoneNumber);
 

@@ -30,36 +30,36 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getAll(int postId) {
+    public List<Comment> getAll(Long postId) {
         return commentRepository.getAll(postId);
     }
 
     @Override
-    public List<CommentDto> getAllCommentDtos(int postId) {
+    public List<CommentDto> getAllCommentDtos(Long postId) {
         //List<CommentDto> comments = commentRepository.getAllCommentsByPostId(postId)
 
         return null;
     }
 
     @Override
-    public List<Comment> getAllCommentsByPostId(int postId) {
+    public List<Comment> getAllCommentsByPostId(Long postId) {
         return commentRepository.getAllCommentsByPostId(postId);
     }
 
 
     @Override
-    public Comment getById(int postId, int id) {
+    public Comment getById(Long postId, Long id) {
         return commentRepository.getById(postId, id);
     }
 
     @Override
-    public List<Comment> getCommentsByAuthor(int postId) {
+    public List<Comment> getCommentsByAuthor(Long postId) {
         User author = postRepository.getById(postId).getAuthor();
         return commentRepository.getCommentsByAuthor(postId, author.getId());
     }
 
     @Override
-    public void create(int postId, Comment comment, User user) {
+    public void create(Long postId, Comment comment, User user) {
         Post postToAddCommentTo = postRepository.getById(postId);
         comment.setAuthor(user);
         comment.setPost(postToAddCommentTo);
@@ -67,7 +67,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void update(int postId, Comment newComment, User user) {
+    public void update(Long postId, Comment newComment, User user) {
         Comment commentToUpdate = commentRepository.getById(postId, newComment.getId());
         validateUserIsAdminOrCommentAuthor(commentToUpdate, user);
         if (isDuplicateComment(newComment, commentToUpdate)) {
@@ -78,7 +78,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void delete(int postId, int id, User user) {
+    public void delete(Long postId, Long id, User user) {
         Comment commentToDelete = commentRepository.getById(postId, id);
         validateUserIsAdminOrCommentAuthor(commentToDelete, user);
         commentRepository.delete(postId, id);

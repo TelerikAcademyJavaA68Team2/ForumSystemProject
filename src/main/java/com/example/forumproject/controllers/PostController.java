@@ -4,6 +4,7 @@ import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.PostMapper;
+import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.PostInDto;
@@ -40,12 +41,22 @@ public class PostController {
 
     //ToDo Filtering !
     @GetMapping("/posts")
-    public List<Post> getAllPosts() {
-        return postService.getAll();
+    public List<PostOutDto> getAllPosts(@RequestParam(required = false) String title,
+                                        @RequestParam(required = false) String content,
+                                        @RequestParam(required = false) String tags,
+                                        @RequestParam(required = false) Long minLikes,
+                                        @RequestParam(required = false) Long maxLikes,
+                                        @RequestParam(required = false) String sortBy,
+                                        @RequestParam(required = false) String orderBy) {
+
+
+        PostFilterOptions filterOptions = new PostFilterOptions(title, content, tags, minLikes, maxLikes, sortBy, orderBy);
+        List<Post> inPosts = postService.getAll(filterOptions);
+        return inPosts.stream().map(postMapper::postToPostOutDto).toList();
     }
 
     @GetMapping("/posts/{id}")
-    public PostOutDto getById(@PathVariable int id) {
+    public PostOutDto getById(@PathVariable Long id) {
         try {
             Post post = postService.getById(id);
             return postMapper.postToPostOutDto(post);
@@ -56,7 +67,7 @@ public class PostController {
     }
 
     @PostMapping("/posts/{id}/like")
-    public ResponseEntity<String> likePost(@PathVariable int id) {
+    public ResponseEntity<String> likePost(@PathVariable Long id) {
         try {
             User user = userService.getAuthenticatedUser();
             Post post = postService.getById(id);
@@ -71,7 +82,7 @@ public class PostController {
     }
 
     @PostMapping("/posts/{id}/dislike")
-    public ResponseEntity<String> dislikePost(@PathVariable int id) {
+    public ResponseEntity<String> dislikePost(@PathVariable Long id) {
         try {
             User user = userService.getAuthenticatedUser();
             Post post = postService.getById(id);
@@ -99,7 +110,7 @@ public class PostController {
     }
 
     @PutMapping("/posts/{id}")
-    public PostOutDto update(@PathVariable int id, @Valid @RequestBody UpdatePostDto postDto) {
+    public PostOutDto update(@PathVariable Long id, @Valid @RequestBody UpdatePostDto postDto) {
         try {
             User user = userService.getAuthenticatedUser();
             Post postToUpdate = postMapper.UpdatePostFromDto(postDto, id);
@@ -117,7 +128,7 @@ public class PostController {
     }
 
     @DeleteMapping("/posts/{id}")
-    public void delete(@PathVariable int id) {
+    public void delete(@PathVariable Long id) {
         try {
             User user = userService.getAuthenticatedUser();
             postService.delete(id, user);

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PostOutDto {
 
-    private int post_id;
+    private Long post_id;
 
     private String author;
 
@@ -14,9 +14,9 @@ public class PostOutDto {
 
     private String content;
 
-    private int likes;
+    private Long likes;
 
-    private int dislikes;
+    private Long dislikes;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CommentDto> comments;
@@ -27,7 +27,7 @@ public class PostOutDto {
     public PostOutDto() {
     }
 
-    public PostOutDto(int dislikes, int likes, List<String> tags, List<CommentDto> comments, String content, String title, String author, int post_id) {
+    public PostOutDto(Long dislikes, Long likes, List<String> tags, List<CommentDto> comments, String content, String title, String author, Long post_id) {
         this.dislikes = dislikes;
         this.likes = likes;
         this.tags = tags;
@@ -38,11 +38,11 @@ public class PostOutDto {
         this.post_id = post_id;
     }
 
-    public int getPost_id() {
+    public Long getPost_id() {
         return post_id;
     }
 
-    public void setPost_id(int post_id) {
+    public void setPost_id(Long post_id) {
         this.post_id = post_id;
     }
 
@@ -78,19 +78,19 @@ public class PostOutDto {
         this.comments = comments;
     }
 
-    public int getLikes() {
+    public Long getLikes() {
         return likes;
     }
 
-    public void setLikes(int likes) {
+    public void setLikes(Long likes) {
         this.likes = likes;
     }
 
-    public int getDislikes() {
+    public Long getDislikes() {
         return dislikes;
     }
 
-    public void setDislikes(int dislikes) {
+    public void setDislikes(Long dislikes) {
         this.dislikes = dislikes;
     }
 
