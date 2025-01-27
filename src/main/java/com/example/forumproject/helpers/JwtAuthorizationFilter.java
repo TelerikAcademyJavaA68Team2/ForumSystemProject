@@ -57,6 +57,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             try {
                 UserDetails userDetails = userService.loadUserByUsername(username);
 
+                // check if user is blocked
+                if (!userDetails.isEnabled()){
+                    throw new UnauthorizedAccessException("Your account is blocked!");
+                }
+
                 // Check if token is valid
                 if (jwtService.isValid(token, userDetails)) {
                     // If token is valid, create authentication token and set it in the context
@@ -67,7 +72,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             } catch (UnauthorizedAccessException e) {
-                // Token is invalid or expired, return an error response directly from the filter
+                // Token is invalid or expired or the user is blocked, return an error response directly from the filter
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("Unauthorized: " + e.getMessage());
                 return; // No further processing, response is already sent
@@ -76,6 +81,5 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         }
         filterChain.doFilter(request, response);
-
     }
 }
