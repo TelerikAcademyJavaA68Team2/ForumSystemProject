@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.forumproject.helpers.ValidationHelpers.*;
+import static com.example.forumproject.helpers.ValidationHelpers.isDuplicateComment;
+import static com.example.forumproject.helpers.ValidationHelpers.validateUserIsAdminOrCommentAuthor;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -53,7 +54,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void create(int postId, Comment comment, User user) {
-        validateUserIsNotBlocked(user);
         Post postToAddCommentTo = postRepository.getById(postId);
         comment.setAuthor(user);
         comment.setPost(postToAddCommentTo);
@@ -62,10 +62,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void update(int postId, Comment newComment, User user) {
-        validateUserIsNotBlocked(user);
         Comment commentToUpdate = commentRepository.getById(postId, newComment.getId());
         validateUserIsAdminOrCommentAuthor(commentToUpdate, user);
-        if (isDuplicateComment(newComment, commentToUpdate)){
+        if (isDuplicateComment(newComment, commentToUpdate)) {
             throw new DuplicateEntityException(DUPLICATE_COMMENT_MESSAGE);
         }
         commentToUpdate.setContent(newComment.getContent());
@@ -74,7 +73,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void delete(int postId, int id, User user) {
-        validateUserIsNotBlocked(user);
         Comment commentToDelete = commentRepository.getById(postId, id);
         validateUserIsAdminOrCommentAuthor(commentToDelete, user);
         commentRepository.delete(postId, id);

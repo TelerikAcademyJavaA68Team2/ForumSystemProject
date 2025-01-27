@@ -62,11 +62,11 @@ public class ValidationHelpers {
         }
     }
 
-    public static void validateUserIsNotBlocked(User user) {
+  /*  public static void validateUserIsNotBlocked(User user) {
         if (user.isBlocked()) {
-            throw new UnauthorizedAccessException(BLOCKED_USER_ERROR_MESSAGE);
+            throw new UserIsBlockedException(BLOCKED_USER_ERROR_MESSAGE);
         }
-    }
+    }*/
 
     public static boolean isDuplicatePost(Post newPost, Post postToUpdate) {
         return newPost.getContent().trim().equalsIgnoreCase(postToUpdate.getContent().trim()) &&

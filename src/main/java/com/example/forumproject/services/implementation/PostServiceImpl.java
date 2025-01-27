@@ -2,7 +2,6 @@ package com.example.forumproject.services.implementation;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.mappers.PostMapper;
-import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.PostOutDto;
@@ -14,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.forumproject.helpers.ValidationHelpers.*;
+import static com.example.forumproject.helpers.ValidationHelpers.isDuplicatePost;
+import static com.example.forumproject.helpers.ValidationHelpers.validateUserIsAdminOrPostAuthor;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -35,7 +35,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getAll(){
+    public List<Post> getAll() {
         return postRepository.getAll();
     }
 
@@ -51,16 +51,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void create(Post post, User user) {
-        validateUserIsNotBlocked(user);
         postRepository.create(post);
     }
 
     @Override
     public void update(Post newPost, User user) {
-        validateUserIsNotBlocked(user);
         Post postToUpdate = postRepository.getById(newPost.getId());
         validateUserIsAdminOrPostAuthor(postToUpdate, user);
-        if (isDuplicatePost(newPost, postToUpdate)){
+        if (isDuplicatePost(newPost, postToUpdate)) {
             throw new DuplicateEntityException(DUPLICATE_POST_MESSAGE);
         }
         postToUpdate.setTitle(newPost.getTitle());
@@ -70,7 +68,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void delete(int id, User user) {
-        validateUserIsNotBlocked(user);
         Post postToDelete = postRepository.getById(id);
         validateUserIsAdminOrPostAuthor(postToDelete, user);
         postRepository.delete(id);
