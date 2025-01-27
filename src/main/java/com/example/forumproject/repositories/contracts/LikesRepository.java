@@ -1,13 +1,13 @@
 package com.example.forumproject.repositories.contracts;
 
-import com.example.forumproject.models.Like;
+import com.example.forumproject.models.PostLikesDislikes;
 import com.example.forumproject.models.Post;
 
 import java.util.List;
 
 public interface LikesRepository {
 
-    Like getLike(Long postId, Long userId);
+    PostLikesDislikes getLike(Long postId, Long userId);
 
     Long getLikesByPostId(Long post_id);
 
@@ -21,9 +21,9 @@ public interface LikesRepository {
 
     List<Post> getAllDislikedPosts(Long user_id);
 
-    void create(Like like);
+    void create(PostLikesDislikes like);
 
-    void update(Like like);
+    void update(PostLikesDislikes like);
 
-    void delete(Like like);
+    void delete(PostLikesDislikes like);
 }
