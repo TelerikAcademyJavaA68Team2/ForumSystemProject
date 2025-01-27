@@ -23,25 +23,14 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
 
-    private final CommentRepository commentRepository;
-
-    private final PostMapper postMapper;
-
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, CommentRepository commentRepository, PostMapper postMapper) {
+    public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
-        this.postMapper = postMapper;
     }
 
     @Override
     public List<Post> getAll() {
         return postRepository.getAll();
-    }
-
-    @Override
-    public PostOutDto getByIdDto(int id) {
-        return postMapper.postOutDtoToPost(postRepository.getById(id));
     }
 
     @Override
