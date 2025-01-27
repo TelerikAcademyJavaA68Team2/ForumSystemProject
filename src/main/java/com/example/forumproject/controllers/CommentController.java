@@ -7,6 +7,7 @@ import com.example.forumproject.mappers.CommentMapper;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.CommentDto;
+import com.example.forumproject.models.dtos.CommentInDto;
 import com.example.forumproject.services.contracts.CommentService;
 import com.example.forumproject.services.contracts.UserService;
 import jakarta.validation.Valid;
@@ -49,7 +50,8 @@ public class CommentController {
     }
 
     @GetMapping("/comments/{id}")
-    public CommentDto getById(@PathVariable int postId, @PathVariable int id) {
+    public CommentDto getById(@PathVariable int postId,
+                              @PathVariable int id) {
         try {
             Comment comment = commentService.getById(postId, id);
             return commentMapper.commentToCommentDto(comment);
@@ -60,13 +62,13 @@ public class CommentController {
     }
 
     @PostMapping("/comments")
-    public Comment createComment(@PathVariable int postId,
-                                                                 @Valid @RequestBody CommentDto commentDTO) {
+    public CommentDto createComment(@PathVariable int postId,
+                                    @Valid @RequestBody CommentInDto commentDTO) {
         try {
             User user = userService.getAuthenticatedUser();
-            Comment comment = commentMapper.dtoToObject(commentDTO, user);
+            Comment comment = commentMapper.CommentInDtoToObject(commentDTO, user);
             commentService.create(postId, comment, user);
-            return comment;
+            return commentMapper.commentToCommentDto(comment);
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
@@ -74,13 +76,14 @@ public class CommentController {
     }
 
     @PutMapping("/comments/{id}")
-    public Comment updateComment(@PathVariable int postId,
-                                 @PathVariable int id, @Valid @RequestBody CommentDto commentDTO) {
+    public CommentDto updateComment(@PathVariable int postId,
+                                    @PathVariable int id,
+                                    @Valid @RequestBody CommentInDto commentDTO) {
         try {
             User user = userService.getAuthenticatedUser();
             Comment comment = commentMapper.updateDtoToObject(commentDTO, postId, id);
             commentService.update(postId, comment, user);
-           return comment;
+           return commentMapper.commentToCommentDto(comment);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
