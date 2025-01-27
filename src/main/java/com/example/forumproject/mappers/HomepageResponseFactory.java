@@ -1,20 +1,23 @@
 package com.example.forumproject.mappers;
 
-import com.example.forumproject.repositories.contracts.PostRepository;
-import com.example.forumproject.repositories.contracts.UserRepository;
+import com.example.forumproject.models.dtos.HomepagePostsDto;
+import com.example.forumproject.services.contracts.PostService;
+import com.example.forumproject.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HomepageResponseFactory {
 
-    private final UserRepository userRepository;
-    private final PostRepository postRepository;
+    private final UserService userService;
+    private final PostService postService;
+    private final PostMapper postMapper;
 
     @Autowired
-    public HomepageResponseFactory(UserRepository userRepository, PostRepository postRepository) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
+    public HomepageResponseFactory(UserService userService, PostService postService, PostMapper postMapper) {
+        this.postService = postService;
+        this.postMapper = postMapper;
+        this.userService = userService;
     }
 
     public String getRegisterInfo() {
@@ -58,8 +61,8 @@ public class HomepageResponseFactory {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Welcome to the best Car Forum EVER! :").append(System.lineSeparator());
-        sb.append(String.format("Active users: %d", userRepository.getNumberOfActiveUsers())).append(System.lineSeparator());
-        sb.append(String.format("Posts created: %d", postRepository.getTotalNumberOfPosts())).append(System.lineSeparator());
+        sb.append(String.format("Active users: %d", userService.getNumberOfRegisteredUsers())).append(System.lineSeparator());
+        sb.append(String.format("Posts created: %d", postService.getTotalNumberOfPosts())).append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("Possible Endpoints without registration:").append(System.lineSeparator());
@@ -153,5 +156,17 @@ public class HomepageResponseFactory {
         sb.append("In order to delete this Comment you need to:").append(System.lineSeparator());
         sb.append("Send a post request to the current URL.").append(System.lineSeparator());
         return sb.toString();
+    }
+
+    public HomepagePostsDto getHomepagePosts() {
+        HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums top commented posts!");
+        homepagePosts.setPosts(postService.getAll().stream().map(postMapper::postToPostOutDto).toList());
+        return homepagePosts;
+    }
+
+    public HomepagePostsDto getHomepageRecentPosts() {
+        HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums newest posts!");
+        homepagePosts.setPosts(postService.getAll().stream().map(postMapper::postToPostOutDto).toList());
+        return homepagePosts;
     }
 }

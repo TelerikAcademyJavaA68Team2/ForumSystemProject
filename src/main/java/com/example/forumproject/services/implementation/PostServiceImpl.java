@@ -29,6 +29,21 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public int getNumberOfPostsByUser(int user_id) {
+        return postRepository.getNumberOfPostsByUser(user_id);
+    }
+
+    @Override
+    public List<Post> getAllPostsFromUser(int user_id) {
+        return postRepository.getAllPostsFromUser(user_id);
+    }
+
+    @Override
+    public int getTotalNumberOfPosts() {
+        return postRepository.getTotalNumberOfPosts();
+    }
+
+    @Override
     public List<Post> getAll() {
         return postRepository.getAll();
     }

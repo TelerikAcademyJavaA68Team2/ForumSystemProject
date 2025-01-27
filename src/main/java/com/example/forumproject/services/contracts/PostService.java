@@ -8,7 +8,13 @@ import java.util.List;
 
 public interface PostService {
 
-   // List<Post> get(FilterOptions filterOptions);
+    // List<Post> get(FilterOptions filterOptions);
+
+    int getNumberOfPostsByUser(int user_id);
+
+    List<Post> getAllPostsFromUser(int user_id);
+
+    int getTotalNumberOfPosts();
 
     List<Post> getAll();
 

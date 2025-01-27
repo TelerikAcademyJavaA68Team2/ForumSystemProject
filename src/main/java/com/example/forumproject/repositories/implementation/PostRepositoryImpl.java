@@ -22,12 +22,35 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
+    public int getNumberOfPostsByUser(int user_id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Long> query = session.createQuery("SELECT COUNT(p) FROM Post p WHERE p.author.id = :userId", Long.class);
+            query.setParameter("userId", user_id);
+            return query.uniqueResult() != null ? query.uniqueResult().intValue() : 0;
+        }
+    }
+
+    @Override
+    public List<Post> getAllPostsFromUser(int user_id) {
+
+        try (Session session = sessionFactory.openSession()) {
+            Query<Post> query = session.createQuery("FROM Post p WHERE p.author.id = :userId", Post.class);
+            query.setParameter("userId", user_id);
+            return query.list();
+        }
+
+    }
+
+    @Override
     public int getTotalNumberOfPosts() {
         try (Session session = sessionFactory.openSession()) {
             Query<Long> query = session.createQuery("SELECT COUNT(p) FROM Post p", Long.class);
             return query.uniqueResult() != null ? query.uniqueResult().intValue() : 0;
         }
     }
+
+    // returnPostDtoWithComments
+
 
     public List<Post> getAll() {
         try (Session session = sessionFactory.openSession()) {

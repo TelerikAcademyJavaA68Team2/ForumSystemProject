@@ -3,6 +3,7 @@ package com.example.forumproject.controllers;
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.InvalidEmailFormatException;
 import com.example.forumproject.mappers.HomepageResponseFactory;
+import com.example.forumproject.models.dtos.HomepagePostsDto;
 import com.example.forumproject.models.dtos.LoginDto;
 import com.example.forumproject.models.dtos.UserInDto;
 import com.example.forumproject.services.AuthenticationService;
@@ -28,10 +29,20 @@ public class HomepageController {
         this.homepageResponseFactory = homepageResponseFactory;
     }
 
-
     @GetMapping
     public ResponseEntity<String> getHomepage() {
         return ResponseEntity.ok(homepageResponseFactory.getHomepageInfo());
+    }
+
+    //todo /posts
+    @GetMapping("/posts")
+    public ResponseEntity<HomepagePostsDto> getHomepagePosts() {
+        return ResponseEntity.ok(homepageResponseFactory.getHomepagePosts());
+    }
+
+    @GetMapping("/posts/recent")
+    public ResponseEntity<HomepagePostsDto> getHomepageRecentPosts() {
+        return ResponseEntity.ok(homepageResponseFactory.getHomepageRecentPosts());
     }
 
     @PostMapping("/register")
@@ -43,11 +54,6 @@ public class HomepageController {
         } catch (InvalidEmailFormatException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-    }
-
-    @GetMapping("/register")
-    public ResponseEntity<String> getRegisterInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getRegisterInfo());
     }
 
     @PostMapping("/login")
@@ -64,5 +70,10 @@ public class HomepageController {
     @GetMapping("/login")
     public ResponseEntity<String> getLoginInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getLoginInfo());
+    }
+
+    @GetMapping("/register")
+    public ResponseEntity<String> getRegisterInfo() {
+        return ResponseEntity.ok(homepageResponseFactory.getRegisterInfo());
     }
 }
