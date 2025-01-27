@@ -14,8 +14,6 @@ public class ValidationHelpers {
 
     private static final String MODIFY_POSTS = "Only admins or the post's creator can modify posts!";
     private static final String MODIFY_COMMENTS = "Only admins or the comment's creator can modify comments!";
-    private static final String BLOCKED_USER_ERROR_MESSAGE =
-            "Your account is currently blocked! Your permissions to create or edit posts are restricted!";
 
     public static void validateEmailAndUsername(User user, UserRepository userRepository) {
         boolean usernameIsNotValid = true;
@@ -61,7 +59,6 @@ public class ValidationHelpers {
             throw new UnauthorizedAccessException(MODIFY_COMMENTS);
         }
     }
-
 
     public static boolean isDuplicatePost(Post newPost, Post postToUpdate) {
         return newPost.getContent().trim().equalsIgnoreCase(postToUpdate.getContent().trim()) &&
