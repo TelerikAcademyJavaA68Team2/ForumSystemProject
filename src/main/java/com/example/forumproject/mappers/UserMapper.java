@@ -9,8 +9,8 @@ public class UserMapper {
 
 
     public User registrationFromDto(UserInDto userInDto) {
-
-        User user = new User(userInDto.getFirstName(), userInDto.getLastName(), userInDto.getEmail(), userInDto.getUsername(), userInDto.getPassword());
+        User user = new User(userInDto.getFirstName(), userInDto.getLastName(),
+                userInDto.getEmail(), userInDto.getUsername(), userInDto.getPassword());
         user.setBlocked(false);
         user.setAdmin(false);
         return user;
