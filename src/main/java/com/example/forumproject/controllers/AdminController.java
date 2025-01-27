@@ -75,6 +75,8 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.CREATED).body(String.format("User with id: %d was blocked successfully!", userId));
         } catch (InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -85,6 +87,8 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.CREATED).body(String.format("User with id: %d was unblocked successfully!", userId));
         } catch (InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -95,6 +99,8 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.CREATED).body(String.format("User with id: %d was promoted to Admin successfully!", userId));
         } catch (InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -105,6 +111,8 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Admin with id: %d was demoted to User successfully!", userId));
         } catch (InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -115,6 +123,8 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Post with id: %d was deleted successfully!", postId));
         } catch (InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -126,14 +136,9 @@ public class AdminController {
                     ("Comment with id: %d was deleted from Post with id: %d successfully!", commentId, postId));
         } catch (InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
-    }
-
-    @GetMapping("/users") // only admins can check users
-    public List<UserOutDto> getAllUsers() {
-
-        List<User> users = userService.getAllUsers();
-        return users.stream().map(userMapper::mapUserToDtoOut).toList();
     }
 
     @GetMapping("/users/{id}")
@@ -179,5 +184,12 @@ public class AdminController {
     @GetMapping("/profile/phone")
     public ResponseEntity<String> getUpdatePhoneInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getUpdatePhoneInfo());
+    }
+
+    @GetMapping("/users") // only admins can check users
+    public List<UserOutDto> getAllUsers() {
+
+        List<User> users = userService.getAllUsers();
+        return users.stream().map(userMapper::mapUserToDtoOut).toList();
     }
 }

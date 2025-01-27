@@ -15,6 +15,7 @@ import com.example.forumproject.services.contracts.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -54,13 +55,14 @@ public class PostController {
         }
     }
 
-    //ToDo PostMapping?
-    @GetMapping("/posts/{id}/like")
-    public String likePost(@PathVariable int id) {
+    @PostMapping("/posts/{id}/like")
+    public ResponseEntity<String> likePost(@PathVariable int id) {
         try {
             User user = userService.getAuthenticatedUser();
             Post post = postService.getById(id);
-            return likeService.save(post, user, true) ? "Post LIKED successfully!" : "LIKE removed successfully!";
+            String message = likeService.save(post, user, true)
+                    ? "Post LIKED successfully!" : "LIKE removed successfully!";
+            return ResponseEntity.status(HttpStatus.CREATED).body(message);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
@@ -68,13 +70,14 @@ public class PostController {
         }
     }
 
-    //ToDo PostMapping?
-    @GetMapping("/posts/{id}/dislike")
-    public String dislikePost(@PathVariable int id) {
+    @PostMapping("/posts/{id}/dislike")
+    public ResponseEntity<String> dislikePost(@PathVariable int id) {
         try {
             User user = userService.getAuthenticatedUser();
             Post post = postService.getById(id);
-            return likeService.save(post, user, false) ? "Post DISLIKED successfully!" : "DISLIKE removed successfully!";
+            String message = likeService.save(post, user, false)
+                    ? "Post DISLIKED successfully!" : "DISLIKE removed successfully!";
+            return ResponseEntity.status(HttpStatus.CREATED).body(message);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
