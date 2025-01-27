@@ -2,7 +2,6 @@ package com.example.forumproject.controllers;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.InvalidEmailFormatException;
-import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.mappers.HomepageResponseFactory;
 import com.example.forumproject.models.dtos.LoginDto;
 import com.example.forumproject.models.dtos.UserInDto;
