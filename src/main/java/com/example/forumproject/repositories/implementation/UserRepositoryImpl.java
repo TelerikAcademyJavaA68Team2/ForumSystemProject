@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -77,7 +78,7 @@ public class UserRepositoryImpl implements UserRepository {
             return users
                     .stream()
                     .findFirst()
-                    .orElseThrow(() -> new EntityNotFoundException("User", "username", username));
+                    .orElseThrow(() -> new UsernameNotFoundException("Invalid username!"));
         }
     }
 

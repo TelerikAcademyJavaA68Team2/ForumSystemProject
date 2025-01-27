@@ -2,13 +2,15 @@ package com.example.forumproject.controllers;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.InvalidEmailFormatException;
+import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.mappers.HomepageResponseFactory;
-import com.example.forumproject.models.User;
+import com.example.forumproject.models.dtos.LoginDto;
+import com.example.forumproject.models.dtos.UserInDto;
 import com.example.forumproject.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -34,7 +36,7 @@ public class HomepageController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User request) {
+    public ResponseEntity<String> register(@RequestBody UserInDto request) {
         try {
             return ResponseEntity.ok(authService.register(request));
         } catch (DuplicateEntityException e) {
@@ -50,23 +52,18 @@ public class HomepageController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User request) {
+    public ResponseEntity<String> login(@RequestBody LoginDto request) {
         try {
             return ResponseEntity.ok(authService.authenticate(request));
         } catch (UsernameNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        } catch (AuthenticationException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong username or password!");
+        } catch (DisabledException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Your account is blocked!");
         }
     }
 
     @GetMapping("/login")
     public ResponseEntity<String> getLoginInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getLoginInfo());
-    }
-
-    @GetMapping("/posts")
-    public ResponseEntity<String> getPosts() {
         return ResponseEntity.ok(homepageResponseFactory.getLoginInfo());
     }
 }
