@@ -1,7 +1,7 @@
 package com.example.forumproject.repositories.implementation;
 
-import com.example.forumproject.models.Like;
 import com.example.forumproject.models.Post;
+import com.example.forumproject.models.PostLikesDislikes;
 import com.example.forumproject.repositories.contracts.LikesRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,7 +24,7 @@ public class LikeRepositoryImpl implements LikesRepository {
     @Override
     public Long getLikesByPostId(Long post_id) {
         try (Session session = sessionFactory.openSession()) {
-            String hql = "SELECT COUNT(pld) FROM Like pld WHERE pld.post.id = :postId AND pld.isLike = true";
+            String hql = "SELECT COUNT(pld) FROM PostLikesDislikes pld WHERE pld.post.id = :postId AND pld.isLike = true";
             Query<Long> query = session.createQuery(hql, Long.class);
             query.setParameter("postId", post_id);
             return query.uniqueResult() != null ? query.uniqueResult() : 0;
@@ -34,7 +34,7 @@ public class LikeRepositoryImpl implements LikesRepository {
     @Override
     public Long getDislikesByPostId(Long post_id) {
         try (Session session = sessionFactory.openSession()) {
-            String hql = "SELECT COUNT(pld) FROM Like pld WHERE pld.post.id = :postId AND pld.isLike = false ";
+            String hql = "SELECT COUNT(pld) FROM PostLikesDislikes pld WHERE pld.post.id = :postId AND pld.isLike = false ";
             Query<Long> query = session.createQuery(hql, Long.class);
             query.setParameter("postId", post_id);
             return query.uniqueResult() != null ? query.uniqueResult() : 0;
@@ -44,8 +44,8 @@ public class LikeRepositoryImpl implements LikesRepository {
     @Override
     public boolean checkIfLikeExists(Long post_id, Long user_id) {
         try (Session session = sessionFactory.openSession()) {
-            String query = "FROM Like lk WHERE lk.user.id = :userId AND lk.post.id = :postId AND lk.isLike = true";
-            Query<Like> likes = session.createQuery(query, Like.class);
+            String query = "FROM PostLikesDislikes lk WHERE lk.user.id = :userId AND lk.post.id = :postId AND lk.isLike = true";
+            Query<PostLikesDislikes> likes = session.createQuery(query, PostLikesDislikes.class);
             likes.setParameter("userId", user_id);
             likes.setParameter("postId", post_id);
             return likes.uniqueResult() != null;
@@ -55,12 +55,10 @@ public class LikeRepositoryImpl implements LikesRepository {
     @Override
     public boolean checkIfDislikeExists(Long post_id, Long user_id) {
         try (Session session = sessionFactory.openSession()) {
-
-            String query = "FROM Like lk WHERE lk.user.id = :userId AND lk.post.id = :postId AND lk.isLike = false ";
-            Query<Like> likes = session.createQuery(query, Like.class);
+            String query = "FROM PostLikesDislikes lk WHERE lk.user.id = :userId AND lk.post.id = :postId AND lk.isLike = false ";
+            Query<PostLikesDislikes> likes = session.createQuery(query, PostLikesDislikes.class);
             likes.setParameter("userId", user_id);
             likes.setParameter("postId", post_id);
-
             return likes.uniqueResult() != null;
         }
     }
@@ -70,7 +68,7 @@ public class LikeRepositoryImpl implements LikesRepository {
     public List<Post> getAllLikedPosts(Long user_id) {
         try (Session session = sessionFactory.openSession()) {
             String queryString = "SELECT post FROM Post post " +
-                    "JOIN Like like ON post.id = like.post.id " +
+                    "JOIN PostLikesDislikes like ON post.id = like.post.id " +
                     "WHERE like.user.id = :userId AND like.isLike = true";
             Query<Post> query = session.createQuery(queryString, Post.class);
             query.setParameter("userId", user_id);
@@ -83,7 +81,7 @@ public class LikeRepositoryImpl implements LikesRepository {
     public List<Post> getAllDislikedPosts(Long user_id) {
         try (Session session = sessionFactory.openSession()) {
             String queryString = "SELECT post FROM Post post " +
-                    "JOIN Like like ON post.id = like.post.id " +
+                    "JOIN PostLikesDislikes like ON post.id = like.post.id " +
                     "WHERE like.user.id = :userId AND like.isLike = false ";
             Query<Post> query = session.createQuery(queryString, Post.class);
             query.setParameter("userId", user_id);
@@ -92,7 +90,7 @@ public class LikeRepositoryImpl implements LikesRepository {
     }
 
     @Override
-    public void create(Like like) {
+    public void create(PostLikesDislikes like) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.persist(like);
@@ -101,10 +99,10 @@ public class LikeRepositoryImpl implements LikesRepository {
     }
 
     @Override
-    public void update(Like like) {
+    public void update(PostLikesDislikes like) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Like exsistingLike = getLike(like.getPost().getId(), like.getUser().getId());
+            PostLikesDislikes exsistingLike = getLike(like.getPost().getId(), like.getUser().getId());
             exsistingLike.setLiked(like.getLiked());
             session.merge(exsistingLike);
             session.getTransaction().commit();
@@ -112,7 +110,7 @@ public class LikeRepositoryImpl implements LikesRepository {
     }
 
     @Override
-    public void delete(Like like) {
+    public void delete(PostLikesDislikes like) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.remove(getLike(like.getPost().getId(), like.getUser().getId()));
@@ -121,10 +119,10 @@ public class LikeRepositoryImpl implements LikesRepository {
     }
 
 
-    public Like getLike(Long post_id, Long user_id) {
+    public PostLikesDislikes getLike(Long post_id, Long user_id) {
         try (Session session = sessionFactory.openSession()) {
 
-            Query<Like> likes = session.createQuery("FROM Like l WHERE l.post.id = :postId AND l.user.id = :userId", Like.class);
+            Query<PostLikesDislikes> likes = session.createQuery("FROM PostLikesDislikes l WHERE l.post.id = :postId AND l.user.id = :userId", PostLikesDislikes.class);
             likes.setParameter("postId", post_id);
             likes.setParameter("userId", user_id);
 
