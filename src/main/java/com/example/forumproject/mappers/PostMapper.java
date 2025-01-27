@@ -5,26 +5,26 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.CreatePostDto;
 import com.example.forumproject.models.dtos.PostOutDto;
 import com.example.forumproject.models.dtos.UpdatePostDto;
-import com.example.forumproject.repositories.contracts.CommentRepository;
-import com.example.forumproject.repositories.contracts.LikesRepository;
-import com.example.forumproject.repositories.contracts.PostRepository;
+import com.example.forumproject.services.contracts.CommentService;
+import com.example.forumproject.services.contracts.LikeService;
+import com.example.forumproject.services.contracts.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostMapper {
 
-    private final PostRepository postRepository;
-    private final LikesRepository likesRepository;
-    private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
+    private final PostService postService;
+    private final LikeService likeService;
+    private final CommentService commentService;
 
     @Autowired
-    public PostMapper(PostRepository postRepository, LikesRepository likesRepository, CommentRepository commentRepository, CommentMapper commentMapper) {
-        this.postRepository = postRepository;
-        this.likesRepository = likesRepository;
-        this.commentRepository = commentRepository;
+    public PostMapper(CommentMapper commentMapper, PostService postService, LikeService likeService, CommentService commentService) {
         this.commentMapper = commentMapper;
+        this.postService = postService;
+        this.likeService = likeService;
+        this.commentService = commentService;
     }
 
     public Post createPostFromDto(CreatePostDto createPostDTO, User author){
@@ -36,22 +36,21 @@ public class PostMapper {
     }
 
     public Post UpdatePostFromDto(UpdatePostDto updatePostDTO, int id){
-        Post postToBeUpdate = postRepository.getById(id);
+        Post postToBeUpdate = postService.getById(id);
         postToBeUpdate.setTitle(updatePostDTO.getTitle());
         postToBeUpdate.setContent(updatePostDTO.getContent());
         return postToBeUpdate;
     }
 
-
-    public PostOutDto postOutDtoToPost(Post post) {
+    public PostOutDto postToPostOutDto(Post post) {
         PostOutDto postOutDto = new PostOutDto();
         postOutDto.setId(post.getId());
-        postOutDto.setAuthorName(post.getAuthor().getUsername());
+        postOutDto.setAuthor(post.getAuthor().getUsername());
         postOutDto.setTitle(post.getTitle());
         postOutDto.setContent(post.getContent());
-        postOutDto.setLikes(likesRepository.getLikesByPostId(post.getId()));
-        postOutDto.setDislikes(likesRepository.getDislikesByPostId(post.getId()));
-        postOutDto.setComments(commentMapper.commentsToCommentDtos(commentRepository.getAllCommentsByPostId(post.getId())));
+        postOutDto.setLikes(likeService.getLikesByPostId(post.getId()));
+        postOutDto.setDislikes(likeService.getDislikesByPostId(post.getId()));
+        postOutDto.setComments(commentMapper.commentsToCommentDtos(commentService.getAllCommentsByPostId(post.getId())));
         return postOutDto;
     }
 }
