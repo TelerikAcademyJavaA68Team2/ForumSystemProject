@@ -12,6 +12,8 @@ public interface CommentService {
 
     List<CommentDto> getAllCommentDtos(int postId);
 
+    List<Comment> getAllCommentsByPostId(int postId);
+
     Comment getById(int postId, int id);
 
     List<Comment> getCommentsByAuthor(int postId);
