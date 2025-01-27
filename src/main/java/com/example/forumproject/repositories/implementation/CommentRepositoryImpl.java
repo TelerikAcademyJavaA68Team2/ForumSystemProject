@@ -62,9 +62,6 @@ public class CommentRepositoryImpl implements CommentRepository {
                     Comment.class
             );
             query.setParameter("postId", postId);
-            if (query.list().isEmpty()) {
-                throw new EntityNotFoundException("Comments", "post", postId);
-            }
             return query.list();
         }
     }
@@ -78,9 +75,6 @@ public class CommentRepositoryImpl implements CommentRepository {
             );
             query.setParameter("postId", postId);
             query.setParameter("userId", userId);
-            if (query.list().isEmpty()) {
-                throw new EntityNotFoundException("Comments", userId, postId);
-            }
             return query.list();
         }
     }

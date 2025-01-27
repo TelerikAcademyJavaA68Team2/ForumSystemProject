@@ -1,17 +1,20 @@
 package com.example.forumproject.models.dtos;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
 public class PostOutDto {
 
     private int id;
 
-    private String authorName;
+    private String author;
 
     private String title;
 
     private String content;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CommentDto> comments;
 
     private int likes;
@@ -26,12 +29,12 @@ public class PostOutDto {
         this.id = id;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getTitle() {
