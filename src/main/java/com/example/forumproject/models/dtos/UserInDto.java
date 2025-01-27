@@ -6,15 +6,15 @@ import jakarta.validation.constraints.Size;
 public class UserInDto {
 
     @NotNull(message = "First name can't be empty")
-    @Size(min = 2, max = 20, message = "First name should be between 2 and 20 symbols!")
+    @Size(min = 4, max = 32, message = "First name should be between 4 and 32 symbols!")
     private String firstName;
 
     @NotNull(message = "Last name can't be empty")
-    @Size(min = 2, max = 20, message = "Last name should be between 2 and 20 symbols!")
+    @Size(min = 4, max = 32, message = "Last name should be between 4 and 32 symbols!")
     private String lastName;
 
     @NotNull(message = "Email can't be empty")
-    @Size(min = 2, max = 20, message = "Email should be between 2 and 20 symbols!")
+    @Size(min = 5, max = 250, message = "Email should be between 5 and 250 symbols!")
     private String email;
 
     @NotNull(message = "Username can't be empty")

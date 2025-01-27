@@ -5,6 +5,7 @@ import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.repositories.contracts.UserRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +20,7 @@ public class ValidationHelpers {
         boolean usernameIsNotValid = true;
         try {
             userRepository.getByUsername(user.getUsername());
-        } catch (EntityNotFoundException e) {
+        } catch (UsernameNotFoundException e) {
             usernameIsNotValid = false;
         }
         if (usernameIsNotValid) {
@@ -59,6 +60,7 @@ public class ValidationHelpers {
             throw new UnauthorizedAccessException(MODIFY_COMMENTS);
         }
     }
+
 
     public static boolean isDuplicatePost(Post newPost, Post postToUpdate) {
         return newPost.getContent().trim().equalsIgnoreCase(postToUpdate.getContent().trim()) &&
