@@ -16,7 +16,7 @@ public interface UserService extends UserDetailsService {
 
     User getByEmail(String email);
 
-    User getByUsername(String username);
+    User loadUserByUsername(String username);
 
     void deleteUser(int userId);
 
@@ -27,8 +27,6 @@ public interface UserService extends UserDetailsService {
     void blockUser(int userId);
 
     void unblockUser(int userId);
-
-    User loadUserByUsername(String username);
 
     void updatePhoneNumber(User user, String phoneNumber);
 

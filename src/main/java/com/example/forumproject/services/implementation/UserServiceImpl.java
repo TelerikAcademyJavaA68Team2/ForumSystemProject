@@ -30,18 +30,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         ValidationHelpers.validateEmailAndUsername(user, userRepository);
-
-        userRepository.save(user);
-    }
-
-
-    @Override
-    public void updatePhoneNumber(User user, String phoneNumber) {
-        ValidationHelpers.validatePhoneNumber(phoneNumber);
-        if (user.getPhoneNumber() != null && user.getPhoneNumber().equals(phoneNumber)) {
-            throw new InvalidUserInputException("You provided the phone number that's already in your profile info!");
-        }
-        user.setPhoneNumber(phoneNumber);
         userRepository.save(user);
     }
 
@@ -51,13 +39,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByEmail(String email) {
-        return userRepository.getByEmail(email);
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.getByUsername(username);
     }
 
     @Override
-    public User getByUsername(String username) {
-        return userRepository.getByUsername(username);
+    public User getByEmail(String email) {
+        return userRepository.getByEmail(email);
     }
 
     @Override
@@ -109,12 +97,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.getByUsername(username);
+    public void updatePhoneNumber(User user, String phoneNumber) {
+        ValidationHelpers.validatePhoneNumber(phoneNumber);
+        if (user.getPhoneNumber() != null && user.getPhoneNumber().equals(phoneNumber)) {
+            throw new InvalidUserInputException("You provided the phone number that's already in your profile info!");
+        }
+        user.setPhoneNumber(phoneNumber);
+        userRepository.save(user);
     }
 
     @Override
     public User getAuthenticatedUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
+
 }
