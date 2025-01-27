@@ -5,6 +5,7 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.CommentDto;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.repositories.contracts.CommentRepository;
+import com.example.forumproject.services.contracts.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +15,11 @@ import java.util.stream.Collectors;
 @Component
 public class CommentMapper {
 
-    private final CommentRepository commentRepository;
+    private final CommentService commentService;
 
     @Autowired
-    public CommentMapper(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
+    public CommentMapper(CommentService commentService) {
+        this.commentService = commentService;
     }
 
     public Comment dtoToObject(CommentDto commentDto, User user){
@@ -29,7 +30,7 @@ public class CommentMapper {
     }
 
     public Comment updateDtoToObject(CommentDto commentDTO, int postId, int commentId) {
-        Comment comment = commentRepository.getById(postId, commentId);
+        Comment comment = commentService.getById(postId, commentId);
         comment.setContent(commentDTO.getContent());
         return comment;
     }
@@ -37,6 +38,7 @@ public class CommentMapper {
 
     public CommentDto commentToCommentDto(Comment comment) {
         CommentDto commentDtoOut = new CommentDto();
+        commentDtoOut.setAuthor(comment.getAuthor().getUsername());
         commentDtoOut.setContent(comment.getContent());
         return commentDtoOut;
     }
