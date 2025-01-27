@@ -12,12 +12,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class LikesRepositoryImpl implements LikesRepository {
+public class LikeRepositoryImpl implements LikesRepository {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public LikesRepositoryImpl(SessionFactory sessionFactory) {
+    public LikeRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
