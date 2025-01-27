@@ -2,7 +2,7 @@ package com.example.forumproject.mappers;
 
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.CreatePostDto;
+import com.example.forumproject.models.dtos.PostInDto;
 import com.example.forumproject.models.dtos.PostOutDto;
 import com.example.forumproject.models.dtos.UpdatePostDto;
 import com.example.forumproject.services.contracts.CommentService;
@@ -27,11 +27,11 @@ public class PostMapper {
         this.commentService = commentService;
     }
 
-    public Post createPostFromDto(CreatePostDto createPostDTO, User author){
+    public Post createPostFromDto(PostInDto postInDTO, User author){
         Post post = new Post();
         post.setAuthor(author);
-        post.setTitle(createPostDTO.getTitle());
-        post.setContent(createPostDTO.getContent());
+        post.setTitle(postInDTO.getTitle());
+        post.setContent(postInDTO.getContent());
         return post;
     }
 
