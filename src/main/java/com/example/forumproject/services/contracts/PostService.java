@@ -12,8 +12,6 @@ public interface PostService {
 
     List<Post> getAll();
 
-    PostOutDto getByIdDto(int id);
-
     Post getById(int id);
 
     void create(Post beer, User user);
