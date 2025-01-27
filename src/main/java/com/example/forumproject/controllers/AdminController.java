@@ -114,7 +114,6 @@ public class AdminController {
         return ResponseEntity.ok(homepageResponseFactory.getDemoteToUserInfo());
     }
 
-    // todo
     @PostMapping("/posts/{postId}/delete")
     public ResponseEntity<String> deletePost(@PathVariable int postId) {
         try {
@@ -125,12 +124,11 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/users/{userId}/delete")
+    @GetMapping("/posts/{postId}/delete")
     public ResponseEntity<String> getDeletePostInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getDeletePostInfo());
     }
 
-    // todo
     @PostMapping("/posts/{postId}/comments/{commentId}/delete")
     public ResponseEntity<String> deleteComment(@PathVariable int postId, @PathVariable int commentId) {
         try {
@@ -142,7 +140,7 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/users/{userId}/delete")
+    @GetMapping("/posts/{postId}/comments/{commentId}/delete")
     public ResponseEntity<String> getDeleteCommentInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getDeleteCommentInfo());
     }
