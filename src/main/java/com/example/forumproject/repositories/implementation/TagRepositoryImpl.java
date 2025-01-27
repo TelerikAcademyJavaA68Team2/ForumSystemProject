@@ -14,7 +14,6 @@ import java.util.List;
 @Repository
 public class TagRepositoryImpl implements TagRepository {
 
-
     private final SessionFactory sessionFactory;
 
     @Autowired

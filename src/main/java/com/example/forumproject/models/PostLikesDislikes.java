@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "post_likes_dislikes")
-public class Like {
+public class PostLikesDislikes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +21,10 @@ public class Like {
     @Column(name = "is_like")
     private boolean isLike;
 
-    public Like() {
+    public PostLikesDislikes() {
     }
 
-    public Like(Post post, User user, boolean isLike) {
+    public PostLikesDislikes(Post post, User user, boolean isLike) {
         this.post = post;
         this.user = user;
         this.isLike = isLike;

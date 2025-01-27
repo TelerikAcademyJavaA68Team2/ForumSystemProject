@@ -25,7 +25,7 @@ public class PostTag {
     public PostTag(Post post, Tag tag) {
         this.post = post;
         this.tag = tag;
-        this.id = new PostTagId(post.getId(), tag.getId());  // Ensure the composite key is set
+        this.id = new PostTagId(post.getId(), tag.getId());
     }
 
     public PostTagId getId() {

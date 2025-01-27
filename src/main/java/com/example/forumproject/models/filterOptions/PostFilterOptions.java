@@ -9,44 +9,44 @@ public class PostFilterOptions {
     private Optional<String> tags;
     private Optional<Long> minLikes;
     private Optional<Long> maxLikes;
-    private Optional<String> sortBy;
     private Optional<String> orderBy;
+    private Optional<String> orderType;
 
-    public PostFilterOptions(String title, String content, String tags, Long minLikes, Long maxLikes, String sortBy, String orderBy) {
+    public PostFilterOptions(String title, String content, String tags, Long minLikes, Long maxLikes, String orderBy, String orderType) {
         this.title = Optional.ofNullable(title);
         this.content = Optional.ofNullable(content);
         this.tags = Optional.ofNullable(tags);
         this.minLikes = Optional.ofNullable(minLikes);
         this.maxLikes = Optional.ofNullable(maxLikes);
-        this.sortBy = Optional.ofNullable(sortBy);
         this.orderBy = Optional.ofNullable(orderBy);
+        this.orderType = Optional.ofNullable(orderType);
     }
 
     public Optional<String> getTitle() {
-        return title;
+        return this.title;
     }
 
     public Optional<String> getContent() {
-        return content;
+        return this.content;
     }
 
     public Optional<String> getTags() {
-        return tags;
+        return this.tags;
     }
 
     public Optional<Long> getMinLikes() {
-        return minLikes;
+        return this.minLikes;
     }
 
     public Optional<Long> getMaxLikes() {
-        return maxLikes;
+        return this.maxLikes;
     }
 
-    public Optional<String> getSortBy() {
-        return sortBy;
+    public Optional<String> getOrderType() {
+        return this.orderType;
     }
 
     public Optional<String> getOrderBy() {
-        return orderBy;
+        return this.orderBy;
     }
 }
