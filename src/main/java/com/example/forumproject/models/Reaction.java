@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "post_likes_dislikes")
-public class PostLikesDislikes {
+public class Reaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id")
@@ -21,20 +21,20 @@ public class PostLikesDislikes {
     @Column(name = "is_like")
     private boolean isLike;
 
-    public PostLikesDislikes() {
+    public Reaction() {
     }
 
-    public PostLikesDislikes(Post post, User user, boolean isLike) {
+    public Reaction(Post post, User user, boolean isLike) {
         this.post = post;
         this.user = user;
         this.isLike = isLike;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -54,11 +54,11 @@ public class PostLikesDislikes {
         this.user = user;
     }
 
-    public boolean getLiked() {
+    public boolean getReaction() {
         return isLike;
     }
 
-    public void setLiked(boolean like) {
+    public void setReaction(boolean like) {
         isLike = like;
     }
 }
