@@ -34,7 +34,6 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private boolean isTokenExpired(String token) {
-
         if (extractExpiration(token).before(new Date())) {
             throw new UnauthorizedAccessException("JWT Token has expired. Please log in again.");
         }

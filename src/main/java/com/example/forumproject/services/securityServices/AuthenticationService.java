@@ -2,10 +2,11 @@ package com.example.forumproject.services.securityServices;
 
 import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
 import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface AuthenticationService {
 
-    public String register(UserRegistrationDto request);
+    String authenticate(LoginDto request);
 
-    public String authenticate(LoginDto request);
+    String register(UserRegistrationDto request);
 }
