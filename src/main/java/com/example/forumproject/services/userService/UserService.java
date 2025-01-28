@@ -1,4 +1,4 @@
-package com.example.forumproject.services;
+package com.example.forumproject.services.userService;
 
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;

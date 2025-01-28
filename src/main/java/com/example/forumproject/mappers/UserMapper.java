@@ -5,7 +5,7 @@ import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileAdminDt
 import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileUserDto;
 import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
-import com.example.forumproject.services.PostService;
+import com.example.forumproject.services.postService.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
