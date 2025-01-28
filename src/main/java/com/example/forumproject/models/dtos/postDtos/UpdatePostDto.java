@@ -1,8 +1,9 @@
-package com.example.forumproject.models.dtos;
+package com.example.forumproject.models.dtos.postDtos;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+
 public class UpdatePostDto {
 
     @Positive(message = "Id should be positive")
