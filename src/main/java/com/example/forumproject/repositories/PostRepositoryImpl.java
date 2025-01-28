@@ -1,4 +1,4 @@
-package com.example.forumproject.repositories.postRepository;
+package com.example.forumproject.repositories;
 
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.models.Post;

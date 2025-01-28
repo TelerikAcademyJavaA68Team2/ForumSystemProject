@@ -1,13 +1,12 @@
-package com.example.forumproject.services.userService;
+package com.example.forumproject.services;
 
 import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.helpers.ValidationHelpers;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
-import com.example.forumproject.repositories.userRepository.UserRepository;
+import com.example.forumproject.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

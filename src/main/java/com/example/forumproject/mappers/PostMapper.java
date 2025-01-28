@@ -5,7 +5,7 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.postDtos.PostInDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
 import com.example.forumproject.services.commentService.CommentService;
-import com.example.forumproject.services.postService.PostService;
+import com.example.forumproject.services.PostService;
 import com.example.forumproject.services.postTagService.PostTagService;
 import com.example.forumproject.services.reactionService.ReactionService;
 import org.springframework.beans.factory.annotation.Autowired;

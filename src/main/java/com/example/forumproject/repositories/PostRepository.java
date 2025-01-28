@@ -1,4 +1,4 @@
-package com.example.forumproject.repositories.postRepository;
+package com.example.forumproject.repositories;
 
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.Post;

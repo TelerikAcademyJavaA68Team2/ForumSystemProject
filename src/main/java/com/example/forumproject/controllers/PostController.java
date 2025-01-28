@@ -9,9 +9,9 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.postDtos.PostInDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
-import com.example.forumproject.services.postService.PostService;
+import com.example.forumproject.services.PostService;
 import com.example.forumproject.services.reactionService.ReactionService;
-import com.example.forumproject.services.userService.UserService;
+import com.example.forumproject.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -65,6 +65,8 @@ public class PostController {
             return inPosts.stream().map(postMapper::postToPostOutDto).toList();
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
@@ -121,7 +123,7 @@ public class PostController {
             responses = {
                     @ApiResponse(responseCode = "201", description = "Successfully disliked or removed dislike"),
                     @ApiResponse(responseCode = "404", description = "Post or user not found"),
-                   // @ApiResponse(responseCode = "400", description = "Duplicate dislike action")
+                    // @ApiResponse(responseCode = "400", description = "Duplicate dislike action")
             }
     )
     @PostMapping("/{postId}/dislike")

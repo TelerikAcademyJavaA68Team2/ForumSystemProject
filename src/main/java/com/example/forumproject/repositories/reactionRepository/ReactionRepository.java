@@ -1,13 +1,13 @@
 package com.example.forumproject.repositories.reactionRepository;
 
-import com.example.forumproject.models.Reaction;
+import com.example.forumproject.models.PostLikesDislikes;
 import com.example.forumproject.models.Post;
 
 import java.util.List;
 
 public interface ReactionRepository {
 
-    Reaction getLike(Long postId, Long userId);
+    PostLikesDislikes getLike(Long postId, Long userId);
 
     Long getLikesByPostId(Long post_id);
 
@@ -21,9 +21,9 @@ public interface ReactionRepository {
 
     List<Post> getAllDislikedPosts(Long user_id);
 
-    void create(Reaction like);
+    void create(PostLikesDislikes like);
 
-    void update(Reaction like);
+    void update(PostLikesDislikes like);
 
-    void delete(Reaction like);
+    void delete(PostLikesDislikes like);
 }

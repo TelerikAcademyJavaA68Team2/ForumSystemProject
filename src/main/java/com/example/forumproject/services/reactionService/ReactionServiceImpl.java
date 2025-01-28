@@ -1,6 +1,6 @@
 package com.example.forumproject.services.reactionService;
 
-import com.example.forumproject.models.Reaction;
+import com.example.forumproject.models.PostLikesDislikes;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.repositories.reactionRepository.ReactionRepository;
@@ -44,27 +44,27 @@ public class ReactionServiceImpl implements ReactionService {
 
         if (reactionRepository.checkIfLikeExists(post.getId(), user.getId())) {
             if (like) {
-                reactionRepository.delete(new Reaction(post, user, true));
+                reactionRepository.delete(new PostLikesDislikes(post, user, true));
                 return false; // return false to print correct msg in controller
                 // option A if you like post 2 times you remove the like
                 // option B if you like smth 2 times you get error
                 /*throw new DuplicateEntityException("You have already liked this post!");*/
             }
 
-            reactionRepository.update(new Reaction(post, user, false));
+            reactionRepository.update(new PostLikesDislikes(post, user, false));
             return true;
         }
         if (reactionRepository.checkIfDislikeExists(post.getId(), user.getId())) {
             if (!like) {
-                reactionRepository.delete(new Reaction(post, user, false));
+                reactionRepository.delete(new PostLikesDislikes(post, user, false));
                 return false;
 //                throw new DuplicateEntityException("Unfortunately you can dislike a post only once!");
             }
-            reactionRepository.update(new Reaction(post, user, true));
+            reactionRepository.update(new PostLikesDislikes(post, user, true));
             return true;
         }
 
-        reactionRepository.create(new Reaction(post, user, like));
+        reactionRepository.create(new PostLikesDislikes(post, user, like));
         return true;
     }
 }

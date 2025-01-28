@@ -1,4 +1,4 @@
-package com.example.forumproject.repositories.userRepository;
+package com.example.forumproject.repositories;
 
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
