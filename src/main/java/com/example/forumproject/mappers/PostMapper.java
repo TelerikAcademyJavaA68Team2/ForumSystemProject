@@ -49,7 +49,7 @@ public class PostMapper {
 
     public PostOutDto postToPostOutDto(Post post) {
         PostOutDto postOutDto = new PostOutDto();
-        postOutDto.setPostId(post.getId());
+        postOutDto.setPost_id(post.getId());
         postOutDto.setAuthor(post.getAuthor().getUsername());
         postOutDto.setTitle(post.getTitle());
         postOutDto.setContent(post.getContent());

@@ -4,7 +4,6 @@ import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.PostMapper;
-import com.example.forumproject.mappers.TagMapper;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
@@ -30,18 +29,16 @@ public class PostController {
     private final PostMapper postMapper;
     private final UserService userService;
     private final ReactionService reactionService;
-    private final TagMapper tagMapper;
 
     @Autowired
     public PostController(PostService postService, PostMapper postMapper,
-                          UserService userService, ReactionService reactionService, TagMapper tagMapper) {
+                          UserService userService, ReactionService reactionService) {
         this.postService = postService;
         this.postMapper = postMapper;
         this.reactionService = reactionService;
         this.userService = userService;
-        this.tagMapper = tagMapper;
     }
-    
+
     @GetMapping("/posts")
     public List<PostOutDto> getAllPosts(@RequestParam(required = false) String title,
                                         @RequestParam(required = false) String content,

@@ -2,9 +2,11 @@ package com.example.forumproject.models.dtos.postDtos;
 
 import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.List;
 
+@JsonPropertyOrder({"post_id", "author", "title", "content", "likes", "dislikes", "comments", "tags"})
 public class PostOutDto {
 
     private Long post_id;
@@ -39,11 +41,11 @@ public class PostOutDto {
         this.post_id = post_id;
     }
 
-    public Long getPostId() {
+    public Long getPost_id() {
         return post_id;
     }
 
-    public void setPostId(Long post_id) {
+    public void setPost_id(Long post_id) {
         this.post_id = post_id;
     }
 
@@ -71,14 +73,6 @@ public class PostOutDto {
         this.content = content;
     }
 
-    public List<CommentOutDto> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentOutDto> comments) {
-        this.comments = comments;
-    }
-
     public Long getLikes() {
         return likes;
     }
@@ -93,6 +87,14 @@ public class PostOutDto {
 
     public void setDislikes(Long dislikes) {
         this.dislikes = dislikes;
+    }
+
+    public List<CommentOutDto> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentOutDto> comments) {
+        this.comments = comments;
     }
 
     public List<String> getTags() {
