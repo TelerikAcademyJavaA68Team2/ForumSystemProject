@@ -12,7 +12,9 @@ public class PostFilterOptions {
     private Optional<String> orderBy;
     private Optional<String> orderType;
 
-    public PostFilterOptions(String title, String content, String tags, Long minLikes, Long maxLikes, String orderBy, String orderType) {
+    public PostFilterOptions(String title, String content, String tags,
+                             Long minLikes, Long maxLikes,
+                             String orderBy, String orderType) {
         this.title = Optional.ofNullable(title);
         this.content = Optional.ofNullable(content);
         this.tags = Optional.ofNullable(tags);
