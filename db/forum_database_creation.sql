@@ -4,7 +4,7 @@ USE forum_management_system;
 
 create table tags
 (
-    id   int auto_increment
+    id   long auto_increment
         primary key,
     name varchar(50) not null,
     constraint tags_pk_2
@@ -13,7 +13,7 @@ create table tags
 
 create table users
 (
-    id            int auto_increment
+    id            long auto_increment
         primary key,
     first_name    varchar(50)          not null,
     last_name     varchar(50)          not null,
@@ -32,9 +32,9 @@ create table users
 
 create table posts
 (
-    id      int auto_increment
+    id      long auto_increment
         primary key,
-    user_id int          not null,
+    user_id long          not null,
     title   varchar(100) not null,
     content text         not null,
     constraint posts_users_id_fk
@@ -43,10 +43,10 @@ create table posts
 
 create table comments
 (
-    id      int auto_increment
+    id      long auto_increment
         primary key,
-    post_id int  not null,
-    user_id int  not null,
+    post_id long  not null,
+    user_id long  not null,
     content text not null,
     constraint comments_posts_id_fk
         foreign key (post_id) references posts (id)
@@ -59,8 +59,8 @@ create table post_likes_dislikes
 (
     id      bigint unsigned auto_increment
         primary key,
-    post_id int        not null,
-    user_id int        not null,
+    post_id long        not null,
+    user_id long        not null,
     is_like tinyint(1) not null,
     constraint post_id
         unique (post_id, user_id),
@@ -77,8 +77,8 @@ create index user_id
 
 create table post_tags
 (
-    post_id int not null,
-    tag_id  int not null,
+    post_id long not null,
+    tag_id  long not null,
     constraint post_tags_posts_id_fk
         foreign key (post_id) references posts (id)
             on delete cascade,
