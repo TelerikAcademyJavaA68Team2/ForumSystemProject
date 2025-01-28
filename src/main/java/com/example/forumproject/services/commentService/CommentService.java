@@ -18,10 +18,10 @@ public interface CommentService {
 
     List<Comment> getCommentsByAuthor(Long postId);
 
-    void create(Long postId, Comment comment, User user);
+    void create(Long postId, Comment comment);
 
-    void update(Long postId, Comment comment, User user);
+    void update(Long postId, Comment comment);
 
-    void delete(Long postId, Long id, User user);
+    void delete(Long postId, Long id);
 
 }

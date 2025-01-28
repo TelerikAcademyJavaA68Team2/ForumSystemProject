@@ -6,6 +6,7 @@ import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.dtos.commentDtos.CommentInDto;
 import com.example.forumproject.services.commentService.CommentService;
+import com.example.forumproject.services.userService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,13 +17,16 @@ import java.util.stream.Collectors;
 public class CommentMapper {
 
     private final CommentService commentService;
+    private final UserService userService;
 
     @Autowired
-    public CommentMapper(CommentService commentService) {
+    public CommentMapper(CommentService commentService, UserService userService) {
         this.commentService = commentService;
+        this.userService = userService;
     }
 
-    public Comment CommentInDtoToObject(CommentInDto commentDto, User user){
+    public Comment CommentInDtoToObject(CommentInDto commentDto) {
+        User user = userService.getAuthenticatedUser();
         Comment comment = new Comment();
         comment.setAuthor(user);
         comment.setContent(commentDto.getContent());

@@ -5,10 +5,8 @@ import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.CommentMapper;
 import com.example.forumproject.models.Comment;
-import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.example.forumproject.models.dtos.commentDtos.CommentInDto;
-import com.example.forumproject.services.userService.UserService;
+import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.example.forumproject.services.commentService.CommentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +23,11 @@ public class CommentController {
 
     private final CommentService commentService;
     private final CommentMapper commentMapper;
-    private final UserService userService;
 
     @Autowired
-    public CommentController(CommentService commentService, CommentMapper commentMapper, UserService userService) {
+    public CommentController(CommentService commentService, CommentMapper commentMapper) {
         this.commentService = commentService;
         this.commentMapper = commentMapper;
-        this.userService = userService;
     }
 
     @GetMapping("/comments")
@@ -44,7 +40,6 @@ public class CommentController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
-
     }
 
     @GetMapping("/comments/{commentId}")
@@ -63,14 +58,12 @@ public class CommentController {
     public CommentOutDto createComment(@PathVariable Long postId,
                                        @Valid @RequestBody CommentInDto commentDTO) {
         try {
-            User user = userService.getAuthenticatedUser();
-            Comment comment = commentMapper.CommentInDtoToObject(commentDTO, user);
-            commentService.create(postId, comment, user);
+            Comment comment = commentMapper.CommentInDtoToObject(commentDTO);
+            commentService.create(postId, comment);
             return commentMapper.commentToCommentOutDto(comment);
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
-
     }
 
     @PutMapping("/comments/{commentId}")
@@ -78,9 +71,8 @@ public class CommentController {
                                        @PathVariable Long commentId,
                                        @Valid @RequestBody CommentInDto commentDTO) {
         try {
-            User user = userService.getAuthenticatedUser();
             Comment comment = commentMapper.updateDtoToObject(commentDTO, postId, commentId);
-            commentService.update(postId, comment, user);
+            commentService.update(postId, comment);
             return commentMapper.commentToCommentOutDto(comment);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -94,8 +86,7 @@ public class CommentController {
     @DeleteMapping("/comments/{commentId}")
     public void delete(@PathVariable Long postId, @PathVariable Long commentId) {
         try {
-            User user = userService.getAuthenticatedUser();
-            commentService.delete(postId, commentId, user);
+            commentService.delete(postId, commentId);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedAccessException e) {
@@ -104,7 +95,3 @@ public class CommentController {
         }
     }
 }
-
-
-
-

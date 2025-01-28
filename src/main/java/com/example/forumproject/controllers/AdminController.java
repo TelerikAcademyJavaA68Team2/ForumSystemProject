@@ -7,9 +7,9 @@ import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
-import com.example.forumproject.services.userService.UserService;
 import com.example.forumproject.services.commentService.CommentService;
 import com.example.forumproject.services.postService.PostService;
+import com.example.forumproject.services.userService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
-
     private final HomepageResponseFactory homepageResponseFactory;
     private final UserService userService;
     private final PostService postService;
@@ -42,13 +41,33 @@ public class AdminController {
         this.userMapper = userMapper;
     }
 
-    @GetMapping
-    public ResponseEntity<String> getAdminOptionsInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getAdminOptionsInfo());
+    @GetMapping("/users")
+    public List<UserResponseDto> getAllUsers(@RequestParam(required = false) String first_name,
+                                             @RequestParam(required = false) String username,
+                                             @RequestParam(required = false) String email,
+                                             @RequestParam(required = false) Long minPosts,
+                                             @RequestParam(required = false) Long maxPosts,
+                                             @RequestParam(required = false) String account_type,
+                                             @RequestParam(required = false) String account_status,
+                                             @RequestParam(required = false) String orderBy,
+                                             @RequestParam(required = false) String orderType) {
+        UsersFilterOptions filterOptions = new UsersFilterOptions(first_name, username, email,
+                minPosts, maxPosts, account_type, account_status, orderBy, orderType);
+        List<User> users = userService.getAllUsers(filterOptions);
+        return users.stream().map(userMapper::mapUserToDtoOut).toList();
     }
 
+    @GetMapping("/users/{userId}")
+    public Object getUserById(@PathVariable Long userId) {
+        try {
+            User user = userService.getById(userId);
+            return userMapper.mapUserToUserFullProfileOutDto(user);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
 
-    @PostMapping("/profile/phone")
+    @PostMapping("/profile/phone") // reed todo below combine with /profile post
     public ResponseEntity<String> updatePhoneNumber(@RequestBody String number) {
         try {
             userService.updatePhoneNumber(userService.getAuthenticatedUser(), number);
@@ -58,15 +77,38 @@ public class AdminController {
         }
     }
 
-  /*  @GetMapping("/profile")
+
+   /* @GetMapping("/profile")  //todo could do the phoneNumber update in postMapping /profile
     public ResponseEntity<String> getAdminProfile() {
         try {
-            userService.updatePhoneNumber(userService.getAuthenticatedUser(), number);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Phone updated successfully!");
-        } catch (InvalidUserInputException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+
         }
     }*/
+
+    @PostMapping("/posts/{postId}/delete")
+    public ResponseEntity<String> deletePost(@PathVariable Long postId) {
+        try {
+            postService.delete(postId, userService.getAuthenticatedUser());
+            return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Post with id: %d was deleted successfully!", postId));
+        } catch (InvalidUserInputException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PostMapping("/posts/{postId}/comments/{commentId}/delete")
+    public ResponseEntity<String> deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
+        try {
+            commentService.delete(postId, commentId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(String.format
+                    ("Comment with id: %d was deleted from Post with id: %d successfully!", commentId, postId));
+        } catch (InvalidUserInputException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
 
     @PostMapping("/users/{userId}/block")
     public ResponseEntity<String> blockUser(@PathVariable Long userId) {
@@ -116,67 +158,18 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/posts/{postId}/delete")
-    public ResponseEntity<String> deletePost(@PathVariable Long postId) {
-        try {
-            postService.delete(postId, userService.getAuthenticatedUser());
-            return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Post with id: %d was deleted successfully!", postId));
-        } catch (InvalidUserInputException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+
+    // informational delete on production
+    // informational delete on production
+    // informational delete on production
+    // informational delete on production
+    // informational delete on production
+
+    // informational delete on production
+    @GetMapping
+    public ResponseEntity<String> getAdminOptionsInfo() {
+        return ResponseEntity.ok(homepageResponseFactory.getAdminOptionsInfo());
     }
-
-    @PostMapping("/posts/{postId}/comments/{commentId}/delete")
-    public ResponseEntity<String> deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
-        try {
-            commentService.delete(postId, commentId, userService.getAuthenticatedUser());
-            return ResponseEntity.status(HttpStatus.CREATED).body(String.format
-                    ("Comment with id: %d was deleted from Post with id: %d successfully!", commentId, postId));
-        } catch (InvalidUserInputException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
-
-    @GetMapping("/users/{userId}")
-    public Object getUserById(@PathVariable Long userId) {
-        try {
-            User user = userService.getById(userId);
-            return userMapper.mapUserToUserFullProfileOutDto(user);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
-
-    @GetMapping("/users") // only admins can check users
-    public List<UserResponseDto> getAllUsers(@RequestParam(required = false) String first_name,
-                                             @RequestParam(required = false) String username,
-                                             @RequestParam(required = false) String email,
-                                             @RequestParam(required = false) Long minPosts,
-                                             @RequestParam(required = false) Long maxPosts,
-                                             @RequestParam(required = false) String account_type,
-                                             @RequestParam(required = false) String account_status,
-                                             @RequestParam(required = false) String orderBy,
-                                             @RequestParam(required = false) String orderType) {
-
-
-        UsersFilterOptions filterOptions = new UsersFilterOptions(first_name, username, email, minPosts, maxPosts, account_type, account_status, orderBy, orderType);
-
-        List<User> users = userService.getAllUsers(filterOptions);
-        return users.stream().map(userMapper::mapUserToDtoOut).toList();
-    }
-
-
-    // informational delete on production
-    // informational delete on production
-    // informational delete on production
-    // informational delete on production
-    // informational delete on production
-    // informational delete on production
-
 
     @GetMapping("/posts/{postId}/comments/{commentId}/delete")
     public ResponseEntity<String> getDeleteCommentInfo() {

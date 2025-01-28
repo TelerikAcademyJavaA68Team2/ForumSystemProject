@@ -7,6 +7,7 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.example.forumproject.repositories.commentsRepository.CommentRepository;
 import com.example.forumproject.repositories.postRepository.PostRepository;
+import com.example.forumproject.services.userService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,13 @@ public class CommentServiceImpl implements CommentService {
     public static final String DUPLICATE_COMMENT_MESSAGE = "The comment already has the same content";
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final UserService userService;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, UserService userService) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -58,7 +61,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void create(Long postId, Comment comment, User user) {
+    public void create(Long postId, Comment comment) {
+        User user = userService.getAuthenticatedUser();
         Post postToAddCommentTo = postRepository.getById(postId);
         comment.setAuthor(user);
         comment.setPost(postToAddCommentTo);
@@ -66,7 +70,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void update(Long postId, Comment newComment, User user) {
+    public void update(Long postId, Comment newComment) {
+        User user = userService.getAuthenticatedUser();
         Comment commentToUpdate = commentRepository.getById(postId, newComment.getId());
         validateUserIsAdminOrCommentAuthor(commentToUpdate, user);
         if (isDuplicateComment(newComment, commentToUpdate)) {
@@ -77,7 +82,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void delete(Long postId, Long id, User user) {
+    public void delete(Long postId, Long id) {
+        User user = userService.getAuthenticatedUser();
         Comment commentToDelete = commentRepository.getById(postId, id);
         validateUserIsAdminOrCommentAuthor(commentToDelete, user);
         commentRepository.delete(postId, id);
