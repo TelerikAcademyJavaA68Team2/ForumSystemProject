@@ -114,15 +114,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public User getAuthenticatedUser() {
-/*
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-*/
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = (String) authentication.getPrincipal(); // Extract username
         try {
-            return userRepository.getByUsername(username);
-        } catch (UsernameNotFoundException e) {
-            throw new UnauthorizedAccessException("Please log in first!");
+            return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            throw new UnauthorizedAccessException("Please login first!");
         }
     }
 }

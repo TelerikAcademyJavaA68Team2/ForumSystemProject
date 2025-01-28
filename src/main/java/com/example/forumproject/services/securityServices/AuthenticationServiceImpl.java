@@ -7,6 +7,7 @@ import com.example.forumproject.services.userService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,19 +32,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     public String register(UserRegistrationDto request) {
-
         User user = createUserFromRequest(request);
         userService.save(user);
-
         return jwtService.generateToken(user);
     }
 
     public String authenticate(LoginDto request) {
-        authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken
-                        (request.getUsername(), request.getPassword()));
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         User user = userService.loadUserByUsername(request.getUsername());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                user, null, user.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         return jwtService.generateToken(user);
     }
 

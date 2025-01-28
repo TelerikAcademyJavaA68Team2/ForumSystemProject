@@ -70,6 +70,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                } else {
+                    throw new UnauthorizedAccessException("No valid token provided! Try login again.");
                 }
             } catch (UnauthorizedAccessException e) {
                 // Token is invalid or expired or the user is blocked, return an error response directly from the filter
@@ -77,8 +79,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 response.getWriter().write("Unauthorized: " + e.getMessage());
                 return; // No further processing, response is already sent
             }
-
-
         }
         filterChain.doFilter(request, response);
     }
