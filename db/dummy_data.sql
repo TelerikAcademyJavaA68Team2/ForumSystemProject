@@ -1,21 +1,21 @@
 -- Insert dummy data into the 'tags' table (expanded)
 INSERT INTO forum_management_system.tags (name)
 VALUES
-    ('Sports Cars'),
-    ('Classic Cars'),
-    ('Electric Vehicles'),
-    ('Car Maintenance'),
-    ('Luxury Cars'),
-    ('Motorcycles'),
-    ('Car Modifications'),
-    ('Tuning'),
-    ('Formula 1'),
-    ('Electric Car Industry'),
-    ('Car Culture'),
-    ('Off-Road Vehicles'),
-    ('Car Restoration'),
-    ('Performance Cars'),
-    ('Electric Car Charging');
+    ('sports cars'),
+    ('classic cars'),
+    ('electric vehicles'),
+    ('car maintenance'),
+    ('luxury cars'),
+    ('motorcycles'),
+    ('car modifications'),
+    ('tuning'),
+    ('formula 1'),
+    ('electric car industry'),
+    ('car culture'),
+    ('off-road vehicles'),
+    ('car restoration'),
+    ('performance cars'),
+    ('electric car charging');
 
 -- Insert dummy data into the 'users' table (car enthusiasts and admins)
 INSERT INTO users (first_name, last_name, email, username, password, is_admin, is_blocked, profile_photo, phone_number)

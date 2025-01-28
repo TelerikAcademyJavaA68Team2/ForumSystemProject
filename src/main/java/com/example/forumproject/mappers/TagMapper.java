@@ -22,13 +22,11 @@ public class TagMapper {
     }
 
     public Tag TagInDtoToTag(TagInDto tagDTO) {
-        Tag tag = new Tag();
-        tag.setTagName(tagDTO.getTagName());
-        return tag;
+        return new Tag(tagDTO.getTagName().toLowerCase());
     }
 
     public Tag TagInDtoToTag(TagInDto tagDTO, Long existingTagId) {
-        Tag tagToBeUpdated = tagService.getTag(existingTagId);
+        Tag tagToBeUpdated = tagService.getTagById(existingTagId);
         tagToBeUpdated.setTagName(tagDTO.getTagName().toLowerCase(Locale.ROOT));
         return tagToBeUpdated;
     }
@@ -43,7 +41,7 @@ public class TagMapper {
         return tags.stream().map(this::tagToTagOutDto).collect(Collectors.toList());
     }
 
-    public String TagToTagName(Tag tag){
+    public String TagToTagName(Tag tag) {
         return tag.getTagName();
     }
 

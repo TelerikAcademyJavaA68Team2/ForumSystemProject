@@ -16,16 +16,11 @@ public class Tag {
     @Column(name = "name")
     private String tagName;
 
-// potential way for posts
-//    @ManyToMany
-//    private Set<Post> posts;
-
     public Tag() {
-
     }
 
     public Tag(String tagName) {
-        this.tagName = tagName;
+        this.tagName = tagName.toLowerCase();
     }
 
     public Long getId() {
@@ -41,7 +36,7 @@ public class Tag {
     }
 
     public void setTagName(String tagName) {
-        this.tagName = tagName;
+        this.tagName = tagName.toLowerCase();
     }
 
     @Override
@@ -56,5 +51,4 @@ public class Tag {
     public int hashCode() {
         return Objects.hash(id);
     }
-
 }

@@ -12,12 +12,12 @@ public class PostTag {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("postId")
-    @JoinColumn(name = "post_id", insertable = false, updatable = false)
+    @JoinColumn(name = "post_id")
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("tagId")
-    @JoinColumn(name = "tag_id", insertable = false, updatable = false)
+    @JoinColumn(name = "tag_id")
     private Tag tag;
 
     public PostTag() {
@@ -42,6 +42,7 @@ public class PostTag {
     }
 
     public void setPost(Post post) {
+        id.setPostId(post.getId());
         this.post = post;
     }
 
@@ -50,6 +51,7 @@ public class PostTag {
     }
 
     public void setTag(Tag tag) {
+        id.setTagId(tag.getId());
         this.tag = tag;
     }
 }

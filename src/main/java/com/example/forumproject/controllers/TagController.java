@@ -3,8 +3,8 @@ package com.example.forumproject.controllers;
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
+import com.example.forumproject.helpers.ValidationHelpers;
 import com.example.forumproject.mappers.TagMapper;
-import com.example.forumproject.models.Post;
 import com.example.forumproject.models.Tag;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.tagDtos.TagInDto;
@@ -22,29 +22,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/posts/{postId}/tags")
+@RequestMapping("/api/posts/{postId}")
 public class TagController {
 
     private final TagService tagService;
-    private final PostService postService;
-    private final UserService userService;
     private final TagMapper tagMapper;
     private final PostTagService postTagService;
 
     @Autowired
-    public TagController(TagService tagService, PostService postService, UserService userService, TagMapper tagMapper, PostTagService postTagService) {
+    public TagController(TagService tagService, TagMapper tagMapper, PostTagService postTagService) {
         this.tagService = tagService;
-        this.postService = postService;
-        this.userService = userService;
         this.tagMapper = tagMapper;
         this.postTagService = postTagService;
     }
 
     // Get all tags for a specific post
-    @GetMapping
+    @GetMapping("/tags")
     public List<String> getTagsForPost(@PathVariable Long postId) {
         try {
-            return tagService.getTagsByPostId(postId)
+            return postTagService.getTagsByPostId(postId)
                     .stream()
                     .map(tagMapper::TagToTagName)
                     .collect(Collectors.toList());
@@ -54,15 +50,13 @@ public class TagController {
     }
 
     // Add a tag to a post
-    @PostMapping
+    @PostMapping("/tags")
     public Tag createTagInPost(@Valid @RequestBody TagInDto tagDTO,
                                @PathVariable Long postId) {
         try {
-            Tag tag = tagMapper.TagInDtoToTag(tagDTO);
-            Post post = postService.getById(postId);
-            User user = userService.getAuthenticatedUser();
-            postTagService.addTagToPost(post, tag);
-            return tagService.getTagByName(tag.getTagName());
+            String newTagName = tagDTO.getTagName();
+            postTagService.createTagOnPost(postId, newTagName);
+            return tagService.getTagByName(newTagName);
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (UnauthorizedAccessException e) {
@@ -72,13 +66,41 @@ public class TagController {
         }
     }
 
-    // Remove a tag from a post
-    @DeleteMapping("/{tagName}")
+    @PostMapping("/tags/{tagId}")
+    public Tag updateTagInPostByTagId(@Valid @RequestBody TagInDto tagDTO,
+                                      @PathVariable Long postId, @PathVariable Long tagId) {
+        try {
+            Tag newTag = new Tag(tagDTO.getTagName().toLowerCase());
+            postTagService.updateTagOnPost(postId, tagId, newTag);
+            return tagService.getTagByName(newTag.getTagName());
+        } catch (DuplicateEntityException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (UnauthorizedAccessException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+
+    @DeleteMapping("/tags/{tagName}")
     public void deleteTagFromPost(@PathVariable Long postId,
                                   @PathVariable String tagName) {
         try {
-            User user = userService.getAuthenticatedUser();
-           // postService.removeTagFromPost(tagName, user, postId);
+            Tag tag = tagService.getTagByName(tagName);
+            postTagService.deleteTagFromPost(postId, tag.getId());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedAccessException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/tags/{tagId}")
+    public void deleteTagFromPost(@PathVariable Long postId,
+                                  @PathVariable Long tagId) {
+        try {
+            postTagService.deleteTagFromPost(postId, tagId);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedAccessException e) {
