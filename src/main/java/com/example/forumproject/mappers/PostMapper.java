@@ -2,13 +2,13 @@ package com.example.forumproject.mappers;
 
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.PostInDto;
-import com.example.forumproject.models.dtos.PostOutDto;
-import com.example.forumproject.models.dtos.UpdatePostDto;
-import com.example.forumproject.services.contracts.CommentService;
-import com.example.forumproject.services.contracts.LikeService;
-import com.example.forumproject.services.contracts.PostService;
-import com.example.forumproject.services.contracts.TagService;
+import com.example.forumproject.models.dtos.postDtos.PostInDto;
+import com.example.forumproject.models.dtos.postDtos.PostOutDto;
+import com.example.forumproject.models.dtos.postDtos.UpdatePostDto;
+import com.example.forumproject.services.commentService.CommentService;
+import com.example.forumproject.services.likeDislikeService.LikeService;
+import com.example.forumproject.services.PostService;
+import com.example.forumproject.services.tagService.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

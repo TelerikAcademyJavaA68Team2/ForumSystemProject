@@ -6,10 +6,10 @@ import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.CommentMapper;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.CommentDto;
-import com.example.forumproject.models.dtos.CommentInDto;
-import com.example.forumproject.services.contracts.CommentService;
-import com.example.forumproject.services.contracts.UserService;
+import com.example.forumproject.models.dtos.commentDtos.CommentDto;
+import com.example.forumproject.models.dtos.commentDtos.CommentInDto;
+import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.commentService.CommentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -81,7 +81,7 @@ public class CommentController {
             User user = userService.getAuthenticatedUser();
             Comment comment = commentMapper.updateDtoToObject(commentDTO, postId, id);
             commentService.update(postId, comment, user);
-           return commentMapper.commentToCommentDto(comment);
+            return commentMapper.commentToCommentDto(comment);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
@@ -96,7 +96,7 @@ public class CommentController {
         try {
             User user = userService.getAuthenticatedUser();
             commentService.delete(postId, id, user);
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,

@@ -7,12 +7,12 @@ import com.example.forumproject.mappers.PostMapper;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.PostInDto;
-import com.example.forumproject.models.dtos.PostOutDto;
-import com.example.forumproject.models.dtos.UpdatePostDto;
-import com.example.forumproject.services.contracts.LikeService;
-import com.example.forumproject.services.contracts.PostService;
-import com.example.forumproject.services.contracts.UserService;
+import com.example.forumproject.models.dtos.postDtos.PostInDto;
+import com.example.forumproject.models.dtos.postDtos.PostOutDto;
+import com.example.forumproject.models.dtos.postDtos.UpdatePostDto;
+import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.likeDislikeService.LikeService;
+import com.example.forumproject.services.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -97,7 +97,7 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public PostOutDto create(@Valid @RequestBody PostInDto postDto) {
+    public PostOutDto create(@Valid @RequestBody PostInDto postDto) { //todo maby otherDto with no id in? updatedto?
         try {
             User user = userService.getAuthenticatedUser();
             Post postToCreate = postMapper.createPostFromDto(postDto, user);

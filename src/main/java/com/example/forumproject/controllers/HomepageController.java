@@ -3,10 +3,10 @@ package com.example.forumproject.controllers;
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.InvalidEmailFormatException;
 import com.example.forumproject.mappers.HomepageResponseFactory;
-import com.example.forumproject.models.dtos.HomepagePostsDto;
-import com.example.forumproject.models.dtos.LoginDto;
-import com.example.forumproject.models.dtos.UserInDto;
-import com.example.forumproject.services.AuthenticationService;
+import com.example.forumproject.models.dtos.homepageResponseDtos.HomepagePostsDto;
+import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
+import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
+import com.example.forumproject.services.securityServices.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +46,7 @@ public class HomepageController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserInDto request) {
+    public ResponseEntity<String> register(@RequestBody UserRegistrationDto request) {
         try {
             return ResponseEntity.ok(authService.register(request));
         } catch (DuplicateEntityException e) {

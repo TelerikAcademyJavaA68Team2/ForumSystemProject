@@ -1,8 +1,8 @@
 package com.example.forumproject.helpers;
 
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
-import com.example.forumproject.services.JwtService;
-import com.example.forumproject.services.contracts.UserService;
+import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.securityServices.JwtService;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -58,7 +58,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userService.loadUserByUsername(username);
 
                 // check if user is blocked
-                if (!userDetails.isEnabled()){
+                if (!userDetails.isEnabled()) {
                     throw new UnauthorizedAccessException("Your account is blocked!");
                 }
 

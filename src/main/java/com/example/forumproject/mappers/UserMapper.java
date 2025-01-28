@@ -1,10 +1,10 @@
 package com.example.forumproject.mappers;
 
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.FullProfileAdminDto;
-import com.example.forumproject.models.dtos.FullProfileUserDto;
-import com.example.forumproject.models.dtos.UserOutDto;
-import com.example.forumproject.services.contracts.PostService;
+import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileAdminDto;
+import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileUserDto;
+import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
+import com.example.forumproject.services.PostService;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,8 +20,8 @@ public class UserMapper {
     }
 
 
-    public UserOutDto mapUserToDtoOut(User user) {
-        UserOutDto userOut = new UserOutDto(user.getId(),
+    public UserResponseDto mapUserToDtoOut(User user) {
+        UserResponseDto userOut = new UserResponseDto(user.getId(),
                 user.getFirstName(),
                 user.getUsername(),
                 user.getEmail(),

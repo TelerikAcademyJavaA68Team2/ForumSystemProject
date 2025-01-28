@@ -2,10 +2,10 @@ package com.example.forumproject.mappers;
 
 
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.CommentDto;
+import com.example.forumproject.models.dtos.commentDtos.CommentDto;
 import com.example.forumproject.models.Comment;
-import com.example.forumproject.models.dtos.CommentInDto;
-import com.example.forumproject.services.contracts.CommentService;
+import com.example.forumproject.models.dtos.commentDtos.CommentInDto;
+import com.example.forumproject.services.commentService.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

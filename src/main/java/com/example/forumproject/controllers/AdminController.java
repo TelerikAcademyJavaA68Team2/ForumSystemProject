@@ -1,16 +1,15 @@
 package com.example.forumproject.controllers;
 
-
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.mappers.HomepageResponseFactory;
 import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.UserOutDto;
+import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
-import com.example.forumproject.services.contracts.CommentService;
-import com.example.forumproject.services.contracts.PostService;
-import com.example.forumproject.services.contracts.UserService;
+import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.commentService.CommentService;
+import com.example.forumproject.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -153,15 +152,15 @@ public class AdminController {
     }
 
     @GetMapping("/users") // only admins can check users
-    public List<UserOutDto> getAllUsers(@RequestParam(required = false) String first_name,
-                                        @RequestParam(required = false) String username,
-                                        @RequestParam(required = false) String email,
-                                        @RequestParam(required = false) Long minPosts,
-                                        @RequestParam(required = false) Long maxPosts,
-                                        @RequestParam(required = false) String account_type,
-                                        @RequestParam(required = false) String account_status,
-                                        @RequestParam(required = false) String orderBy,
-                                        @RequestParam(required = false) String orderType) {
+    public List<UserResponseDto> getAllUsers(@RequestParam(required = false) String first_name,
+                                             @RequestParam(required = false) String username,
+                                             @RequestParam(required = false) String email,
+                                             @RequestParam(required = false) Long minPosts,
+                                             @RequestParam(required = false) Long maxPosts,
+                                             @RequestParam(required = false) String account_type,
+                                             @RequestParam(required = false) String account_status,
+                                             @RequestParam(required = false) String orderBy,
+                                             @RequestParam(required = false) String orderType) {
 
 
         UsersFilterOptions filterOptions = new UsersFilterOptions(first_name, username, email, minPosts, maxPosts, account_type, account_status, orderBy, orderType);

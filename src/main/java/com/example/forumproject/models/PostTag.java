@@ -1,5 +1,6 @@
 package com.example.forumproject.models;
 
+import com.example.forumproject.models.embedable.PostTagId;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,8 +20,8 @@ public class PostTag {
     @JoinColumn(name = "tag_id", insertable = false, updatable = false)
     private Tag tag;
 
-
-    public PostTag() {}
+    public PostTag() {
+    }
 
     public PostTag(Post post, Tag tag) {
         this.post = post;
