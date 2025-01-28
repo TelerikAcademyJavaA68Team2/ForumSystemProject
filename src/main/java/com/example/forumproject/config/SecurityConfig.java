@@ -21,6 +21,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private static final String[] WHITE_LIST_URL = { "/api/v1/auth/**", "/v2/api-docs", "/v3/api-docs",
+            "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
+            "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html", "/api/auth/**",
+            "/api/test/**", "/authenticate" };
+
     private final UserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
@@ -33,7 +38,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req -> req
+                .authorizeHttpRequests(req ->
+                        req.requestMatchers(WHITE_LIST_URL)
+                        .permitAll()
                         .requestMatchers("/api/home/**", "/error", "/api/posts").permitAll()
                         .requestMatchers("/api/admin/**", "/api/users/{id}").hasAnyAuthority("ADMIN") // Admin-only endpoint
                         .anyRequest().authenticated())
@@ -50,7 +57,6 @@ public class SecurityConfig {
                 )
                 .build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
