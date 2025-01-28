@@ -114,6 +114,9 @@ public class UserServiceImpl implements UserService {
     }
 
     public User getAuthenticatedUser() {
+/*
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+*/
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (String) authentication.getPrincipal(); // Extract username
         try {
