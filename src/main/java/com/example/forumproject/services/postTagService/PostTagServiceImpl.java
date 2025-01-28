@@ -34,6 +34,7 @@ public class PostTagServiceImpl implements PostTagService {
 
     @Override
     public List<Tag> getTagsByPostId(Long post_id) {
+        postRepository.getById(post_id);
         return postTagRepository.getTagsByPostId(post_id);
     }
 
