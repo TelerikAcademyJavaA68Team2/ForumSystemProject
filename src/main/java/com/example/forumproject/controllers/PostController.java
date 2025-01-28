@@ -48,38 +48,11 @@ public class PostController {
                                         @RequestParam(required = false) Long maxLikes,
                                         @RequestParam(required = false) String orderBy,
                                         @RequestParam(required = false) String orderType) {
-
-
-        PostFilterOptions filterOptions = new PostFilterOptions(title, content, tags, minLikes, maxLikes, orderBy, orderType, null);
+        PostFilterOptions filterOptions = new PostFilterOptions(title, content, tags,
+                minLikes, maxLikes, orderBy, orderType, null);
         List<Post> inPosts = postService.getAll(filterOptions);
         return inPosts.stream().map(postMapper::postToPostOutDto).toList();
     }
-
-//    //ToDo
-//    @GetMapping("/10-most-commented")
-//    public List<PostOutDto> getMostCommentedPosts() {
-//        try {
-//            List<Post> posts = postService.getMostCommentedPosts();
-//            List<PostOutDto> result = new ArrayList<>();
-//            posts.forEach(post -> result.add(postMapper.postToPostOutDto(post)));
-//            return result;
-//        } catch (EntityNotFoundException e) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-//        }
-//    }
-//
-//    //ToDo
-//    @GetMapping("/10-most-recent")
-//    public List<PostOutDto> getMostRecentlyCreatedPosts() {
-//        try {
-//            List<Post> posts = postService.getTenMostRecent();
-//            List<PostOutDto> result = new ArrayList<>();
-//            posts.forEach(post -> result.add(postMapper.postToPostOutDto(post)));
-//            return result;
-//        } catch (EntityNotFoundException e) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-//        }
-//    }
 
     @GetMapping("/posts/{postId}")
     public PostOutDto getPostById(@PathVariable Long postId) {

@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-
 @RestController
 @RequestMapping("/api/home")
 public class HomepageController {
@@ -34,7 +33,6 @@ public class HomepageController {
         return ResponseEntity.ok(homepageResponseFactory.getHomepageInfo());
     }
 
-    //todo /posts
     @GetMapping("/posts")
     public ResponseEntity<HomepagePostsDto> getHomepagePosts() {
         return ResponseEntity.ok(homepageResponseFactory.getHomepagePosts());

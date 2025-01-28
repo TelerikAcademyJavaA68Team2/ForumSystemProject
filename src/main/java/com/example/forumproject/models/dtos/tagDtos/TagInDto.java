@@ -13,11 +13,11 @@ public class TagInDto {
     }
 
     public TagInDto(String tagName) {
-        this.tagName = tagName;
+        this.tagName = tagName.toLowerCase();
     }
 
     public String getTagName() {
-        return tagName;
+        return tagName.toLowerCase();
     }
 
     public void setTagName(String tagName) {

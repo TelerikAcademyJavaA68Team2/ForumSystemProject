@@ -69,18 +69,18 @@ public class PostTagServiceImpl implements PostTagService {
     }
 
     @Transactional
-    public void updateTagOnPost(Long postId, Long tagId, Tag newTag) {
+    public void updateTagOnPost(Long postId, Long oldTagId, String newTagName) {
         Post post = postRepository.getById(postId);
         ValidationHelpers.validateUserIsAdminOrPostAuthor(post, userService.getAuthenticatedUser());
-        Tag oldTag = tagRepository.getTagById(tagId);
-        PostTag postTag = postTagRepository.getPostTag(postId, tagId);
+        Tag oldTag = tagRepository.getTagById(oldTagId);
+        PostTag postTag = postTagRepository.getPostTag(postId, oldTagId);
 
         Tag tag;
         try {
-            tag = tagRepository.getTagByName(newTag.getTagName());
+            tag = tagRepository.getTagByName(newTagName);
         } catch (Exception e) {
             tag = new Tag();
-            tag.setTagName(newTag.getTagName());
+            tag.setTagName(newTagName);
             tagRepository.create(tag);
         }
         if (postTagRepository.checkIfPostIsTagged(postId, tag.getId())) {

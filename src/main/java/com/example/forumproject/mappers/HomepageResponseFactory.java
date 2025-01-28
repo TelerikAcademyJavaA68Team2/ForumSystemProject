@@ -1,7 +1,7 @@
 package com.example.forumproject.mappers;
 
-import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.dtos.homepageResponseDtos.HomepagePostsDto;
+import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.postService.PostService;
 import com.example.forumproject.services.userService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,19 +160,17 @@ public class HomepageResponseFactory {
         return sb.toString();
     }
 
-    //todo
     public HomepagePostsDto getHomepagePosts() {
         HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums top commented posts!");
         PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, "comments", "desc", null);
-        homepagePosts.setPosts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
+        homepagePosts.setPosts(postService.getAll(filterOptions).stream().limit(10).map(postMapper::postToPostOutDto).toList());
         return homepagePosts;
     }
 
-    //todo
     public HomepagePostsDto getHomepageRecentPosts() {
         HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums newest posts!");
         PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, "id", "desc", null);
-        homepagePosts.setPosts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
+        homepagePosts.setPosts(postService.getAll(filterOptions).stream().limit(10).map(postMapper::postToPostOutDto).toList());
         return homepagePosts;
     }
 }
