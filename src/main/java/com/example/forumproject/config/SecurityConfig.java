@@ -21,10 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final String[] WHITE_LIST_URL = { "/api/v1/auth/**", "/v2/api-docs", "/v3/api-docs",
+    private static final String[] WHITE_LIST_SWAGGER_URL = { "/api/v1/auth/**", "/v2/api-docs", "/v3/api-docs",
             "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
             "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html", "/api/auth/**",
             "/api/test/**", "/authenticate" };
+    private static final String[] WHITE_LIST_APIS_URL = { "/api/home/**", "/error", "/api/posts" };
+    private static final String[] RESTRICTED_APIS_URL = { "/api/admin/**", "/api/users/{id}" };
 
     private final UserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
@@ -39,10 +41,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(WHITE_LIST_URL)
+                        req.requestMatchers(WHITE_LIST_SWAGGER_URL)
                         .permitAll()
-                        .requestMatchers("/api/home/**", "/error", "/api/posts").permitAll()
-                        .requestMatchers("/api/admin/**", "/api/users/{id}").hasAnyAuthority("ADMIN") // Admin-only endpoint
+                        .requestMatchers(WHITE_LIST_APIS_URL).permitAll()
+                        .requestMatchers(RESTRICTED_APIS_URL).hasAnyAuthority("ADMIN") // Admin-only endpoint
                         .anyRequest().authenticated())
                 .userDetailsService(userDetailsService)
                 .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
