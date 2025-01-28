@@ -50,7 +50,7 @@ public class PostController {
                                         @RequestParam(required = false) String orderType) {
 
 
-        PostFilterOptions filterOptions = new PostFilterOptions(title, content, tags, minLikes, maxLikes, orderBy, orderType);
+        PostFilterOptions filterOptions = new PostFilterOptions(title, content, tags, minLikes, maxLikes, orderBy, orderType, null);
         List<Post> inPosts = postService.getAll(filterOptions);
         return inPosts.stream().map(postMapper::postToPostOutDto).toList();
     }

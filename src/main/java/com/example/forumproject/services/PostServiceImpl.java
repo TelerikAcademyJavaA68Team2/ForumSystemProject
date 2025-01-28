@@ -30,10 +30,10 @@ public class PostServiceImpl implements PostService {
         return postRepository.getNumberOfPostsByUser(user_id);
     }
 
-    @Override
+  /*  @Override
     public List<Post> getAllPostsFromUser(Long user_id) {
         return postRepository.getAllPostsFromUser(user_id);
-    }
+    }*/
 
     @Override
     public Long getTotalNumberOfPosts() {

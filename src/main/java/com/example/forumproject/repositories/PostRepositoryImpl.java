@@ -30,14 +30,14 @@ public class PostRepositoryImpl implements PostRepository {
         }
     }
 
-    @Override
+  /*  @Override
     public List<Post> getAllPostsFromUser(Long user_id) {
         try (Session session = sessionFactory.openSession()) {
             Query<Post> query = session.createQuery("FROM Post p WHERE p.author.id = :userId", Post.class);
             query.setParameter("userId", user_id);
             return query.list();
         }
-    }
+    }*/
 
     @Override
     public Long getTotalNumberOfPosts() {
@@ -53,7 +53,7 @@ public class PostRepositoryImpl implements PostRepository {
 
             if (filterOptions.getTitle().isPresent() || filterOptions.getContent().isPresent() ||
                     filterOptions.getTags().isPresent() || filterOptions.getMinLikes().isPresent() ||
-                    filterOptions.getMaxLikes().isPresent()) {
+                    filterOptions.getMaxLikes().isPresent() || filterOptions.getUser_id().isPresent()) {
 
                 sb.append("WHERE ");
                 filterOptions.getTitle().ifPresent(title -> {
@@ -80,23 +80,30 @@ public class PostRepositoryImpl implements PostRepository {
                     sb.append("p.id IN (SELECT pl.post.id FROM PostLikesDislikes pl WHERE pl.isLike = true GROUP BY pl.post.id HAVING COUNT(pl.id) <= :maxLikes) ");
                     sb.append("AND ");
                 });
+
+                sb.append("WHERE ");
+                filterOptions.getUser_id().ifPresent(userId -> {
+                    sb.append("p.author.id = :userId ");
+                    sb.append("AND ");
+                });
                 sb.setLength(sb.length() - 4);
             }
 
-            boolean orderByIsPresent = false;
-            if (filterOptions.getOrderBy().isPresent()) {
+            boolean orderByIsPresent = filterOptions.getOrderBy().isPresent();
+            if (orderByIsPresent) {
                 String orderBy = filterOptions.getOrderBy().get();
                 if ("title".equalsIgnoreCase(orderBy)) {
                     sb.append("ORDER BY p.title ");
-                    orderByIsPresent = true;
                 } else if ("id".equalsIgnoreCase(orderBy)) {
                     sb.append("ORDER BY p.id ");
-                    orderByIsPresent = true;
                 } else if ("likes".equalsIgnoreCase(orderBy)) {
                     sb.append("ORDER BY (SELECT COUNT(pld.id) FROM PostLikesDislikes pld WHERE pld.post.id = p.id AND pld.isLike = true) DESC");
                     if (filterOptions.getOrderType().isPresent() && filterOptions.getOrderType().get().equalsIgnoreCase("desc")) {
                         sb.setLength(sb.length() - 5);
                     }
+                    orderByIsPresent = false;
+                } else if ("comments".equalsIgnoreCase(orderBy)) {
+                    sb.append("ORDER BY (SELECT COUNT(c.id) FROM Comment c WHERE c.post.id = p.id) ");
                 }
             }
 
@@ -110,6 +117,7 @@ public class PostRepositoryImpl implements PostRepository {
             filterOptions.getTags().ifPresent(tags -> query.setParameter("tags", "%" + tags + "%"));
             filterOptions.getMinLikes().ifPresent(minLikes -> query.setParameter("minLikes", minLikes));
             filterOptions.getMaxLikes().ifPresent(maxLikes -> query.setParameter("maxLikes", maxLikes));
+            filterOptions.getUser_id().ifPresent(userId -> query.setParameter("userId", userId));
 
             return query.list();
         }

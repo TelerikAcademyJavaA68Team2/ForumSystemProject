@@ -162,7 +162,7 @@ public class HomepageResponseFactory {
     //todo
     public HomepagePostsDto getHomepagePosts() {
         HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums top commented posts!");
-        PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, null, null);
+        PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, "comments", "asc", null);
         homepagePosts.setPosts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
         return homepagePosts;
     }
@@ -170,7 +170,7 @@ public class HomepageResponseFactory {
     //todo
     public HomepagePostsDto getHomepageRecentPosts() {
         HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums newest posts!");
-        PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, null, null);
+        PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, "id", "desc", null);
         homepagePosts.setPosts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
         return homepagePosts;
     }

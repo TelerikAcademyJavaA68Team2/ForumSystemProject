@@ -4,6 +4,7 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileAdminDto;
 import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileUserDto;
 import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
+import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.PostService;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +48,15 @@ public class UserMapper {
                     accountStatus,
                     profilePhoto,
                     user.getPhoneNumber() == null ? "No phone number provided" : user.getPhoneNumber());
+/*
             userDto.setUser_posts(postService.getAllPostsFromUser(user.getId()).stream().map(postMapper::postToPostOutDto).toList());
+*/
+            PostFilterOptions filterOptions = new PostFilterOptions
+                    (null, null, null,
+                            null, null,
+                            null, null, user.getId());
+
+            userDto.setUser_posts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
             return userDto;
         } else {
             FullProfileUserDto userDto = new FullProfileUserDto(
@@ -59,7 +68,14 @@ public class UserMapper {
                     accountType,
                     accountStatus,
                     profilePhoto);
+/*
             userDto.setUser_posts(postService.getAllPostsFromUser(user.getId()).stream().map(postMapper::postToPostOutDto).toList());
+*/
+            PostFilterOptions filterOptions = new PostFilterOptions
+                    (null, null, null,
+                            null, null,
+                            null, null, user.getId());
+            userDto.setUser_posts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
             return userDto;
         }
     }

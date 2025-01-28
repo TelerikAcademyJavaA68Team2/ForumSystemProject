@@ -11,10 +11,11 @@ public class PostFilterOptions {
     private Optional<Long> maxLikes;
     private Optional<String> orderBy;
     private Optional<String> orderType;
+    private Optional<Long> user_id;
 
     public PostFilterOptions(String title, String content, String tags,
                              Long minLikes, Long maxLikes,
-                             String orderBy, String orderType) {
+                             String orderBy, String orderType, Long user_id) {
         this.title = Optional.ofNullable(title);
         this.content = Optional.ofNullable(content);
         this.tags = Optional.ofNullable(tags);
@@ -22,6 +23,11 @@ public class PostFilterOptions {
         this.maxLikes = Optional.ofNullable(maxLikes);
         this.orderBy = Optional.ofNullable(orderBy);
         this.orderType = Optional.ofNullable(orderType);
+        this.user_id = Optional.ofNullable(user_id);
+    }
+
+    public Optional<Long> getUser_id() {
+        return user_id;
     }
 
     public Optional<String> getTitle() {
