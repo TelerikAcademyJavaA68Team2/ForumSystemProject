@@ -68,7 +68,8 @@ public class HomepageResponseFactory {
         sb.append(System.lineSeparator());
         sb.append("Possible Endpoints without registration:").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("/home/posts List the top 10 most commented or most recent posts.").append(System.lineSeparator());
+        sb.append("/home/posts List the top 10 most commented posts.").append(System.lineSeparator());
+        sb.append("/home/posts/recent List the top 10 most recent posts.").append(System.lineSeparator());
         sb.append("/home/register Register a new user.").append(System.lineSeparator());
         sb.append("/home/login Log in a user.");
         sb.append(System.lineSeparator());
@@ -162,7 +163,7 @@ public class HomepageResponseFactory {
     //todo
     public HomepagePostsDto getHomepagePosts() {
         HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums top commented posts!");
-        PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, "comments", "asc", null);
+        PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, "comments", "desc", null);
         homepagePosts.setPosts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
         return homepagePosts;
     }

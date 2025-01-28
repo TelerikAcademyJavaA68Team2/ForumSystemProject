@@ -56,7 +56,9 @@ public class PostMapper {
         postOutDto.setContent(post.getContent());
         postOutDto.setLikes(reactionService.getLikesByPostId(post.getId()));
         postOutDto.setDislikes(reactionService.getDislikesByPostId(post.getId()));
-        postOutDto.setComments(commentMapper.commentsToCommentDtos(commentService.getAllCommentsByPostId(post.getId())));
+        postOutDto.setComments(commentMapper
+                .commentsToCommentDtos(commentService
+                        .getAllCommentsByPostId(post.getId())));
         postOutDto.setTags(tagMapper.tagsToTagNames(tagService.getTagsByPostId(post.getId())));
         return postOutDto;
     }
