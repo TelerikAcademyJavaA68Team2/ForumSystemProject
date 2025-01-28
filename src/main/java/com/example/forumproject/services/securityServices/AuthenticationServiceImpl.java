@@ -5,11 +5,14 @@ import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
 import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
 import com.example.forumproject.services.userService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -38,8 +41,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public String authenticate(LoginDto request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong username or password!");
+        }
 
         User user = userService.loadUserByUsername(request.getUsername());
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
