@@ -4,15 +4,16 @@ import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.PostMapper;
+import com.example.forumproject.mappers.TagMapper;
+import com.example.forumproject.models.dtos.postDtos.UpdatePostDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.postDtos.PostInDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
-import com.example.forumproject.models.dtos.postDtos.UpdatePostDto;
-import com.example.forumproject.services.UserService;
-import com.example.forumproject.services.likeDislikeService.LikeService;
-import com.example.forumproject.services.PostService;
+import com.example.forumproject.services.userService.UserService;
+import com.example.forumproject.services.reactionService.ReactionService;
+import com.example.forumproject.services.postService.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,14 +30,17 @@ public class PostController {
     private final PostService postService;
     private final PostMapper postMapper;
     private final UserService userService;
-    private final LikeService likeService;
+    private final ReactionService reactionService;
+    private final TagMapper tagMapper;
 
     @Autowired
-    public PostController(PostService postService, PostMapper postMapper, UserService userService, LikeService likeService) {
+    public PostController(PostService postService, PostMapper postMapper,
+                          UserService userService, ReactionService reactionService, TagMapper tagMapper) {
         this.postService = postService;
         this.postMapper = postMapper;
-        this.likeService = likeService;
+        this.reactionService = reactionService;
         this.userService = userService;
+        this.tagMapper = tagMapper;
     }
 
     //ToDo Filtering !
@@ -55,10 +59,36 @@ public class PostController {
         return inPosts.stream().map(postMapper::postToPostOutDto).toList();
     }
 
-    @GetMapping("/posts/{id}")
-    public PostOutDto getById(@PathVariable Long id) {
+//    //ToDo
+//    @GetMapping("/10-most-commented")
+//    public List<PostOutDto> getMostCommentedPosts() {
+//        try {
+//            List<Post> posts = postService.getMostCommentedPosts();
+//            List<PostOutDto> result = new ArrayList<>();
+//            posts.forEach(post -> result.add(postMapper.postToPostOutDto(post)));
+//            return result;
+//        } catch (EntityNotFoundException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+//        }
+//    }
+//
+//    //ToDo
+//    @GetMapping("/10-most-recent")
+//    public List<PostOutDto> getMostRecentlyCreatedPosts() {
+//        try {
+//            List<Post> posts = postService.getTenMostRecent();
+//            List<PostOutDto> result = new ArrayList<>();
+//            posts.forEach(post -> result.add(postMapper.postToPostOutDto(post)));
+//            return result;
+//        } catch (EntityNotFoundException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+//        }
+//    }
+
+    @GetMapping("/posts/{postId}")
+    public PostOutDto getPostById(@PathVariable Long postId) {
         try {
-            Post post = postService.getById(id);
+            Post post = postService.getById(postId);
             return postMapper.postToPostOutDto(post);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException
@@ -66,12 +96,12 @@ public class PostController {
         }
     }
 
-    @PostMapping("/posts/{id}/like")
-    public ResponseEntity<String> likePost(@PathVariable Long id) {
+    @PostMapping("/posts/{postId}/like")
+    public ResponseEntity<String> likePost(@PathVariable Long postId) {
         try {
             User user = userService.getAuthenticatedUser();
-            Post post = postService.getById(id);
-            String message = likeService.save(post, user, true)
+            Post post = postService.getById(postId);
+            String message = reactionService.save(post, user, true)
                     ? "Post LIKED successfully!" : "LIKE removed successfully!";
             return ResponseEntity.status(HttpStatus.CREATED).body(message);
         } catch (EntityNotFoundException e) {
@@ -81,12 +111,12 @@ public class PostController {
         }
     }
 
-    @PostMapping("/posts/{id}/dislike")
-    public ResponseEntity<String> dislikePost(@PathVariable Long id) {
+    @PostMapping("/posts/{postId}/dislike")
+    public ResponseEntity<String> dislikePost(@PathVariable Long postId) {
         try {
             User user = userService.getAuthenticatedUser();
-            Post post = postService.getById(id);
-            String message = likeService.save(post, user, false)
+            Post post = postService.getById(postId);
+            String message = reactionService.save(post, user, false)
                     ? "Post DISLIKED successfully!" : "DISLIKE removed successfully!";
             return ResponseEntity.status(HttpStatus.CREATED).body(message);
         } catch (EntityNotFoundException e) {
@@ -109,13 +139,13 @@ public class PostController {
         }
     }
 
-    @PutMapping("/posts/{id}")
-    public PostOutDto update(@PathVariable Long id, @Valid @RequestBody UpdatePostDto postDto) {
+    @PutMapping("/posts/{postId}")
+    public PostOutDto update(@PathVariable Long postId, @Valid @RequestBody UpdatePostDto postDto) {
         try {
             User user = userService.getAuthenticatedUser();
-            Post postToUpdate = postMapper.UpdatePostFromDto(postDto, id);
+            Post postToUpdate = postMapper.UpdatePostFromDto(postDto, postId);
             postService.update(postToUpdate, user);
-            Post updatedPost = postService.getById(id);
+            Post updatedPost = postService.getById(postId);
             return postMapper.postToPostOutDto(updatedPost);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -127,11 +157,11 @@ public class PostController {
         }
     }
 
-    @DeleteMapping("/posts/{id}")
-    public void delete(@PathVariable Long id) {
+    @DeleteMapping("/posts/{postId}")
+    public void delete(@PathVariable Long postId) {
         try {
             User user = userService.getAuthenticatedUser();
-            postService.delete(id, user);
+            postService.delete(postId, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedAccessException e) {
