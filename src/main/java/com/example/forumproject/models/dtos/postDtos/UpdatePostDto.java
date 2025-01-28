@@ -1,36 +1,35 @@
-package com.example.forumproject.models.dtos.postDtos;
+package com.example.forumproject.models.dtos;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-
 public class UpdatePostDto {
 
     @Positive(message = "Id should be positive")
-    private int id;
+    private Long id;
 
-    @NotBlank(message = "Title can't be blank")
+    @NotNull(message = "Title can't be empty")
     @Size(min = 16, max = 64, message = "Title should be between 16 and 64 symbols")
     private String title;
 
-    @NotBlank(message = "Content can't be blank")
+    @NotNull(message = "Content can't be empty")
     @Size(min = 32, max = 8192, message = "Content should be between 32 and 8192 symbols")
     private String content;
 
     public UpdatePostDto() {
     }
 
-    public UpdatePostDto(int id, String title, String content) {
+    public UpdatePostDto(Long id, String title, String content) {
         this.id = id;
         this.title = title;
         this.content = content;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -49,5 +48,6 @@ public class UpdatePostDto {
     public void setContent(String content) {
         this.content = content;
     }
+
 }
 
