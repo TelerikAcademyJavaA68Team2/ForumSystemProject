@@ -2,6 +2,7 @@ package com.example.forumproject.repositories.implementation;
 
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.models.User;
+import com.example.forumproject.models.filterOptions.UsersFilterOptions;
 import com.example.forumproject.repositories.contracts.UserRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -30,11 +31,89 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(UsersFilterOptions filterOptions) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("From User", User.class).list();
+            StringBuilder sb = new StringBuilder("FROM User u ");
+
+            if (filterOptions.getFirst_name().isPresent() ||
+                    filterOptions.getUsername().isPresent() || filterOptions.getEmail().isPresent() ||
+                    filterOptions.getMinPosts().isPresent() || filterOptions.getMaxPosts().isPresent() ||
+                    filterOptions.getAccount_type().isPresent() || filterOptions.getAccount_status().isPresent()) {
+
+                sb.append("WHERE ");
+                filterOptions.getFirst_name().ifPresent(first_name -> {
+                    sb.append("u.firstName like :first_name ");
+                    sb.append("AND ");
+                });
+
+                filterOptions.getUsername().ifPresent(username -> {
+                    sb.append("u.username like :username ");
+                    sb.append("AND ");
+                });
+
+                filterOptions.getEmail().ifPresent(email -> {
+                    sb.append("u.email like :email ");
+                    sb.append("AND ");
+                });
+
+                filterOptions.getMinPosts().ifPresent(minPosts -> {
+                    sb.append("(SELECT COUNT(p) FROM Post p WHERE p.author.id = u.id) >= :minPosts ");
+                    sb.append("AND ");
+                });
+
+                filterOptions.getMaxPosts().ifPresent(maxPosts -> {
+                    sb.append("(SELECT COUNT(p) FROM Post p WHERE p.author.id = u.id) <= :maxPosts ");
+                    sb.append("AND ");
+                });
+
+                filterOptions.getAccount_type().ifPresent(accountType -> {
+                    if (accountType.equalsIgnoreCase("admin")) {
+                        sb.append("u.isAdmin = true  ");
+                        sb.append("AND ");
+                    } else if (accountType.equalsIgnoreCase("user")) {
+                        sb.append("u.isAdmin = false  ");
+                        sb.append("AND ");
+                    }
+                });
+
+                filterOptions.getAccount_status().ifPresent(accountStatus -> {
+                    if (accountStatus.equalsIgnoreCase("active")) {
+                        sb.append("u.isBlocked = false  ");
+                        sb.append("AND ");
+                    } else if (accountStatus.equalsIgnoreCase("blocked")) {
+                        sb.append("u.isBlocked = true  ");
+                        sb.append("AND ");
+                    }
+                });
+                sb.setLength(sb.length() - 4);
+            }
+
+            // id / posts count / username
+
+            if (filterOptions.getOrderBy().isPresent()) {
+                String orderBy = filterOptions.getOrderBy().get();
+                if ("id".equalsIgnoreCase(orderBy)) {
+                    sb.append("ORDER BY u.id ");
+                } else if ("posts".equalsIgnoreCase(orderBy)) {
+                    sb.append("ORDER BY (SELECT COUNT(p) FROM Post p WHERE p.author.id = u.id) ");
+                } else if ("username".equalsIgnoreCase(orderBy)) {
+                    sb.append("ORDER BY u.username");
+                }
+            }
+
+            if (filterOptions.getOrderType().isPresent() && filterOptions.getOrderBy().isPresent()) {
+                sb.append(filterOptions.getOrderType().get().equalsIgnoreCase("desc") ? "DESC" : "ASC");
+            }
+
+            Query<User> query = session.createQuery(sb.toString(), User.class);
+            filterOptions.getFirst_name().ifPresent(firstName -> query.setParameter("first_name", "%" + firstName + "%"));
+            filterOptions.getUsername().ifPresent(username -> query.setParameter("username", "%" + username + "%"));
+            filterOptions.getEmail().ifPresent(email -> query.setParameter("email", "%" + email + "%"));
+            filterOptions.getMinPosts().ifPresent(minPosts -> query.setParameter("minPosts", minPosts));
+            filterOptions.getMaxPosts().ifPresent(maxPosts -> query.setParameter("maxPosts", maxPosts));
+
+            return query.list();
         }
     }
 
@@ -81,7 +160,6 @@ public class UserRepositoryImpl implements UserRepository {
                     .orElseThrow(() -> new UsernameNotFoundException("Invalid username!"));
         }
     }
-
 
     @Override
     public void deleteUser(Long userId) {

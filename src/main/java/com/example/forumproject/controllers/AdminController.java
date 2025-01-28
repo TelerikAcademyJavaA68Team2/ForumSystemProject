@@ -7,6 +7,7 @@ import com.example.forumproject.mappers.HomepageResponseFactory;
 import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.UserOutDto;
+import com.example.forumproject.models.filterOptions.UsersFilterOptions;
 import com.example.forumproject.services.contracts.CommentService;
 import com.example.forumproject.services.contracts.PostService;
 import com.example.forumproject.services.contracts.UserService;
@@ -151,6 +152,33 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/users") // only admins can check users
+    public List<UserOutDto> getAllUsers(@RequestParam(required = false) String first_name,
+                                        @RequestParam(required = false) String username,
+                                        @RequestParam(required = false) String email,
+                                        @RequestParam(required = false) Long minPosts,
+                                        @RequestParam(required = false) Long maxPosts,
+                                        @RequestParam(required = false) String account_type,
+                                        @RequestParam(required = false) String account_status,
+                                        @RequestParam(required = false) String orderBy,
+                                        @RequestParam(required = false) String orderType) {
+
+
+        UsersFilterOptions filterOptions = new UsersFilterOptions(first_name, username, email, minPosts, maxPosts, account_type, account_status, orderBy, orderType);
+
+        List<User> users = userService.getAllUsers(filterOptions);
+        return users.stream().map(userMapper::mapUserToDtoOut).toList();
+    }
+
+
+    // informational delete on production
+    // informational delete on production
+    // informational delete on production
+    // informational delete on production
+    // informational delete on production
+    // informational delete on production
+
+
     @GetMapping("/posts/{postId}/comments/{commentId}/delete")
     public ResponseEntity<String> getDeleteCommentInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getDeleteCommentInfo());
@@ -184,12 +212,5 @@ public class AdminController {
     @GetMapping("/profile/phone")
     public ResponseEntity<String> getUpdatePhoneInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getUpdatePhoneInfo());
-    }
-
-    @GetMapping("/users") // only admins can check users
-    public List<UserOutDto> getAllUsers() {
-
-        List<User> users = userService.getAllUsers();
-        return users.stream().map(userMapper::mapUserToDtoOut).toList();
     }
 }

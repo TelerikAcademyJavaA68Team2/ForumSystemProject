@@ -3,6 +3,7 @@ package com.example.forumproject.services.implementation;
 import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.helpers.ValidationHelpers;
 import com.example.forumproject.models.User;
+import com.example.forumproject.models.filterOptions.UsersFilterOptions;
 import com.example.forumproject.repositories.contracts.UserRepository;
 import com.example.forumproject.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.getAllUsers();
+    public List<User> getAllUsers(UsersFilterOptions filterOptions) {
+        return userRepository.getAllUsers(filterOptions);
     }
 
     @Override
@@ -115,5 +116,4 @@ public class UserServiceImpl implements UserService {
     public User getAuthenticatedUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
-
 }

@@ -1,12 +1,13 @@
 package com.example.forumproject.repositories.contracts;
 
 import com.example.forumproject.models.User;
+import com.example.forumproject.models.filterOptions.UsersFilterOptions;
 
 import java.util.List;
 
 public interface UserRepository {
 
-    List<User> getAllUsers();
+    List<User> getAllUsers(UsersFilterOptions filterOptions);
 
     Long getNumberOfRegisteredUsers();
 
