@@ -16,7 +16,7 @@ public interface PostTagService {
 
     void createTagOnPost(Long post_id, String tagName);
 
-    void updateTagOnPost(Long postId, Long tagId, Tag newTag);
+    void updateTagOnPost(Long postId, Long tagId, String newTagName);
 
     void deleteTagFromPost(Long post_id, Long tag_id);
 }
