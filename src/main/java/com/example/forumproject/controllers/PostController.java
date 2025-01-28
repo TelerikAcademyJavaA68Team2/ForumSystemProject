@@ -12,6 +12,9 @@ import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.postService.PostService;
 import com.example.forumproject.services.reactionService.ReactionService;
 import com.example.forumproject.services.userService.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +25,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/posts")
+@Tag(name = "Post Management", description = "API for managing forum posts")
 public class PostController {
 
     private final PostService postService;
@@ -39,7 +43,14 @@ public class PostController {
         this.userService = userService;
     }
 
-    @GetMapping("/posts")
+    @Operation(
+            description = "Get all posts with optional filters by title, content, tags, likes, and sorting options",
+            summary = "Retrieve all posts",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully retrieved posts")
+            }
+    )
+    @GetMapping
     public List<PostOutDto> getAllPosts(@RequestParam(required = false) String title,
                                         @RequestParam(required = false) String content,
                                         @RequestParam(required = false) String tags,
@@ -57,7 +68,15 @@ public class PostController {
         }
     }
 
-    @GetMapping("/posts/{postId}")
+    @Operation(
+            description = "Retrieve a post by its ID",
+            summary = "Get post by ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully retrieved post"),
+                    @ApiResponse(responseCode = "404", description = "Post not found")
+            }
+    )
+    @GetMapping("/{postId}")
     public PostOutDto getPostById(@PathVariable Long postId) {
         try {
             Post post = postService.getById(postId);
@@ -70,7 +89,16 @@ public class PostController {
         }
     }
 
-    @PostMapping("/posts/{postId}/like")
+    @Operation(
+            description = "Like or remove like from a post",
+            summary = "Like a post",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Successfully liked or unliked the post"),
+                    @ApiResponse(responseCode = "404", description = "Post or user not found"),
+                    @ApiResponse(responseCode = "400", description = "Duplicate like action")
+            }
+    )
+    @PostMapping("/{postId}/like")
     public ResponseEntity<String> likePost(@PathVariable Long postId) {
         try {
             User user = userService.getAuthenticatedUser();
@@ -87,7 +115,16 @@ public class PostController {
         }
     }
 
-    @PostMapping("/posts/{postId}/dislike")
+    @Operation(
+            description = "Dislike or remove dislike from a post",
+            summary = "Dislike a post",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Successfully disliked or removed dislike"),
+                    @ApiResponse(responseCode = "404", description = "Post or user not found"),
+                   // @ApiResponse(responseCode = "400", description = "Duplicate dislike action")
+            }
+    )
+    @PostMapping("/{postId}/dislike")
     public ResponseEntity<String> dislikePost(@PathVariable Long postId) {
         try {
             User user = userService.getAuthenticatedUser();
@@ -104,7 +141,16 @@ public class PostController {
         }
     }
 
-    @PostMapping("/posts")
+    @Operation(
+            description = "Create a new post",
+            summary = "Create a post",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Successfully created post"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized to create post"),
+                    @ApiResponse(responseCode = "404", description = "User not found")
+            }
+    )
+    @PostMapping
     public PostOutDto create(@Valid @RequestBody PostInDto postDto) { //todo maby otherDto with no id in? updatedto?
         try {
             User user = userService.getAuthenticatedUser();
@@ -116,7 +162,17 @@ public class PostController {
         }
     }
 
-    @PutMapping("/posts/{postId}")
+    @Operation(
+            description = "Update an existing post",
+            summary = "Update a post",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully updated post"),
+                    @ApiResponse(responseCode = "404", description = "Post or user not found"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized to update post"),
+                    @ApiResponse(responseCode = "409", description = "Duplicate entity conflict")
+            }
+    )
+    @PutMapping("/{postId}")
     public PostOutDto update(@PathVariable Long postId, @Valid @RequestBody PostInDto postDto) {
         try {
             User user = userService.getAuthenticatedUser();
@@ -133,7 +189,16 @@ public class PostController {
         }
     }
 
-    @DeleteMapping("/posts/{postId}")
+    @Operation(
+            description = "Delete a post by ID",
+            summary = "Delete a post",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully deleted post"),
+                    @ApiResponse(responseCode = "404", description = "Post or user not found"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized to delete post")
+            }
+    )
+    @DeleteMapping("/{postId}")
     public void delete(@PathVariable Long postId) {
         try {
             User user = userService.getAuthenticatedUser();

@@ -11,6 +11,9 @@ import com.example.forumproject.models.filterOptions.UsersFilterOptions;
 import com.example.forumproject.services.commentService.CommentService;
 import com.example.forumproject.services.postService.PostService;
 import com.example.forumproject.services.userService.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+@Tag(name = "Admin Management", description = "Endpoints for admin actions like user, post, and comment management")
 public class AdminController {
     private final HomepageResponseFactory homepageResponseFactory;
     private final UserService userService;
@@ -42,6 +46,13 @@ public class AdminController {
         this.userMapper = userMapper;
     }
 
+    @Operation(
+            summary = "Retrieve all users",
+            description = "Fetch a list of users with optional filters and sorting options",
+            responses = {
+                    @ApiResponse(description = "Success", responseCode = "200")
+            }
+    )
     @GetMapping("/users")
     public List<UserResponseDto> getAllUsers(@RequestParam(required = false) String first_name,
                                              @RequestParam(required = false) String username,
@@ -58,6 +69,14 @@ public class AdminController {
         return users.stream().map(userMapper::mapUserToDtoOut).toList();
     }
 
+    @Operation(
+            summary = "Retrieve user by ID",
+            description = "Fetch details of a user using their ID",
+            responses = {
+                    @ApiResponse(description = "Success", responseCode = "200"),
+                    @ApiResponse(description = "User not found", responseCode = "404")
+            }
+    )
     @GetMapping("/users/{userId}")
     public Object getUserById(@PathVariable Long userId) {
         try {
@@ -68,6 +87,14 @@ public class AdminController {
         }
     }
 
+    @Operation(
+            summary = "Update phone number",
+            description = "Update the phone number of the authenticated user",
+            responses = {
+                    @ApiResponse(description = "Phone updated successfully", responseCode = "201"),
+                    @ApiResponse(description = "Invalid phone number", responseCode = "400")
+            }
+    )
     @PostMapping("/profile/phone") // reed todo below combine with /profile post
     public ResponseEntity<String> updatePhoneNumber(@RequestBody String number) {
         try {
@@ -88,6 +115,15 @@ public class AdminController {
         }
     }*/
 
+    @Operation(
+            summary = "Delete a post",
+            description = "Remove a specific post by ID",
+            responses = {
+                    @ApiResponse(description = "Post deleted successfully", responseCode = "201"),
+                    @ApiResponse(description = "Post not found", responseCode = "404"),
+                    @ApiResponse(description = "Invalid user input", responseCode = "400")
+            }
+    )
     @PostMapping("/posts/{postId}/delete")
     public ResponseEntity<String> deletePost(@PathVariable Long postId) {
         try {
@@ -102,6 +138,15 @@ public class AdminController {
         }
     }
 
+    @Operation(
+            summary = "Delete a comment",
+            description = "Remove a specific comment from a post by ID",
+            responses = {
+                    @ApiResponse(description = "Comment deleted successfully", responseCode = "201"),
+                    @ApiResponse(description = "Comment not found", responseCode = "404"),
+                    @ApiResponse(description = "Invalid user input", responseCode = "400")
+            }
+    )
     @PostMapping("/posts/{postId}/comments/{commentId}/delete")
     public ResponseEntity<String> deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
         try {
@@ -117,6 +162,15 @@ public class AdminController {
         }
     }
 
+    @Operation(
+            summary = "Block a user",
+            description = "Block a specific user by their ID",
+            responses = {
+                    @ApiResponse(description = "User blocked successfully", responseCode = "201"),
+                    @ApiResponse(description = "User not found", responseCode = "404"),
+                    @ApiResponse(description = "Invalid user input", responseCode = "400")
+            }
+    )
     @PostMapping("/users/{userId}/block")
     public ResponseEntity<String> blockUser(@PathVariable Long userId) {
         try {
@@ -131,6 +185,15 @@ public class AdminController {
         }
     }
 
+    @Operation(
+            summary = "Unblock a user",
+            description = "Unblock a specific user by their ID",
+            responses = {
+                    @ApiResponse(description = "User unblocked successfully", responseCode = "201"),
+                    @ApiResponse(description = "User not found", responseCode = "404"),
+                    @ApiResponse(description = "Invalid user input", responseCode = "400")
+            }
+    )
     @PostMapping("/users/{userId}/unblock")
     public ResponseEntity<String> unblockUser(@PathVariable Long userId) {
         try {
@@ -145,6 +208,15 @@ public class AdminController {
         }
     }
 
+    @Operation(
+            summary = "Promote a user to Admin",
+            description = "Grant admin privileges to a user by their ID",
+            responses = {
+                    @ApiResponse(description = "User promoted to admin successfully", responseCode = "201"),
+                    @ApiResponse(description = "User not found", responseCode = "404"),
+                    @ApiResponse(description = "Invalid user input", responseCode = "400")
+            }
+    )
     @PostMapping("/users/{userId}/make-admin")
     public ResponseEntity<String> updateToAdmin(@PathVariable Long userId) {
         try {
@@ -159,6 +231,15 @@ public class AdminController {
         }
     }
 
+    @Operation(
+            summary = "Demote an Admin to User",
+            description = "Revoke admin privileges and make the user a regular user",
+            responses = {
+                    @ApiResponse(description = "Admin demoted to user successfully", responseCode = "201"),
+                    @ApiResponse(description = "User not found", responseCode = "404"),
+                    @ApiResponse(description = "Invalid user input", responseCode = "400")
+            }
+    )
     @PostMapping("/users/{userId}/make-user")
     public ResponseEntity<String> demoteToUser(@PathVariable Long userId) {
         try {
@@ -180,41 +261,81 @@ public class AdminController {
     // informational delete on production
     // informational delete on production
     // informational delete on production
+    @Operation(
+            summary = "Get Admin Options Info",
+            description = "Retrieve general information about admin options available in the application.",
+            responses = @ApiResponse(description = "Success", responseCode = "200")
+    )
     @GetMapping
     public ResponseEntity<String> getAdminOptionsInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getAdminOptionsInfo());
     }
 
+    @Operation(
+            summary = "Get Delete Comment Info",
+            description = "Retrieve information about the process of deleting a specific comment from a post.",
+            responses = @ApiResponse(description = "Success", responseCode = "200")
+    )
     @GetMapping("/posts/{postId}/comments/{commentId}/delete")
     public ResponseEntity<String> getDeleteCommentInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getDeleteCommentInfo());
     }
 
+    @Operation(
+            summary = "Get Delete Post Info",
+            description = "Retrieve information about the process of deleting a specific post.",
+            responses = @ApiResponse(description = "Success", responseCode = "200")
+    )
     @GetMapping("/posts/{postId}/delete")
     public ResponseEntity<String> getDeletePostInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getDeletePostInfo());
     }
 
+    @Operation(
+            summary = "Get Promote to Admin Info",
+            description = "Retrieve information about the process of promoting a user to an admin role.",
+            responses = @ApiResponse(description = "Success", responseCode = "200")
+    )
     @GetMapping("/users/{userId}/make-admin")
     public ResponseEntity<String> getUpdateToAdminInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getUpdateToAdminInfo());
     }
 
+    @Operation(
+            summary = "Get Demote to User Info",
+            description = "Retrieve information about the process of demoting an admin to a regular user role.",
+            responses = @ApiResponse(description = "Success", responseCode = "200")
+    )
     @GetMapping("/users/{userId}/make-user")
     public ResponseEntity<String> getDemoteToUserInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getDemoteToUserInfo());
     }
 
+    @Operation(
+            summary = "Get Unblock User Info",
+            description = "Retrieve information about the process of unblocking a user account.",
+            responses = @ApiResponse(description = "Success", responseCode = "200")
+    )
     @GetMapping("/users/{userId}/unblock")
     public ResponseEntity<String> getUnblockUserInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getUnblockUserInfo());
     }
 
+    @Operation(
+            summary = "Get Block User Info",
+            description = "Retrieve information about the process of blocking a user account.",
+            responses = @ApiResponse(description = "Success", responseCode = "200")
+    )
     @GetMapping("/users/{userId}/block")
     public ResponseEntity<String> getBlockUserInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getBlockUserInfo());
     }
 
+    @Operation(
+            summary = "Get Update Phone Info",
+            description = "Retrieve information about the process of updating a user's phone number.",
+            responses = @ApiResponse(description = "Success", responseCode = "200")
+    )
     @GetMapping("/profile/phone")
     public ResponseEntity<String> getUpdatePhoneInfo() {
         return ResponseEntity.ok(homepageResponseFactory.getUpdatePhoneInfo());

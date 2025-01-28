@@ -8,6 +8,8 @@ import com.example.forumproject.models.Tag;
 import com.example.forumproject.models.dtos.tagDtos.TagInDto;
 import com.example.forumproject.services.postTagService.PostTagService;
 import com.example.forumproject.services.tagService.TagService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/posts/{postId}")
+@io.swagger.v3.oas.annotations.tags.Tag(name = "Tag Management",
+        description = "API for managing tags associated with posts")
 public class TagController {
 
     private final TagService tagService;
@@ -32,6 +36,14 @@ public class TagController {
         this.postTagService = postTagService;
     }
 
+    @Operation(
+            summary = "Get tags for a specific post",
+            description = "Retrieve all tags associated with a given post",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully retrieved tags"),
+                    @ApiResponse(responseCode = "404", description = "Post not found")
+            }
+    )
     @GetMapping("/tags")
     public List<String> getTagsForPost(@PathVariable Long postId) {
         try {
@@ -46,9 +58,19 @@ public class TagController {
         }
     }
 
+    @Operation(
+            summary = "Create a new tag for a post",
+            description = "Add a new tag to a specific post",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Successfully created tag"),
+                    @ApiResponse(responseCode = "404", description = "Post not found"),
+                    @ApiResponse(responseCode = "409", description = "Duplicate tag name"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized to create tag")
+            }
+    )
     @PostMapping("/tags")
-    public Tag createTagInPost(@Valid @RequestBody TagInDto tagDTO,
-                               @PathVariable Long postId) {
+    public Tag addTagToPost(@Valid @RequestBody TagInDto tagDTO,
+                            @PathVariable Long postId) {
         try {
             String newTagName = tagDTO.getTagName();
             postTagService.createTagOnPost(postId, newTagName);
@@ -62,6 +84,16 @@ public class TagController {
         }
     }
 
+    @Operation(
+            summary = "Update an existing tag for a post",
+            description = "Modify the name of an existing tag associated with a specific post",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully updated tag"),
+                    @ApiResponse(responseCode = "404", description = "Post or tag not found"),
+                    @ApiResponse(responseCode = "409", description = "Duplicate tag name"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized to update tag")
+            }
+    )
     @PostMapping("/tags/{tagId}")
     public Tag updateTagInPostByTagId(@Valid @RequestBody TagInDto tagDTO,
                                       @PathVariable Long postId, @PathVariable Long tagId) {
@@ -77,6 +109,15 @@ public class TagController {
         }
     }
 
+    @Operation(
+            summary = "Delete a tag from a post by tag name",
+            description = "Remove a tag from a specific post using the tag name",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully deleted tag"),
+                    @ApiResponse(responseCode = "404", description = "Post or tag not found"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized to delete tag")
+            }
+    )
     @DeleteMapping("/tags/{tagName}")
     public void deleteTagFromPost(@PathVariable Long postId,
                                   @PathVariable String tagName) {
@@ -92,6 +133,15 @@ public class TagController {
         }
     }
 
+//    @Operation(
+//            summary = "Delete a tag from a post by tag ID",
+//            description = "Remove a tag from a specific post using the tag ID",
+//            responses = {
+//                    @ApiResponse(responseCode = "200", description = "Successfully deleted tag"),
+//                    @ApiResponse(responseCode = "404", description = "Post or tag not found"),
+//                    @ApiResponse(responseCode = "401", description = "Unauthorized to delete tag")
+//            }
+//    )
  /*   @DeleteMapping("/tags/{tagId}")
     public void deleteTagFromPost(@PathVariable Long postId,
                                   @PathVariable Long tagId) {
