@@ -5,9 +5,9 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.postDtos.PostInDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
 import com.example.forumproject.services.commentService.CommentService;
-import com.example.forumproject.services.reactionService.ReactionService;
 import com.example.forumproject.services.postService.PostService;
-import com.example.forumproject.services.tagService.TagService;
+import com.example.forumproject.services.postTagService.PostTagService;
+import com.example.forumproject.services.reactionService.ReactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,20 +19,20 @@ public class PostMapper {
     private final ReactionService reactionService;
     private final CommentService commentService;
     private final TagMapper tagMapper;
-    private final TagService tagService;
+    private final PostTagService postTagService;
 
     @Autowired
     public PostMapper(CommentMapper commentMapper, PostService postService,
-                      ReactionService reactionService, CommentService commentService, TagMapper tagMapper, TagService tagService) {
+                      ReactionService reactionService, CommentService commentService, TagMapper tagMapper, PostTagService postTagService) {
         this.commentMapper = commentMapper;
         this.postService = postService;
         this.reactionService = reactionService;
         this.commentService = commentService;
         this.tagMapper = tagMapper;
-        this.tagService = tagService;
+        this.postTagService = postTagService;
     }
 
-    public Post createPostFromDto(PostInDto postInDTO, User author){
+    public Post createPostFromDto(PostInDto postInDTO, User author) {
         Post post = new Post();
         post.setAuthor(author);
         post.setTitle(postInDTO.getTitle());
@@ -40,7 +40,7 @@ public class PostMapper {
         return post;
     }
 
-    public Post postInDtoToPost(PostInDto postInDto, Long id){
+    public Post postInDtoToPost(PostInDto postInDto, Long id) {
         Post postToBeUpdate = postService.getById(id);
         postToBeUpdate.setTitle(postInDto.getTitle());
         postToBeUpdate.setContent(postInDto.getContent());
@@ -58,7 +58,7 @@ public class PostMapper {
         postOutDto.setComments(commentMapper
                 .commentsToCommentDtos(commentService
                         .getAllCommentsByPostId(post.getId())));
-        postOutDto.setTags(tagMapper.tagsToTagNames(tagService.getTagsByPostId(post.getId())));
+        postOutDto.setTags(tagMapper.tagsToTagNames(postTagService.getTagsByPostId(post.getId())));
         return postOutDto;
     }
 }
