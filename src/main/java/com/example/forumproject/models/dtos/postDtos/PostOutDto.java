@@ -1,6 +1,6 @@
 package com.example.forumproject.models.dtos.postDtos;
 
-import com.example.forumproject.models.dtos.commentDtos.CommentDto;
+import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class PostOutDto {
     private Long dislikes;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CommentDto> comments;
+    private List<CommentOutDto> comments;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> tags;
@@ -28,7 +28,7 @@ public class PostOutDto {
     public PostOutDto() {
     }
 
-    public PostOutDto(Long dislikes, Long likes, List<String> tags, List<CommentDto> comments, String content, String title, String author, Long post_id) {
+    public PostOutDto(Long dislikes, Long likes, List<String> tags, List<CommentOutDto> comments, String content, String title, String author, Long post_id) {
         this.dislikes = dislikes;
         this.likes = likes;
         this.tags = tags;
@@ -39,11 +39,11 @@ public class PostOutDto {
         this.post_id = post_id;
     }
 
-    public Long getPost_id() {
+    public Long getPostId() {
         return post_id;
     }
 
-    public void setPost_id(Long post_id) {
+    public void setPostId(Long post_id) {
         this.post_id = post_id;
     }
 
@@ -71,11 +71,11 @@ public class PostOutDto {
         this.content = content;
     }
 
-    public List<CommentDto> getComments() {
+    public List<CommentOutDto> getComments() {
         return comments;
     }
 
-    public void setComments(List<CommentDto> comments) {
+    public void setComments(List<CommentOutDto> comments) {
         this.comments = comments;
     }
 

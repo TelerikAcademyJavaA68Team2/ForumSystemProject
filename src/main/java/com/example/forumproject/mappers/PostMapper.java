@@ -6,8 +6,8 @@ import com.example.forumproject.models.dtos.postDtos.PostInDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
 import com.example.forumproject.models.dtos.postDtos.UpdatePostDto;
 import com.example.forumproject.services.commentService.CommentService;
-import com.example.forumproject.services.likeDislikeService.LikeService;
-import com.example.forumproject.services.PostService;
+import com.example.forumproject.services.reactionService.ReactionService;
+import com.example.forumproject.services.postService.PostService;
 import com.example.forumproject.services.tagService.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,17 +17,17 @@ public class PostMapper {
 
     private final CommentMapper commentMapper;
     private final PostService postService;
-    private final LikeService likeService;
+    private final ReactionService reactionService;
     private final CommentService commentService;
     private final TagMapper tagMapper;
     private final TagService tagService;
 
     @Autowired
     public PostMapper(CommentMapper commentMapper, PostService postService,
-                      LikeService likeService, CommentService commentService, TagMapper tagMapper, TagService tagService) {
+                      ReactionService reactionService, CommentService commentService, TagMapper tagMapper, TagService tagService) {
         this.commentMapper = commentMapper;
         this.postService = postService;
-        this.likeService = likeService;
+        this.reactionService = reactionService;
         this.commentService = commentService;
         this.tagMapper = tagMapper;
         this.tagService = tagService;
@@ -50,12 +50,12 @@ public class PostMapper {
 
     public PostOutDto postToPostOutDto(Post post) {
         PostOutDto postOutDto = new PostOutDto();
-        postOutDto.setPost_id(post.getId());
+        postOutDto.setPostId(post.getId());
         postOutDto.setAuthor(post.getAuthor().getUsername());
         postOutDto.setTitle(post.getTitle());
         postOutDto.setContent(post.getContent());
-        postOutDto.setLikes(likeService.getLikesByPostId(post.getId()));
-        postOutDto.setDislikes(likeService.getDislikesByPostId(post.getId()));
+        postOutDto.setLikes(reactionService.getLikesByPostId(post.getId()));
+        postOutDto.setDislikes(reactionService.getDislikesByPostId(post.getId()));
         postOutDto.setComments(commentMapper.commentsToCommentDtos(commentService.getAllCommentsByPostId(post.getId())));
         postOutDto.setTags(tagMapper.tagsToTagNames(tagService.getTagsByPostId(post.getId())));
         return postOutDto;
