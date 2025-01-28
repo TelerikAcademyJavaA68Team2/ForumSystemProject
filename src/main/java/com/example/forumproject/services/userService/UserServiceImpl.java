@@ -1,6 +1,7 @@
 package com.example.forumproject.services.userService;
 
 import com.example.forumproject.exceptions.InvalidUserInputException;
+import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.helpers.ValidationHelpers;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
@@ -115,6 +116,10 @@ public class UserServiceImpl implements UserService {
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (String) authentication.getPrincipal(); // Extract username
-        return userRepository.getByUsername(username); // Replace with your repository method
+        try {
+            return userRepository.getByUsername(username);
+        } catch (UsernameNotFoundException e) {
+            throw new UnauthorizedAccessException("Please log in first!");
+        }
     }
 }

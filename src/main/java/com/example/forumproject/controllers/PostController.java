@@ -4,19 +4,18 @@ import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.PostMapper;
-import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.postDtos.PostInDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
-import com.example.forumproject.services.userService.UserService;
-import com.example.forumproject.services.reactionService.ReactionService;
+import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.postService.PostService;
+import com.example.forumproject.services.reactionService.ReactionService;
+import com.example.forumproject.services.userService.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -50,8 +49,12 @@ public class PostController {
                                         @RequestParam(required = false) String orderType) {
         PostFilterOptions filterOptions = new PostFilterOptions(title, content, tags,
                 minLikes, maxLikes, orderBy, orderType, null);
-        List<Post> inPosts = postService.getAll(filterOptions);
-        return inPosts.stream().map(postMapper::postToPostOutDto).toList();
+        try {
+            List<Post> inPosts = postService.getAll(filterOptions);
+            return inPosts.stream().map(postMapper::postToPostOutDto).toList();
+        } catch (UnauthorizedAccessException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
     }
 
     @GetMapping("/posts/{postId}")
@@ -62,6 +65,8 @@ public class PostController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException
                     (HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedAccessException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
@@ -77,6 +82,8 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (UnauthorizedAccessException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
@@ -92,6 +99,8 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (UnauthorizedAccessException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
@@ -103,11 +112,7 @@ public class PostController {
             postService.create(postToCreate, user);
             return postMapper.postToPostOutDto(postToCreate);
         } catch (UnauthorizedAccessException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    e.getMessage());
-        } catch (UsernameNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    e.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
@@ -124,8 +129,7 @@ public class PostController {
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (UnauthorizedAccessException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    e.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 

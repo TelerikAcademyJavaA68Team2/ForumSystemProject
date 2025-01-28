@@ -39,6 +39,8 @@ public class CommentController {
                     .collect(Collectors.toList());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedAccessException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
@@ -49,8 +51,9 @@ public class CommentController {
             Comment comment = commentService.getById(postId, commentId);
             return commentMapper.commentToCommentOutDto(comment);
         } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException
-                    (HttpStatus.NOT_FOUND, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedAccessException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
@@ -90,8 +93,7 @@ public class CommentController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedAccessException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    e.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 }
