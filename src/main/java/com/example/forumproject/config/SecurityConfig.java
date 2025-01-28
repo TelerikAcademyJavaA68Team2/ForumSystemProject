@@ -21,12 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final String[] WHITE_LIST_SWAGGER_URL = { "/api/v1/auth/**", "/v2/api-docs", "/v3/api-docs",
+    private static final String[] WHITE_LIST_SWAGGER_URL = {"/api/v1/auth/**", "/v2/api-docs", "/v3/api-docs",
             "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
             "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html", "/api/auth/**",
-            "/api/test/**", "/authenticate" };
-    private static final String[] WHITE_LIST_APIS_URL = { "/api/home/**", "/error", "/api/posts" };
-    private static final String[] RESTRICTED_APIS_URL = { "/api/admin/**", "/api/users/{id}" };
+            "/api/test/**", "/authenticate"};
+    private static final String[] PUBLIC_URL_LIST = {"/api/home/**", "/error"};
+    private static final String[] RESTRICTED_URL_LIST = {"/api/admin/**", "/api/users/**"};
 
     private final UserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
@@ -40,21 +40,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req ->
-                        req.requestMatchers(WHITE_LIST_SWAGGER_URL)
-                        .permitAll()
-                        .requestMatchers(WHITE_LIST_APIS_URL).permitAll()
-                        .requestMatchers(RESTRICTED_APIS_URL).hasAnyAuthority("ADMIN") // Admin-only endpoint
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(WHITE_LIST_SWAGGER_URL).permitAll()
+                        .requestMatchers(PUBLIC_URL_LIST).permitAll()
+                        .requestMatchers(RESTRICTED_URL_LIST).hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .userDetailsService(userDetailsService)
                 .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> { // Handle 401 (Unauthorized)
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: No valid token provided");
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: You need to be logged in to access this page!");
                         })
                         .accessDeniedHandler((request, response, accessDeniedException) -> { // Handle 403 (Forbidden)
-                            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden: You don't have permission to access this resource");
+                            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden: You don't have permission to access this page!");
                         })
                 )
                 .build();
