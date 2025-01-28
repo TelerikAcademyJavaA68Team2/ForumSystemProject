@@ -6,6 +6,7 @@ import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileUserDto
 import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.PostService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +15,7 @@ public class UserMapper {
     private final PostService postService;
     private final PostMapper postMapper;
 
-
+    @Autowired
     public UserMapper(PostService postService, PostMapper postMapper) {
         this.postService = postService;
         this.postMapper = postMapper;
