@@ -7,11 +7,18 @@ import java.util.List;
 
 public interface TagService {
 
-/*  probably wont need these
-    boolean checkIfPostIsTagged(int post_id, int tag_id);
+    //probably wont need these
+    boolean checkIfPostIsTagged(Long post_id, Long tag_id);
 
-    Tag getTag(int post_id, int tag_id);
-*/
+    Tag getTag(Long post_id, Long tag_id);
+
+    Tag getTag(Long tag_id);
+
+    Tag getTagByTagId(Long tag_id);
+
+    Tag getTagByName(String tagName);
+
+    Tag getOrCreateTag(String tagName);
 
     List<Tag> getTagsByPostId(Long post_id);
 

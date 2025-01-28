@@ -1,4 +1,4 @@
-package com.example.forumproject.repositories.tagsRepo;
+package com.example.forumproject.repositories.tagsRepository;
 
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.Tag;
@@ -15,7 +15,13 @@ public interface TagRepository {
 
     List<Post> getAllPostsByTag(Long tag_id);
 
+    Tag getTagByTagId(Long tag_id);
+
+    Tag getTagByName(String tagName);
+
     void create(Tag tag);
+
+    void addTagToPost(Long postId, Long tagId);
 
     void update(Tag tag);
 

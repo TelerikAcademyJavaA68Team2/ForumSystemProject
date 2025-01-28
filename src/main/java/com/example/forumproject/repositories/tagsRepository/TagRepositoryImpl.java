@@ -1,6 +1,8 @@
-package com.example.forumproject.repositories.tagsRepo;
+package com.example.forumproject.repositories.tagsRepository;
 
+import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.models.Post;
+import com.example.forumproject.models.PostTag;
 import com.example.forumproject.models.Tag;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Locale;
 
 @Repository
 public class TagRepositoryImpl implements TagRepository {
@@ -23,12 +26,53 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public boolean checkIfPostIsTagged(Long post_id, Long tag_id) {
         try (Session session = sessionFactory.openSession()) {
-            String sql = "SELECT COUNT(*) FROM forum_management_system.post_tags WHERE post_id = :post_id AND tag_id = :tag_id";
+            String sql = "SELECT COUNT(*) FROM post_tags WHERE post_id = :post_id AND tag_id = :tag_id";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("post_id", post_id);
             query.setParameter("tag_id", tag_id);
 
             return query.uniqueResult() != null;
+        }
+    }
+
+    @Override
+    public Tag getTagByTagId(Long tagId) {
+        try (Session session = sessionFactory.openSession()) {
+            String sql = "SELECT * FROM tags WHERE id = :tagId";
+            Query<Tag> query = session.createNativeQuery(sql, Tag.class);
+            query.setParameter("tagId", tagId);
+            return query.uniqueResultOptional().orElseThrow(() ->
+                    new EntityNotFoundException("Tag ", tagId));
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching tag by ID", e);
+        }
+    }
+
+    @Override
+    public Tag getTagByName(String tagName) {
+        try (Session session = sessionFactory.openSession()) {
+            String sql = "SELECT * FROM tags WHERE name = :tagName";
+            Query<Tag> query = session.createNativeQuery(sql, Tag.class);
+            query.setParameter("tagName", tagName.toLowerCase(Locale.ROOT));
+            return query.uniqueResultOptional().orElseThrow(() ->
+                    new EntityNotFoundException("Tag","name", tagName));
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching tag by name", e);
+        }
+    }
+
+    @Override
+    public void addTagToPost(Long postId, Long tagId) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            String sql = "INSERT INTO post_tags (post_id, tag_id) VALUES (:postId, :tagId)";
+            Query<PostTag> query = session.createNativeQuery(sql, PostTag.class);
+            query.setParameter("postId", postId);
+            query.setParameter("tagId", tagId);
+            query.executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to add tag to post", e);
         }
     }
 
