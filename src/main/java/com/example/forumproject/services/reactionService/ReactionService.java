@@ -1,11 +1,11 @@
-package com.example.forumproject.services.likeDislikeService;
+package com.example.forumproject.services.reactionService;
 
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 
 import java.util.List;
 
-public interface LikeService {
+public interface ReactionService {
     Long getLikesByPostId(Long post_id);
 
     Long getDislikesByPostId(Long post_id);
