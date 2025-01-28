@@ -1,5 +1,6 @@
 package com.example.forumproject.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,6 +45,7 @@ public class User implements UserDetails {
     @Column(name = "profile_photo")
     private String photo;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Column(name = "phone_number")
     private String phoneNumber;
 
