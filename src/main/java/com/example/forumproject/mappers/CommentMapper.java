@@ -2,7 +2,7 @@ package com.example.forumproject.mappers;
 
 
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.commentDtos.CommentDto;
+import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.dtos.commentDtos.CommentInDto;
 import com.example.forumproject.services.commentService.CommentService;
@@ -36,15 +36,15 @@ public class CommentMapper {
     }
 
 
-    public CommentDto commentToCommentDto(Comment comment) {
-        CommentDto commentDtoOut = new CommentDto();
-        commentDtoOut.setAuthor(comment.getAuthor().getUsername());
-        commentDtoOut.setContent(comment.getContent());
-        return commentDtoOut;
+    public CommentOutDto commentToCommentOutDto(Comment comment) {
+        CommentOutDto commentOutDto = new CommentOutDto();
+        commentOutDto.setAuthor(comment.getAuthor().getUsername());
+        commentOutDto.setContent(comment.getContent());
+        return commentOutDto;
     }
 
-    public List<CommentDto> commentsToCommentDtos(List<Comment> comments) {
-        return comments.stream().map(this::commentToCommentDto).collect(Collectors.toList());
+    public List<CommentOutDto> commentsToCommentDtos(List<Comment> comments) {
+        return comments.stream().map(this::commentToCommentOutDto).collect(Collectors.toList());
     }
 
 }

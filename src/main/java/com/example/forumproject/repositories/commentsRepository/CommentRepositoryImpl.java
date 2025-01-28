@@ -1,4 +1,4 @@
-package com.example.forumproject.repositories.commentsRepo;
+package com.example.forumproject.repositories.commentsRepository;
 
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.models.Comment;

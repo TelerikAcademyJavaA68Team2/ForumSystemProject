@@ -4,9 +4,9 @@ import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.commentDtos.CommentDto;
-import com.example.forumproject.repositories.commentsRepo.CommentRepository;
-import com.example.forumproject.repositories.PostRepository;
+import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
+import com.example.forumproject.repositories.commentsRepository.CommentRepository;
+import com.example.forumproject.repositories.postRepository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDto> getAllCommentDtos(Long postId) {
+    public List<CommentOutDto> getAllCommentDtos(Long postId) {
         //List<CommentDto> comments = commentRepository.getAllCommentsByPostId(postId)
 
         return null;

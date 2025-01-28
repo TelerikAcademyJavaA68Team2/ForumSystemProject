@@ -6,9 +6,9 @@ import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.CommentMapper;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.commentDtos.CommentDto;
+import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.example.forumproject.models.dtos.commentDtos.CommentInDto;
-import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.userService.UserService;
 import com.example.forumproject.services.commentService.CommentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +35,11 @@ public class CommentController {
     }
 
     @GetMapping("/comments")
-    public List<CommentDto> getAllComments(@PathVariable Long postId) {
+    public List<CommentOutDto> getAllComments(@PathVariable Long postId) {
         try {
             return commentService.getAll(postId)
                     .stream()
-                    .map(commentMapper::commentToCommentDto)
+                    .map(commentMapper::commentToCommentOutDto)
                     .collect(Collectors.toList());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -47,12 +47,12 @@ public class CommentController {
 
     }
 
-    @GetMapping("/comments/{id}")
-    public CommentDto getById(@PathVariable Long postId,
-                              @PathVariable Long id) {
+    @GetMapping("/comments/{commentId}")
+    public CommentOutDto getById(@PathVariable Long postId,
+                                 @PathVariable Long commentId) {
         try {
-            Comment comment = commentService.getById(postId, id);
-            return commentMapper.commentToCommentDto(comment);
+            Comment comment = commentService.getById(postId, commentId);
+            return commentMapper.commentToCommentOutDto(comment);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException
                     (HttpStatus.NOT_FOUND, e.getMessage());
@@ -60,28 +60,28 @@ public class CommentController {
     }
 
     @PostMapping("/comments")
-    public CommentDto createComment(@PathVariable Long postId,
-                                    @Valid @RequestBody CommentInDto commentDTO) {
+    public CommentOutDto createComment(@PathVariable Long postId,
+                                       @Valid @RequestBody CommentInDto commentDTO) {
         try {
             User user = userService.getAuthenticatedUser();
             Comment comment = commentMapper.CommentInDtoToObject(commentDTO, user);
             commentService.create(postId, comment, user);
-            return commentMapper.commentToCommentDto(comment);
+            return commentMapper.commentToCommentOutDto(comment);
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
 
     }
 
-    @PutMapping("/comments/{id}")
-    public CommentDto updateComment(@PathVariable Long postId,
-                                    @PathVariable Long id,
-                                    @Valid @RequestBody CommentInDto commentDTO) {
+    @PutMapping("/comments/{commentId}")
+    public CommentOutDto updateComment(@PathVariable Long postId,
+                                       @PathVariable Long commentId,
+                                       @Valid @RequestBody CommentInDto commentDTO) {
         try {
             User user = userService.getAuthenticatedUser();
-            Comment comment = commentMapper.updateDtoToObject(commentDTO, postId, id);
+            Comment comment = commentMapper.updateDtoToObject(commentDTO, postId, commentId);
             commentService.update(postId, comment, user);
-            return commentMapper.commentToCommentDto(comment);
+            return commentMapper.commentToCommentOutDto(comment);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
@@ -91,11 +91,11 @@ public class CommentController {
         }
     }
 
-    @DeleteMapping("/comments/{id}")
-    public void delete(@PathVariable Long postId, @PathVariable Long id) {
+    @DeleteMapping("/comments/{commentId}")
+    public void delete(@PathVariable Long postId, @PathVariable Long commentId) {
         try {
             User user = userService.getAuthenticatedUser();
-            commentService.delete(postId, id, user);
+            commentService.delete(postId, commentId, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedAccessException e) {

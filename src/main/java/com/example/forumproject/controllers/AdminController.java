@@ -7,9 +7,9 @@ import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
-import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.userService.UserService;
 import com.example.forumproject.services.commentService.CommentService;
-import com.example.forumproject.services.PostService;
+import com.example.forumproject.services.postService.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -141,10 +141,10 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/users/{id}")
-    public Object getUserById(@PathVariable Long id) {
+    @GetMapping("/users/{userId}")
+    public Object getUserById(@PathVariable Long userId) {
         try {
-            User user = userService.getById(id);
+            User user = userService.getById(userId);
             return userMapper.mapUserToUserFullProfileOutDto(user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

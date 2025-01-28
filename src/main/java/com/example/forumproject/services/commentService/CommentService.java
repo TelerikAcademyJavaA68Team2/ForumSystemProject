@@ -2,7 +2,7 @@ package com.example.forumproject.services.commentService;
 
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.commentDtos.CommentDto;
+import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public interface CommentService {
 
     List<Comment> getAll(Long postId);
 
-    List<CommentDto> getAllCommentDtos(Long postId);
+    List<CommentOutDto> getAllCommentDtos(Long postId);
 
     List<Comment> getAllCommentsByPostId(Long postId);
 

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class CommentDto {
+public class CommentOutDto {
 
     @NotBlank(message = "Username can't be empty")
     @NotNull(message = "Username can't be empty")
@@ -15,10 +15,10 @@ public class CommentDto {
     @Size(min = 1, max = 2048, message = "Content should be between 1 and 2048 symbols")
     private String content;
 
-    public CommentDto() {
+    public CommentOutDto() {
     }
 
-    public CommentDto(String content) {
+    public CommentOutDto(String content) {
         this.content = content;
     }
 
