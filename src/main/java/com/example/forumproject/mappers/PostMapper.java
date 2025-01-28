@@ -4,7 +4,6 @@ import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.postDtos.PostInDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
-import com.example.forumproject.models.dtos.postDtos.UpdatePostDto;
 import com.example.forumproject.services.commentService.CommentService;
 import com.example.forumproject.services.reactionService.ReactionService;
 import com.example.forumproject.services.postService.PostService;
@@ -41,10 +40,10 @@ public class PostMapper {
         return post;
     }
 
-    public Post UpdatePostFromDto(UpdatePostDto updatePostDTO, Long id){
+    public Post postInDtoToPost(PostInDto postInDto, Long id){
         Post postToBeUpdate = postService.getById(id);
-        postToBeUpdate.setTitle(updatePostDTO.getTitle());
-        postToBeUpdate.setContent(updatePostDTO.getContent());
+        postToBeUpdate.setTitle(postInDto.getTitle());
+        postToBeUpdate.setContent(postInDto.getContent());
         return postToBeUpdate;
     }
 

@@ -5,7 +5,6 @@ import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.PostMapper;
 import com.example.forumproject.mappers.TagMapper;
-import com.example.forumproject.models.dtos.postDtos.UpdatePostDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
@@ -42,8 +41,7 @@ public class PostController {
         this.userService = userService;
         this.tagMapper = tagMapper;
     }
-
-    //ToDo Filtering !
+    
     @GetMapping("/posts")
     public List<PostOutDto> getAllPosts(@RequestParam(required = false) String title,
                                         @RequestParam(required = false) String content,
@@ -140,10 +138,10 @@ public class PostController {
     }
 
     @PutMapping("/posts/{postId}")
-    public PostOutDto update(@PathVariable Long postId, @Valid @RequestBody UpdatePostDto postDto) {
+    public PostOutDto update(@PathVariable Long postId, @Valid @RequestBody PostInDto postDto) {
         try {
             User user = userService.getAuthenticatedUser();
-            Post postToUpdate = postMapper.UpdatePostFromDto(postDto, postId);
+            Post postToUpdate = postMapper.postInDtoToPost(postDto, postId);
             postService.update(postToUpdate, user);
             Post updatedPost = postService.getById(postId);
             return postMapper.postToPostOutDto(updatedPost);
