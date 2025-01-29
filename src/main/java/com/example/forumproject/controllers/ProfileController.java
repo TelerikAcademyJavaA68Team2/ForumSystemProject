@@ -92,6 +92,4 @@ public class ProfileController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
-
-
 }
