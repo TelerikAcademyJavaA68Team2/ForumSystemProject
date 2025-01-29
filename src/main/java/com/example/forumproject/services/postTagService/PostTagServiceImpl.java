@@ -54,11 +54,9 @@ public class PostTagServiceImpl implements PostTagService {
     @Transactional
     public void createTagOnPost(Long post_id, String tagName) {
         Post post = postRepository.getById(post_id);
-
         ValidationHelpers.validateUserIsAdminOrPostAuthor(post, userService.getAuthenticatedUser());
 
         Tag tag;
-
         try {
             tag = tagRepository.getTagByName(tagName);
         } catch (Exception e) {
@@ -78,15 +76,11 @@ public class PostTagServiceImpl implements PostTagService {
     @Transactional
     public void updateTagOnPost(Long postId, Long oldTagId, String newTagName) {
         Post post = postRepository.getById(postId);
-
         ValidationHelpers.validateUserIsAdminOrPostAuthor(post, userService.getAuthenticatedUser());
-
         Tag oldTag = tagRepository.getTagById(oldTagId);
-
-        PostTag postTag = postTagRepository.getPostTag(postId, oldTagId);
+        PostTag postTag = postTagRepository.getPostTag(postId, oldTag.getId());
 
         Tag tag;
-
         try {
             tag = tagRepository.getTagByName(newTagName);
         } catch (Exception e) {
@@ -105,11 +99,8 @@ public class PostTagServiceImpl implements PostTagService {
     @Transactional
     public void deleteTagFromPost(Long post_id, Long tag_id) {
         Post post = postRepository.getById(post_id);
-
         Tag tag = tagRepository.getTagById(post_id);
-
         postTagRepository.checkIfPostIsTagged(post_id, tag_id);
-
         ValidationHelpers.validateUserIsAdminOrPostAuthor(post, userService.getAuthenticatedUser());
 
         postTagRepository.delete(postTagRepository.getPostTag(post_id, tag_id));
