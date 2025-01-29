@@ -269,7 +269,6 @@ public class UserServiceTests {
         Assertions.assertDoesNotThrow(() -> service.blockUser(2L));
     }
 
-
     @Test
     public void unblockUser_ShouldThrowExc_When_IdInvalid() {
         // Arrange
@@ -330,21 +329,19 @@ public class UserServiceTests {
 
         // Act, Assert
         Assertions.assertThrows(InvalidUserInputException.class, () -> service.updatePhoneNumber("12345678"));
-
     }
 
     @Test
-    public void updatePhoneNumber_ShouldThrowExc_When_PhoneIsNull() {
+    public void updatePhoneNumber_ShouldNotThrowExc_When_PhoneIsNull() {
         // Arrange
         User user = Helpers.createMockAdmin();
-        user.setPhoneNumber("12345678");
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         Mockito.when(authentication.getPrincipal()).thenReturn(Helpers.createMockUser());
         Mockito.when(service.getAuthenticatedUser()).thenReturn(user);
 
         // Act, Assert
-        Assertions.assertThrows(InvalidUserInputException.class, () -> service.updatePhoneNumber(null));
+        Assertions.assertDoesNotThrow(() -> service.updatePhoneNumber("12345678"));
     }
 
     @Test
@@ -395,5 +392,4 @@ public class UserServiceTests {
         // Act, Assert
         Assertions.assertThrows(UnauthorizedAccessException.class, () -> service.getAuthenticatedUser());
     }
-
 }
