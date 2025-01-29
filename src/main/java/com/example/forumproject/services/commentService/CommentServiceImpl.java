@@ -7,6 +7,7 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.example.forumproject.repositories.commentsRepository.CommentRepository;
 import com.example.forumproject.repositories.PostRepository;
+import com.example.forumproject.services.PostService;
 import com.example.forumproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,14 +22,14 @@ public class CommentServiceImpl implements CommentService {
 
     public static final String DUPLICATE_COMMENT_MESSAGE = "The comment already has the same content";
     private final CommentRepository commentRepository;
-    private final PostRepository postRepository;
     private final UserService userService;
+    private final PostService postService;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, UserService userService) {
+    public CommentServiceImpl(CommentRepository commentRepository,UserService userService, PostService postService) {
         this.commentRepository = commentRepository;
-        this.postRepository = postRepository;
         this.userService = userService;
+        this.postService = postService;
     }
 
     @Override
@@ -44,12 +45,13 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment getById(Long postId, Long id) {
-        return commentRepository.getById(postId, id);
+        Post postToGetCommentFrom = postService.getById(postId);
+        return commentRepository.getById(postToGetCommentFrom.getId(), id);
     }
 
     @Override
     public List<Comment> getCommentsByAuthor(Long postId) {
-        User author = postRepository.getById(postId).getAuthor();
+        User author = postService.getById(postId).getAuthor();
         return commentRepository.getCommentsByAuthor(postId, author.getId());
     }
 
@@ -57,7 +59,7 @@ public class CommentServiceImpl implements CommentService {
     public void create(Long postId, Comment comment) {
         User user = userService.getAuthenticatedUser();
 
-        Post postToAddCommentTo = postRepository.getById(postId);
+        Post postToAddCommentTo = postService.getById(postId);
 
         comment.setAuthor(user);
 

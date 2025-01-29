@@ -39,7 +39,7 @@ public class CommentController {
             description = "Retrieve all comments associated with a specific post",
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200"),
-                    @ApiResponse(description = "Post not found", responseCode = "404")
+                    @ApiResponse(description = "Unauthorized", responseCode = "401")
             }
     )
     @GetMapping("/comments")
