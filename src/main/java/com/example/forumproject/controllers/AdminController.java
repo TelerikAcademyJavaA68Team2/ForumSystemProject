@@ -87,33 +87,6 @@ public class AdminController {
         }
     }
 
-    @Operation(
-            summary = "Update phone number",
-            description = "Update the phone number of the authenticated user",
-            responses = {
-                    @ApiResponse(description = "Phone updated successfully", responseCode = "201"),
-                    @ApiResponse(description = "Invalid phone number", responseCode = "400")
-            }
-    )
-    @PostMapping("/profile/phone") // reed todo below combine with /profile post
-    public ResponseEntity<String> updatePhoneNumber(@RequestBody String number) {
-        try {
-            userService.updatePhoneNumber(number);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Phone updated successfully!");
-        } catch (InvalidUserInputException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        } catch (UnauthorizedAccessException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-    }
-
-
-   /* @GetMapping("/profile")  //todo could do the phoneNumber update in postMapping /profile
-    public ResponseEntity<String> getAdminProfile() {
-        try {
-
-        }
-    }*/
 
     @Operation(
             summary = "Delete a post",
