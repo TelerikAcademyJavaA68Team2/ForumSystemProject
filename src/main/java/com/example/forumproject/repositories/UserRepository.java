@@ -19,11 +19,5 @@ public interface UserRepository {
 
     void save(User user);
 
-    void deleteUser(Long userId);
-
-    void promoteToAdmin(Long userId);
-
-    void blockUser(Long userId);
-
-    void unblockUser(Long userId);
+    void deleteUser(User user);
 }

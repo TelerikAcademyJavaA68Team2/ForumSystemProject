@@ -8,9 +8,9 @@ import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
-import com.example.forumproject.services.commentService.CommentService;
 import com.example.forumproject.services.PostService;
 import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.commentService.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -98,7 +98,7 @@ public class AdminController {
     @PostMapping("/profile/phone") // reed todo below combine with /profile post
     public ResponseEntity<String> updatePhoneNumber(@RequestBody String number) {
         try {
-            userService.updatePhoneNumber(userService.getAuthenticatedUser(), number);
+            userService.updatePhoneNumber(number);
             return ResponseEntity.status(HttpStatus.CREATED).body("Phone updated successfully!");
         } catch (InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

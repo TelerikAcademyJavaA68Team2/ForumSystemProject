@@ -30,7 +30,7 @@ public interface UserService extends UserDetailsService {
 
     void unblockUser(Long userId);
 
-    void updatePhoneNumber(User user, String phoneNumber);
+    void updatePhoneNumber(String phoneNumber);
 
     User getAuthenticatedUser();
 }

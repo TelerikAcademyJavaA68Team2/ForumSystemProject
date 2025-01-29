@@ -6,6 +6,7 @@ import com.example.forumproject.helpers.ValidationHelpers;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
 import com.example.forumproject.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -56,7 +57,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long userId) {
-        userRepository.deleteUser(userId);
+        User user = userRepository.getById(userId);
+        userRepository.deleteUser(user);
     }
 
     @Override
@@ -82,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void blockUser(Long userId) {
-        User user = getById(userId);
+        User user = userRepository.getById(userId);
         if (user.isBlocked()) {
             throw new InvalidUserInputException(String.format(
                     "User with id: %d is already blocked! To unblock him try /unblock", userId));
@@ -103,8 +105,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePhoneNumber(User user, String phoneNumber) {
+    public void updatePhoneNumber(String phoneNumber) {
         ValidationHelpers.validatePhoneNumber(phoneNumber);
+        User user = getAuthenticatedUser();
         if (user.getPhoneNumber() != null && user.getPhoneNumber().equals(phoneNumber)) {
             throw new InvalidUserInputException("You provided the phone number that's already in your profile info!");
         }
@@ -114,7 +117,11 @@ public class UserServiceImpl implements UserService {
 
     public User getAuthenticatedUser() {
         try {
-            return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (user == null) {
+                throw new EntityNotFoundException("User not found!");
+            }
+            return user;
         } catch (Exception e) {
             throw new UnauthorizedAccessException("Please login first!");
         }

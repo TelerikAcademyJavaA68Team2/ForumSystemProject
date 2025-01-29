@@ -161,43 +161,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteUser(Long userId) {
+    public void deleteUser(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.remove(getById(userId));
-            session.getTransaction().commit();
-        }
-    }
-
-    @Override
-    public void promoteToAdmin(Long userId) {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            User user = getById(userId);
-            user.setAdmin(true);
-            session.merge(user);
-            session.getTransaction().commit();
-        }
-    }
-
-    @Override
-    public void blockUser(Long userId) {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            User user = getById(userId);
-            user.setBlocked(true);
-            session.merge(user);
-            session.getTransaction().commit();
-        }
-    }
-
-    @Override
-    public void unblockUser(Long userId) {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            User user = getById(userId);
-            user.setBlocked(false);
-            session.merge(user);
+            session.remove(user);
             session.getTransaction().commit();
         }
     }
