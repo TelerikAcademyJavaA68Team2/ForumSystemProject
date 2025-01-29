@@ -1,5 +1,6 @@
 package com.example.forumproject;
 
+import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.Tag;
 import com.example.forumproject.models.User;
@@ -10,7 +11,8 @@ public class Helpers {
 
     public static final String VALID_MOCK_TITLE = "Valid mock title for testing";
     public static final String VALID_MOCK_TAG_NAME = "MockTag";
-    public static final String VALID_MOCK_CONTENT = "Valid mock content for testing needs to be a bit longer but that's ok!";
+    public static final String VALID_MOCK_CONTENT = "Valid mock content for testing needs to be a bit longer " +
+            "but that's ok!";
     public static final String MOCK_USER_FIRST_NAME = "MockFirstNameUser";
     public static final String MOCK_ADMIN_FIRST_NAME = "MockFirstNameAdmin";
     public static final String MOCK_USER_LAST_NAME = "MockLastNameUser";
@@ -62,6 +64,15 @@ public class Helpers {
         mockPost.setTitle(VALID_MOCK_TITLE);
         mockPost.setContent(VALID_MOCK_CONTENT);
         return mockPost;
+    }
+
+    public static Comment createMockComment() {
+        var mockComment = new Comment();
+        mockComment.setId(1L);
+        mockComment.setAuthor(createMockUser());
+        mockComment.setContent(VALID_MOCK_CONTENT);
+        mockComment.setPost(createMockPost());
+        return mockComment;
     }
 
     public static UsersFilterOptions mockUserFilterOptions() {
