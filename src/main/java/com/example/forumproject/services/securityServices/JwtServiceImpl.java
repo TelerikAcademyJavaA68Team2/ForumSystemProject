@@ -55,7 +55,7 @@ public class JwtServiceImpl implements JwtService {
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
-                .setSigningKey(getSigninKey())
+                .setSigningKey(getSignInKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -67,12 +67,12 @@ public class JwtServiceImpl implements JwtService {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 // Token expiration set to 101 days for extended testing, reducing the need for frequent token refreshes.
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000 * 24 * 101))
-                .signWith(getSigninKey())
+                .signWith(getSignInKey())
                 .compact();
         return token;
     }
 
-    private SecretKey getSigninKey() {
+    private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64URL.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
