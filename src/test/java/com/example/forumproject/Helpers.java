@@ -1,9 +1,6 @@
 package com.example.forumproject;
 
-import com.example.forumproject.models.Comment;
-import com.example.forumproject.models.Post;
-import com.example.forumproject.models.Tag;
-import com.example.forumproject.models.User;
+import com.example.forumproject.models.*;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
 
@@ -73,6 +70,10 @@ public class Helpers {
         mockComment.setContent(VALID_MOCK_CONTENT);
         mockComment.setPost(createMockPost());
         return mockComment;
+    }
+
+    public static PostTag createMockPostTag() {
+        return new PostTag(createMockPost(), createMockTag());
     }
 
     public static UsersFilterOptions mockUserFilterOptions() {
