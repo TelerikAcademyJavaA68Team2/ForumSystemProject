@@ -30,16 +30,6 @@ public class ReactionServiceImpl implements ReactionService {
     }
 
     @Override
-    public List<Post> getAllLikedPosts(Long user_id) {
-        return reactionRepository.getAllLikedPosts(user_id);
-    }
-
-    @Override
-    public List<Post> getAllDislikedPosts(Long user_id) {
-        return reactionRepository.getAllDislikedPosts(user_id);
-    }
-
-    @Override
     public boolean save(Post post, User user, boolean like) {
 
         if (reactionRepository.checkIfLikeExists(post.getId(), user.getId())) {
