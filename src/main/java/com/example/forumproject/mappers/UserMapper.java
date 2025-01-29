@@ -6,6 +6,7 @@ import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileUserDto
 import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.PostService;
+import com.example.forumproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,12 +15,15 @@ public class UserMapper {
 
     private final PostService postService;
     private final PostMapper postMapper;
+    private final UserService userService;
 
     @Autowired
-    public UserMapper(PostService postService, PostMapper postMapper) {
+    public UserMapper(PostService postService, PostMapper postMapper, UserService userService) {
         this.postService = postService;
         this.postMapper = postMapper;
+        this.userService = userService;
     }
+
 
     public UserResponseDto mapUserToDtoOut(User user) {
         UserResponseDto userOut = new UserResponseDto(user.getId(),
@@ -48,12 +52,11 @@ public class UserMapper {
                     accountStatus,
                     profilePhoto,
                     user.getPhoneNumber() == null ? "No phone number provided" : user.getPhoneNumber());
-
             PostFilterOptions filterOptions = new PostFilterOptions
                     (null, null, null,
                             null, null,
                             null, null, user.getUsername());
-
+            userDto.setUser_posts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
             userDto.setUser_posts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
             return userDto;
         } else {
