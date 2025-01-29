@@ -39,7 +39,6 @@ import org.springframework.context.annotation.Configuration;
 )
 @SecurityScheme(
         name = "Bearer Authentication",
-        description = "Login to get your JWT Token",
         type = SecuritySchemeType.HTTP,
         bearerFormat = "JWT",
         scheme = "bearer"
@@ -53,7 +52,6 @@ public class SwaggerConfig {
                 .components(new Components()
                         .addSecuritySchemes("Bearer Authentication", new io.swagger.v3.oas.models.security.SecurityScheme()
                                 .type(io.swagger.v3.oas.models.security.SecurityScheme.Type.HTTP)
-                                .description("Login to get your JWT Token")
                                 .scheme("bearer")
                                 .bearerFormat("JWT")));
     }
