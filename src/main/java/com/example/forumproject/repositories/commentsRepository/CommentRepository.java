@@ -12,9 +12,9 @@ public interface CommentRepository {
 
     List<Comment> getAllCommentsByPostIdForMapper(Long postId);
 
-    void create(Long postId, Comment comment);
+    void create(Comment comment);
 
-    void update(Long postId, Comment comment);
+    void update(Comment comment);
 
     void delete(Long postId, Long id);
 

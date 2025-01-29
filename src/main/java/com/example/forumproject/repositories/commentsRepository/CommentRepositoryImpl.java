@@ -56,7 +56,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public void create(Long postId, Comment comment) {
+    public void create(Comment comment) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.persist(comment);
@@ -65,7 +65,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public void update(Long postId, Comment comment) {
+    public void update(Comment comment) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.merge(comment);
