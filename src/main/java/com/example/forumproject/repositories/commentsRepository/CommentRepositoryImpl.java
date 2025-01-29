@@ -21,58 +21,36 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> getAll(Long postId) {
-        try(Session session = sessionFactory.openSession()) {
-            Query<Comment> query = session.createQuery(
-                    "FROM Comment c WHERE c.post.id = :postId",
-                    Comment.class
-            );
-            query.setParameter("postId", postId);
-
-            List<Comment> comments = query.list();
-
-            if (comments.isEmpty()) {
-                throw new EntityNotFoundException("Comments", "post", postId);
-            }
-            return comments;
+    public List<Comment> getAllComments(Long postId) {
+        List<Comment> allComments = getAllCommentsByPostIdForMapper(postId);
+        if (allComments.isEmpty()) {
+            throw new EntityNotFoundException("Comments", "post", postId);
         }
+        return allComments;
     }
 
     @Override
     public Comment getById(Long postId, Long id) {
-       try (Session session = sessionFactory.openSession()) {
-           Query<Comment> query = session.createQuery(
-                   "FROM Comment c WHERE c.post.id = :postId AND c.id = :id",
-                   Comment.class
-           );
-           query.setParameter("postId", postId);
-           query.setParameter("id", id);
-           return query.uniqueResultOptional()
-                   .orElseThrow(() -> new EntityNotFoundException("Comment", id));
-       }
+        try (Session session = sessionFactory.openSession()) {
+            Query<Comment> query = session.createQuery(
+                    "FROM Comment c WHERE c.post.id = :postId AND c.id = :id",
+                    Comment.class
+            );
+            query.setParameter("postId", postId);
+            query.setParameter("id", id);
+            return query.uniqueResultOptional()
+                    .orElseThrow(() -> new EntityNotFoundException("Comment", id));
+        }
     }
 
     @Override
-    public List<Comment> getAllCommentsByPostId(Long postId) {
+    public List<Comment> getAllCommentsByPostIdForMapper(Long postId) {
         try (Session session = sessionFactory.openSession()) {
             Query<Comment> query = session.createQuery(
                     " from Comment WHERE post.id = :postId ",
                     Comment.class
             );
             query.setParameter("postId", postId);
-            return query.list();
-        }
-    }
-
-    @Override
-    public List<Comment> getCommentsByAuthor(Long postId, Long userId) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Comment> query = session.createQuery(
-                    "from Comment WHERE post.id = :postId AND author.id = :userId",
-                    Comment.class
-            );
-            query.setParameter("postId", postId);
-            query.setParameter("userId", userId);
             return query.list();
         }
     }

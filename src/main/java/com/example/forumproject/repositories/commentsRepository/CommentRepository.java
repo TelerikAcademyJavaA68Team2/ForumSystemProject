@@ -6,13 +6,11 @@ import java.util.List;
 
 public interface CommentRepository {
 
-    List<Comment> getAll(Long postId);
+    List<Comment> getAllComments(Long postId);
 
     Comment getById(Long postId, Long id);
 
-    List<Comment> getAllCommentsByPostId(Long postId);
-
-    List<Comment> getCommentsByAuthor(Long postId, Long userId);
+    List<Comment> getAllCommentsByPostIdForMapper(Long postId);
 
     void create(Long postId, Comment comment);
 

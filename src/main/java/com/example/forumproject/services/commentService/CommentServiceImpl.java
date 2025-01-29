@@ -4,9 +4,7 @@ import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.example.forumproject.repositories.commentsRepository.CommentRepository;
-import com.example.forumproject.repositories.PostRepository;
 import com.example.forumproject.services.PostService;
 import com.example.forumproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,26 +31,20 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getAll(Long postId) {
+    public List<Comment> getAllComments(Long postId) {
         Post post = postService.getById(postId);
-        return commentRepository.getAll(post.getId());
+        return commentRepository.getAllComments(post.getId());
     }
 
     @Override
     public List<Comment> getAllCommentsByPostId(Long postId) {
-        return commentRepository.getAllCommentsByPostId(postId);
+        return commentRepository.getAllCommentsByPostIdForMapper(postId);
     }
 
     @Override
     public Comment getById(Long postId, Long id) {
         Post postToGetCommentFrom = postService.getById(postId);
         return commentRepository.getById(postToGetCommentFrom.getId(), id);
-    }
-
-    @Override
-    public List<Comment> getCommentsByAuthor(Long postId) {
-        User author = postService.getById(postId).getAuthor();
-        return commentRepository.getCommentsByAuthor(postId, author.getId());
     }
 
     @Override

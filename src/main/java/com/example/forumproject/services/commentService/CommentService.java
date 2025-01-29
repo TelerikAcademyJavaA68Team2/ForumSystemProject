@@ -6,13 +6,11 @@ import java.util.List;
 
 public interface CommentService {
 
-    List<Comment> getAll(Long postId);
+    List<Comment> getAllComments(Long postId);
 
     List<Comment> getAllCommentsByPostId(Long postId);
 
     Comment getById(Long postId, Long id);
-
-    List<Comment> getCommentsByAuthor(Long postId);
 
     void create(Long postId, Comment comment);
 
