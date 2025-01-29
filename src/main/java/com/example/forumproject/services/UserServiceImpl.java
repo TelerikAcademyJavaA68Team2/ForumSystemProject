@@ -49,6 +49,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void update(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
     public User getById(Long userId) {
         return userRepository.getById(userId);
     }
@@ -109,17 +114,6 @@ public class UserServiceImpl implements UserService {
                     (NOT_BLOCKED, userId));
         }
         user.setBlocked(false);
-        userRepository.save(user);
-    }
-
-    @Override
-    public void updatePhoneNumber(String phoneNumber) {
-        ValidationHelpers.validatePhoneNumber(phoneNumber);
-        User user = getAuthenticatedUser();
-        if (user.getPhoneNumber() != null && user.getPhoneNumber().equals(phoneNumber)) {
-            throw new InvalidUserInputException(IDENTICAL_PHONE_NUMBER);
-        }
-        user.setPhoneNumber(phoneNumber);
         userRepository.save(user);
     }
 

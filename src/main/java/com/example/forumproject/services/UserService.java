@@ -14,6 +14,8 @@ public interface UserService extends UserDetailsService {
 
     void save(User user);
 
+    void update(User user);
+
     User getById(Long userId);
 
     User getByEmail(String email);
@@ -29,8 +31,6 @@ public interface UserService extends UserDetailsService {
     void blockUser(Long userId);
 
     void unblockUser(Long userId);
-
-    void updatePhoneNumber(String phoneNumber);
 
     User getAuthenticatedUser();
 }

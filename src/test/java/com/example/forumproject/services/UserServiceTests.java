@@ -100,13 +100,24 @@ public class UserServiceTests {
     }
 
     @Test
-    public void deleteUser_ShouldReturnUser_When_ValidArgs() {
+    public void deleteUser_ShouldDeleteUser_When_ValidArgs() {
         // Arrange
-        Mockito.when(mockRepository.getById(Mockito.any()))
-                .thenReturn(Helpers.createMockUser());
+        User user = Helpers.createMockUser();
+        SecurityContextHolder.setContext(securityContext);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        Mockito.when(authentication.getPrincipal()).thenReturn(user);
 
         // Act, Assert
         Assertions.assertDoesNotThrow(() -> service.deleteUser());
+    }
+
+    @Test
+    public void update_ShouldUpdateUser_When_ValidArgs() {
+        // Arrange
+        User user = Helpers.createMockUser();
+
+        // Act, Assert
+        Assertions.assertDoesNotThrow(() -> service.update(user));
     }
 
     @Test
@@ -289,57 +300,6 @@ public class UserServiceTests {
 
         // Act, Assert
         Assertions.assertDoesNotThrow(() -> service.unblockUser(2L));
-    }
-
-    @Test
-    public void updatePhoneNumber_ShouldNotThrowExc_When_ValidArgs() {
-        // Arrange
-        User user = Helpers.createMockAdmin();
-        user.setPhoneNumber("12345678");
-        SecurityContextHolder.setContext(securityContext);
-        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        Mockito.when(authentication.getPrincipal()).thenReturn(Helpers.createMockUser());
-        Mockito.when(service.getAuthenticatedUser()).thenReturn(user);
-
-        // Act, Assert
-        Assertions.assertDoesNotThrow(() -> service.updatePhoneNumber("87654321"));
-    }
-
-    @Test
-    public void updatePhoneNumber_ShouldThrowExc_When_PhoneTheSame() {
-        // Arrange
-        User user = Helpers.createMockAdmin();
-        user.setPhoneNumber("12345678");
-        SecurityContextHolder.setContext(securityContext);
-        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        Mockito.when(authentication.getPrincipal()).thenReturn(Helpers.createMockUser());
-        Mockito.when(service.getAuthenticatedUser()).thenReturn(user);
-
-        // Act, Assert
-        Assertions.assertThrows(InvalidUserInputException.class, () -> service.updatePhoneNumber("12345678"));
-    }
-
-    @Test
-    public void updatePhoneNumber_ShouldNotThrowExc_When_PhoneIsNull() {
-        // Arrange
-        User user = Helpers.createMockAdmin();
-        SecurityContextHolder.setContext(securityContext);
-        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        Mockito.when(authentication.getPrincipal()).thenReturn(Helpers.createMockUser());
-        Mockito.when(service.getAuthenticatedUser()).thenReturn(user);
-
-        // Act, Assert
-        Assertions.assertDoesNotThrow(() -> service.updatePhoneNumber("12345678"));
-    }
-
-    @Test
-    public void updatePhoneNumber_ShouldThrowExc_When_PhoneNotValid() {
-        // Arrange
-        User user = Helpers.createMockAdmin();
-        user.setPhoneNumber("12345678");
-
-        // Act, Assert
-        Assertions.assertThrows(InvalidUserInputException.class, () -> service.updatePhoneNumber("&&&&&&&"));
     }
 
     @Test
