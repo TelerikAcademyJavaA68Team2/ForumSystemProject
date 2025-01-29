@@ -34,14 +34,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getAll(Long postId) {
-        return commentRepository.getAll(postId);
+        Post post = postService.getById(postId);
+        return commentRepository.getAll(post.getId());
     }
 
     @Override
     public List<Comment> getAllCommentsByPostId(Long postId) {
         return commentRepository.getAllCommentsByPostId(postId);
     }
-
 
     @Override
     public Comment getById(Long postId, Long id) {
