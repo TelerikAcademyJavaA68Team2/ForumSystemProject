@@ -1,6 +1,7 @@
 package com.example.forumproject.mappers;
 
 import com.example.forumproject.models.Post;
+import com.example.forumproject.models.Tag;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.postDtos.PostInDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
@@ -11,6 +12,9 @@ import com.example.forumproject.services.reactionService.ReactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class PostMapper {
 
@@ -18,17 +22,15 @@ public class PostMapper {
     private final PostService postService;
     private final ReactionService reactionService;
     private final CommentService commentService;
-    private final TagMapper tagMapper;
     private final PostTagService postTagService;
 
     @Autowired
     public PostMapper(CommentMapper commentMapper, PostService postService,
-                      ReactionService reactionService, CommentService commentService, TagMapper tagMapper, PostTagService postTagService) {
+                      ReactionService reactionService, CommentService commentService, PostTagService postTagService) {
         this.commentMapper = commentMapper;
         this.postService = postService;
         this.reactionService = reactionService;
         this.commentService = commentService;
-        this.tagMapper = tagMapper;
         this.postTagService = postTagService;
     }
 
@@ -53,12 +55,22 @@ public class PostMapper {
         postOutDto.setAuthor(post.getAuthor().getUsername());
         postOutDto.setTitle(post.getTitle());
         postOutDto.setContent(post.getContent());
-        postOutDto.setLikes(reactionService.getLikesByPostId(post.getId()));
-        postOutDto.setDislikes(reactionService.getDislikesByPostId(post.getId()));
+
+        postOutDto.setLikes(reactionService
+                .getLikesByPostId(post.getId()));
+
+        postOutDto.setDislikes(reactionService
+                .getDislikesByPostId(post.getId()));
+
         postOutDto.setComments(commentMapper
                 .commentsToCommentDtos(commentService
-                        .getAllCommentsByPostId(post.getId())));
-        postOutDto.setTags(tagMapper.tagsToTagNames(postTagService.getTagsByPostId(post.getId())));
+                .getAllCommentsByPostId(post.getId())));
+
+        postOutDto.setTags(postTagService.getTagsByPostId(post.getId())
+                .stream()
+                .map(Tag::getTagName)
+                .toList());
+
         return postOutDto;
     }
 }

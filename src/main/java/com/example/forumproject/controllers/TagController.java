@@ -3,7 +3,6 @@ package com.example.forumproject.controllers;
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
-import com.example.forumproject.mappers.TagMapper;
 import com.example.forumproject.models.Tag;
 import com.example.forumproject.models.dtos.tagDtos.TagInDto;
 import com.example.forumproject.services.postTagService.PostTagService;
@@ -26,13 +25,11 @@ import java.util.stream.Collectors;
 public class TagController {
 
     private final TagService tagService;
-    private final TagMapper tagMapper;
     private final PostTagService postTagService;
 
     @Autowired
-    public TagController(TagService tagService, TagMapper tagMapper, PostTagService postTagService) {
+    public TagController(TagService tagService, PostTagService postTagService) {
         this.tagService = tagService;
-        this.tagMapper = tagMapper;
         this.postTagService = postTagService;
     }
 
@@ -49,7 +46,7 @@ public class TagController {
         try {
             return postTagService.getTagsByPostId(postId)
                     .stream()
-                    .map(tagMapper::TagToTagName)
+                    .map(Tag::getTagName)
                     .collect(Collectors.toList());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
