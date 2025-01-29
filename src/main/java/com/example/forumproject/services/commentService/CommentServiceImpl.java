@@ -6,8 +6,8 @@ import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.example.forumproject.repositories.commentsRepository.CommentRepository;
-import com.example.forumproject.repositories.postRepository.PostRepository;
-import com.example.forumproject.services.userService.UserService;
+import com.example.forumproject.repositories.PostRepository;
+import com.example.forumproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

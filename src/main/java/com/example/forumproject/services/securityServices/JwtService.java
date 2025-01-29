@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 public interface JwtService {
 
-    public String extractUsername(String token);
+    String extractUsername(String token);
 
     boolean isValid(String token, UserDetails user);
 

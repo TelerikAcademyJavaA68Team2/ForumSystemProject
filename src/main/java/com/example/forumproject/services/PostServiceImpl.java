@@ -1,10 +1,10 @@
-package com.example.forumproject.services.postService;
+package com.example.forumproject.services;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
-import com.example.forumproject.repositories.postRepository.PostRepository;
+import com.example.forumproject.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

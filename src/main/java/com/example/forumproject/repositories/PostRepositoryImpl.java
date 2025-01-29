@@ -1,4 +1,4 @@
-package com.example.forumproject.repositories.postRepository;
+package com.example.forumproject.repositories;
 
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.models.Post;
@@ -72,12 +72,12 @@ public class PostRepositoryImpl implements PostRepository {
                 });
 
                 filterOptions.getMinLikes().ifPresent(minLikes -> {
-                    sb.append("p.id IN (SELECT pl.post.id FROM PostLikesDislikes pl WHERE pl.isLike = true GROUP BY pl.post.id HAVING COUNT(pl.id) >= :minLikes) ");
+                    sb.append("p.id IN (SELECT pl.post.id FROM Reaction pl WHERE pl.isLike = true GROUP BY pl.post.id HAVING COUNT(pl.id) >= :minLikes) ");
                     sb.append("AND ");
                 });
 
                 filterOptions.getMaxLikes().ifPresent(maxLikes -> {
-                    sb.append("p.id IN (SELECT pl.post.id FROM PostLikesDislikes pl WHERE pl.isLike = true GROUP BY pl.post.id HAVING COUNT(pl.id) <= :maxLikes) ");
+                    sb.append("p.id IN (SELECT pl.post.id FROM Reaction pl WHERE pl.isLike = true GROUP BY pl.post.id HAVING COUNT(pl.id) <= :maxLikes) ");
                     sb.append("AND ");
                 });
 
@@ -97,11 +97,7 @@ public class PostRepositoryImpl implements PostRepository {
                 } else if ("id".equalsIgnoreCase(orderBy)) {
                     sb.append("ORDER BY p.id ");
                 } else if ("likes".equalsIgnoreCase(orderBy)) {
-                    sb.append("ORDER BY (SELECT COUNT(pld.id) FROM PostLikesDislikes pld WHERE pld.post.id = p.id AND pld.isLike = true) DESC");
-                    if (filterOptions.getOrderType().isPresent() && filterOptions.getOrderType().get().equalsIgnoreCase("desc")) {
-                        sb.setLength(sb.length() - 5);
-                    }
-                    orderByIsPresent = false;
+                    sb.append("ORDER BY (SELECT COUNT(pld.id) FROM Reaction pld WHERE pld.post.id = p.id AND pld.isLike = true) ");
                 } else if ("comments".equalsIgnoreCase(orderBy)) {
                     sb.append("ORDER BY (SELECT COUNT(c.id) FROM Comment c WHERE c.post.id = p.id) ");
                 }

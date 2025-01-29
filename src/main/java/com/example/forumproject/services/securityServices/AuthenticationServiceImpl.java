@@ -3,7 +3,7 @@ package com.example.forumproject.services.securityServices;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
 import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
-import com.example.forumproject.services.userService.UserService;
+import com.example.forumproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,7 +32,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
-
 
     public String register(UserRegistrationDto request) {
         User user = createUserFromRequest(request);

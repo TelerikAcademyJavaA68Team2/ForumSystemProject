@@ -1,4 +1,4 @@
-package com.example.forumproject.services.postService;
+package com.example.forumproject.services;
 
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.Post;

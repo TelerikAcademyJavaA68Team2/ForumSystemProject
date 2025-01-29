@@ -2,8 +2,8 @@ package com.example.forumproject.mappers;
 
 import com.example.forumproject.models.dtos.homepageResponseDtos.HomepagePostsDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
-import com.example.forumproject.services.postService.PostService;
-import com.example.forumproject.services.userService.UserService;
+import com.example.forumproject.services.PostService;
+import com.example.forumproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

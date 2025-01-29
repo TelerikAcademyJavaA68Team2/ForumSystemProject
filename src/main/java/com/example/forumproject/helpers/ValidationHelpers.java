@@ -4,7 +4,7 @@ import com.example.forumproject.exceptions.*;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
-import com.example.forumproject.repositories.userRepository.UserRepository;
+import com.example.forumproject.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.regex.Matcher;
