@@ -1,6 +1,6 @@
 package com.example.forumproject.services;
 
-import com.example.forumproject.UserHelpers;
+import com.example.forumproject.Helpers;
 import com.example.forumproject.exceptions.*;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
@@ -36,9 +36,9 @@ public class UserServiceTests {
     @Test
     public void getAllUsers_ShouldReturnUserList_When_ValidArgs() {
         // Arrange
-        UsersFilterOptions filterOptions = UserHelpers.mockUserFilterOptions();
+        UsersFilterOptions filterOptions = Helpers.mockUserFilterOptions();
         Mockito.when(mockRepository.getAllUsers(filterOptions))
-                .thenReturn(List.of(UserHelpers.createMockUser()));
+                .thenReturn(List.of(Helpers.createMockUser()));
 
         // Act
         List<User> result = service.getAllUsers(filterOptions);
@@ -62,7 +62,7 @@ public class UserServiceTests {
     public void loadUserByUsername_ShouldReturnUser_When_ValidArgs() {
         // Arrange
         Mockito.when(mockRepository.getByUsername(Mockito.any()))
-                .thenReturn(UserHelpers.createMockUser());
+                .thenReturn(Helpers.createMockUser());
 
         // Act, Assert
         Assertions.assertEquals(1L, service.loadUserByUsername(Mockito.any()).getId());
@@ -71,7 +71,7 @@ public class UserServiceTests {
     @Test
     public void getByEmail_ShouldReturnUser_When_ValidArgs() {
         // Arrange
-        Mockito.when(mockRepository.getByEmail("mock@user.com")).thenReturn(UserHelpers.createMockUser());
+        Mockito.when(mockRepository.getByEmail("mock@user.com")).thenReturn(Helpers.createMockUser());
 
         // Act
         User result = service.getByEmail("mock@user.com");
@@ -90,7 +90,7 @@ public class UserServiceTests {
     @Test
     public void getById_ShouldReturnUser_When_ValidArgs() {
         // Arrange
-        Mockito.when(mockRepository.getById(1L)).thenReturn(UserHelpers.createMockUser());
+        Mockito.when(mockRepository.getById(1L)).thenReturn(Helpers.createMockUser());
 
         // Act
         User result = service.getById(1L);
@@ -103,7 +103,7 @@ public class UserServiceTests {
     public void deleteUser_ShouldReturnUser_When_ValidArgs() {
         // Arrange
         Mockito.when(mockRepository.getById(Mockito.any()))
-                .thenReturn(UserHelpers.createMockUser());
+                .thenReturn(Helpers.createMockUser());
 
         // Act, Assert
         Assertions.assertDoesNotThrow(() -> service.deleteUser(1L));
@@ -122,7 +122,7 @@ public class UserServiceTests {
     @Test
     public void save_ShouldThrowExc_When_emailExists() {
         // Arrange
-        User user = UserHelpers.createMockUser();
+        User user = Helpers.createMockUser();
         Mockito.when(mockRepository.getByUsername(Mockito.any()))
                 .thenThrow(UsernameNotFoundException.class);
         Mockito.when(mockRepository.getByEmail(user.getEmail()))
@@ -135,7 +135,7 @@ public class UserServiceTests {
     @Test
     public void save_ShouldThrowExc_When_usernameTaken() {
         // Arrange
-        User user = UserHelpers.createMockUser();
+        User user = Helpers.createMockUser();
         Mockito.when(mockRepository.getByUsername(Mockito.any()))
                 .thenReturn(user);
 
@@ -146,7 +146,7 @@ public class UserServiceTests {
     @Test
     public void save_ShouldThrowExc_When_emailInvalid() {
         // Arrange
-        User user = UserHelpers.createMockUser();
+        User user = Helpers.createMockUser();
         user.setEmail("£££££££££");
         Mockito.when(mockRepository.getByUsername(Mockito.any()))
                 .thenThrow(UsernameNotFoundException.class);
@@ -159,7 +159,7 @@ public class UserServiceTests {
     @Test
     public void save_ShouldNotThrowExc_When_ArgsValid() {
         // Arrange
-        User user = UserHelpers.createMockUser();
+        User user = Helpers.createMockUser();
         Mockito.when(mockRepository.getByUsername(Mockito.any()))
                 .thenThrow(UsernameNotFoundException.class);
         Mockito.when(mockRepository.getByEmail(user.getEmail()))
@@ -182,7 +182,7 @@ public class UserServiceTests {
     @Test
     public void promoteToAdmin_ShouldThrowExc_When_UserIsAdmin() {
         // Arrange
-        User user = UserHelpers.createMockAdmin();
+        User user = Helpers.createMockAdmin();
         Mockito.when(mockRepository.getById(Mockito.any()))
                 .thenReturn(user);
 
@@ -193,7 +193,7 @@ public class UserServiceTests {
     @Test
     public void promoteToAdmin_ShouldNotThrowExc_When_ValidArgs() {
         // Arrange
-        User user = UserHelpers.createMockUser();
+        User user = Helpers.createMockUser();
         Mockito.when(mockRepository.getById(Mockito.any()))
                 .thenReturn(user);
 
@@ -214,7 +214,7 @@ public class UserServiceTests {
     @Test
     public void demoteAdminToUser_ShouldThrowExc_When_UserIsAdmin() {
         // Arrange
-        User user = UserHelpers.createMockUser();
+        User user = Helpers.createMockUser();
         Mockito.when(mockRepository.getById(Mockito.any()))
                 .thenReturn(user);
 
@@ -225,7 +225,7 @@ public class UserServiceTests {
     @Test
     public void demoteAdminToUser_ShouldNotThrowExc_When_ValidArgs() {
         // Arrange
-        User user = UserHelpers.createMockAdmin();
+        User user = Helpers.createMockAdmin();
         Mockito.when(mockRepository.getById(Mockito.any()))
                 .thenReturn(user);
 
@@ -246,7 +246,7 @@ public class UserServiceTests {
     @Test
     public void blockUser_ShouldThrowExc_When_UserIsBlocked() {
         // Arrange
-        User user = UserHelpers.createMockUser();
+        User user = Helpers.createMockUser();
         user.setBlocked(true);
         Mockito.when(mockRepository.getById(Mockito.any()))
                 .thenReturn(user);
@@ -258,7 +258,7 @@ public class UserServiceTests {
     @Test
     public void blockUser_ShouldNotThrowExc_When_ValidArgs() {
         // Arrange
-        User user = UserHelpers.createMockAdmin();
+        User user = Helpers.createMockAdmin();
         user.setBlocked(false);
         Mockito.when(mockRepository.getById(Mockito.any()))
                 .thenReturn(user);
@@ -280,7 +280,7 @@ public class UserServiceTests {
     @Test
     public void unblockUser_ShouldThrowExc_When_UserIsBlocked() {
         // Arrange
-        User user = UserHelpers.createMockUser();
+        User user = Helpers.createMockUser();
         user.setBlocked(false);
         Mockito.when(mockRepository.getById(Mockito.any()))
                 .thenReturn(user);
@@ -292,7 +292,7 @@ public class UserServiceTests {
     @Test
     public void unblockUser_ShouldNotThrowExc_When_ValidArgs() {
         // Arrange
-        User user = UserHelpers.createMockAdmin();
+        User user = Helpers.createMockAdmin();
         user.setBlocked(true);
         Mockito.when(mockRepository.getById(Mockito.any()))
                 .thenReturn(user);
@@ -304,11 +304,11 @@ public class UserServiceTests {
     @Test
     public void updatePhoneNumber_ShouldNotThrowExc_When_ValidArgs() {
         // Arrange
-        User user = UserHelpers.createMockAdmin();
+        User user = Helpers.createMockAdmin();
         user.setPhoneNumber("12345678");
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        Mockito.when(authentication.getPrincipal()).thenReturn(UserHelpers.createMockUser());
+        Mockito.when(authentication.getPrincipal()).thenReturn(Helpers.createMockUser());
         Mockito.when(service.getAuthenticatedUser()).thenReturn(user);
 
         // Act, Assert
@@ -318,11 +318,11 @@ public class UserServiceTests {
     @Test
     public void updatePhoneNumber_ShouldThrowExc_When_PhoneTheSame() {
         // Arrange
-        User user = UserHelpers.createMockAdmin();
+        User user = Helpers.createMockAdmin();
         user.setPhoneNumber("12345678");
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        Mockito.when(authentication.getPrincipal()).thenReturn(UserHelpers.createMockUser());
+        Mockito.when(authentication.getPrincipal()).thenReturn(Helpers.createMockUser());
         Mockito.when(service.getAuthenticatedUser()).thenReturn(user);
 
         // Act, Assert
@@ -332,10 +332,10 @@ public class UserServiceTests {
     @Test
     public void updatePhoneNumber_ShouldNotThrowExc_When_PhoneIsNull() {
         // Arrange
-        User user = UserHelpers.createMockAdmin();
+        User user = Helpers.createMockAdmin();
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        Mockito.when(authentication.getPrincipal()).thenReturn(UserHelpers.createMockUser());
+        Mockito.when(authentication.getPrincipal()).thenReturn(Helpers.createMockUser());
         Mockito.when(service.getAuthenticatedUser()).thenReturn(user);
 
         // Act, Assert
@@ -345,7 +345,7 @@ public class UserServiceTests {
     @Test
     public void updatePhoneNumber_ShouldThrowExc_When_PhoneNotValid() {
         // Arrange
-        User user = UserHelpers.createMockAdmin();
+        User user = Helpers.createMockAdmin();
         user.setPhoneNumber("12345678");
 
         // Act, Assert
@@ -357,7 +357,7 @@ public class UserServiceTests {
         // Arrange
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        User user = UserHelpers.createMockUser();
+        User user = Helpers.createMockUser();
         Mockito.when(authentication.getPrincipal()).thenReturn(user);
 
         // Act
@@ -372,8 +372,8 @@ public class UserServiceTests {
         // Arrange
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        User user = UserHelpers.createMockUser();
-        Mockito.when(authentication.getPrincipal()).thenReturn(UserHelpers.createMockUser());
+        User user = Helpers.createMockUser();
+        Mockito.when(authentication.getPrincipal()).thenReturn(Helpers.createMockUser());
 
         // Act, Assert
         Assertions.assertDoesNotThrow(() -> service.getAuthenticatedUser());
@@ -384,7 +384,7 @@ public class UserServiceTests {
         // Arrange
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        User user = UserHelpers.createMockUser();
+        User user = Helpers.createMockUser();
         Mockito.when(authentication.getPrincipal()).thenReturn(null);
 
         // Act, Assert
