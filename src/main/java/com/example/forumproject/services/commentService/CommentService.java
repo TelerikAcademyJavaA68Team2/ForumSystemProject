@@ -12,7 +12,7 @@ public interface CommentService {
 
     Comment getById(Long postId, Long id);
 
-    void create(Long postId, Comment comment);
+    Comment create(Long postId, Comment comment);
 
     void update(Long postId, Comment comment);
 
