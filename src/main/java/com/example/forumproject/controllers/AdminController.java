@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/api/admin")
 @Tag(name = "Admin Management", description = "Endpoints for admin actions like user, post, and comment management")
 public class AdminController {
-    private final HomepageResponseFactory homepageResponseFactory;
+
     private final UserService userService;
     private final PostService postService;
     private final CommentService commentService;
@@ -34,12 +34,10 @@ public class AdminController {
 
     @Autowired
     public AdminController(
-            HomepageResponseFactory homepageResponseFactory,
             UserMapper userMapper,
             UserService userService,
             PostService postService,
             CommentService commentService) {
-        this.homepageResponseFactory = homepageResponseFactory;
         this.userService = userService;
         this.postService = postService;
         this.commentService = commentService;
@@ -225,92 +223,5 @@ public class AdminController {
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
-    }
-
-
-    // informational delete on production
-    // informational delete on production
-    // informational delete on production
-    // informational delete on production
-    // informational delete on production
-    // informational delete on production
-    @Operation(
-            summary = "Get Admin Options Info",
-            description = "Retrieve general information about admin options available in the application.",
-            responses = @ApiResponse(description = "Success", responseCode = "200")
-    )
-    @GetMapping
-    public ResponseEntity<String> getAdminOptionsInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getAdminOptionsInfo());
-    }
-
-    @Operation(
-            summary = "Get Delete Comment Info",
-            description = "Retrieve information about the process of deleting a specific comment from a post.",
-            responses = @ApiResponse(description = "Success", responseCode = "200")
-    )
-    @GetMapping("/posts/{postId}/comments/{commentId}/delete")
-    public ResponseEntity<String> getDeleteCommentInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getDeleteCommentInfo());
-    }
-
-    @Operation(
-            summary = "Get Delete Post Info",
-            description = "Retrieve information about the process of deleting a specific post.",
-            responses = @ApiResponse(description = "Success", responseCode = "200")
-    )
-    @GetMapping("/posts/{postId}/delete")
-    public ResponseEntity<String> getDeletePostInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getDeletePostInfo());
-    }
-
-    @Operation(
-            summary = "Get Promote to Admin Info",
-            description = "Retrieve information about the process of promoting a user to an admin role.",
-            responses = @ApiResponse(description = "Success", responseCode = "200")
-    )
-    @GetMapping("/users/{userId}/make-admin")
-    public ResponseEntity<String> getUpdateToAdminInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getUpdateToAdminInfo());
-    }
-
-    @Operation(
-            summary = "Get Demote to User Info",
-            description = "Retrieve information about the process of demoting an admin to a regular user role.",
-            responses = @ApiResponse(description = "Success", responseCode = "200")
-    )
-    @GetMapping("/users/{userId}/make-user")
-    public ResponseEntity<String> getDemoteToUserInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getDemoteToUserInfo());
-    }
-
-    @Operation(
-            summary = "Get Unblock User Info",
-            description = "Retrieve information about the process of unblocking a user account.",
-            responses = @ApiResponse(description = "Success", responseCode = "200")
-    )
-    @GetMapping("/users/{userId}/unblock")
-    public ResponseEntity<String> getUnblockUserInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getUnblockUserInfo());
-    }
-
-    @Operation(
-            summary = "Get Block User Info",
-            description = "Retrieve information about the process of blocking a user account.",
-            responses = @ApiResponse(description = "Success", responseCode = "200")
-    )
-    @GetMapping("/users/{userId}/block")
-    public ResponseEntity<String> getBlockUserInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getBlockUserInfo());
-    }
-
-    @Operation(
-            summary = "Get Update Phone Info",
-            description = "Retrieve information about the process of updating a user's phone number.",
-            responses = @ApiResponse(description = "Success", responseCode = "200")
-    )
-    @GetMapping("/profile/phone")
-    public ResponseEntity<String> getUpdatePhoneInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getUpdatePhoneInfo());
     }
 }

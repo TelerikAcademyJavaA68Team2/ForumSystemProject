@@ -56,7 +56,6 @@ public class HomepageResponseFactory {
         return sb.toString();
     }
 
-    //todo dummy data
     public String getHomepageInfo() {
 
         StringBuilder sb = new StringBuilder();
@@ -84,79 +83,6 @@ public class HomepageResponseFactory {
         sb.append("/users/posts/{postId}/comments: Add comments to posts.").append(System.lineSeparator());
         sb.append("/users/posts/{postId}/like: Like or dislike a post.").append(System.lineSeparator());
 
-        return sb.toString();
-    }
-
-    public String getAdminOptionsInfo() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("Congrats you are Admin which means you now have access to the forum private parts.").append(System.lineSeparator());
-        sb.append("Here are all the URLs you can go to and all the actions you can take.").append(System.lineSeparator());
-        sb.append(System.lineSeparator());
-        sb.append(System.lineSeparator());
-        sb.append("/admin/profile                    -->  Check your profile.").append(System.lineSeparator());
-        sb.append("/admin/profile/phone              -->  Add/Update your phone number so other admins can contact you.").append(System.lineSeparator());
-        sb.append("/admin/users/{userId}/block       -->  Block user/admin.").append(System.lineSeparator());
-        sb.append("/admin/users/{userId}/unblock     -->  Unblock user/admin.").append(System.lineSeparator());
-        sb.append("/admin/users/{userId}/make-admin  -->  Give ADMIN access to other user.").append(System.lineSeparator());
-        sb.append("/admin/users/{userId}/make-user   -->  Remove ADMIN access from inactive admin.").append(System.lineSeparator());
-        sb.append("/admin/posts/{postId}/delete      -->  Delete any harmful posts.").append(System.lineSeparator());
-        sb.append("/admin/posts/{postId}/comments/{commentId}/delete  -->  Delete any harmful comments.").append(System.lineSeparator());
-
-        return sb.toString();
-    }
-
-
-    public String getUpdatePhoneInfo() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("In order to update your phone you need to:").append(System.lineSeparator());
-        sb.append("Send a post request to the current URL and add your phone number in the body");
-        return sb.toString();
-    }
-
-    public String getBlockUserInfo() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("In order to block this User you need to:").append(System.lineSeparator());
-        sb.append("Send a post request to the current URL.").append(System.lineSeparator());
-        sb.append("If you want to unblock the User later you need to:").append(System.lineSeparator());
-        sb.append("Change the block to unblock in the URL and dont forget to change the request to post!");
-        return sb.toString();
-    }
-
-    public String getUnblockUserInfo() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("In order to unblock this User you need to:").append(System.lineSeparator());
-        sb.append("Send a post request to the current URL.").append(System.lineSeparator());
-        return sb.toString();
-    }
-
-    public String getUpdateToAdminInfo() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("In order to promote this User to Admin you need to:").append(System.lineSeparator());
-        sb.append("Send a post request to the current URL.").append(System.lineSeparator());
-        return sb.toString();
-    }
-
-    public String getDemoteToUserInfo() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("In order to demote this Admin to User you need to:").append(System.lineSeparator());
-        sb.append("Send a post request to the current URL.").append(System.lineSeparator());
-        return sb.toString();
-
-    }
-
-
-    public String getDeletePostInfo() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("In order to delete this Post you need to:").append(System.lineSeparator());
-        sb.append("Send a post request to the current URL.").append(System.lineSeparator());
-        return sb.toString();
-    }
-
-    public String getDeleteCommentInfo() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("In order to delete this Comment you need to:").append(System.lineSeparator());
-        sb.append("Send a post request to the current URL.").append(System.lineSeparator());
         return sb.toString();
     }
 

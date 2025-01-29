@@ -10,8 +10,6 @@ public interface PostService {
 
     List<Post> getAll(PostFilterOptions filterOptions);
 
-    /*List<Post> getAllPostsFromUser(Long user_id);*/
-
     Long getNumberOfPostsByUser(Long user_id);
 
     Long getTotalNumberOfPosts();

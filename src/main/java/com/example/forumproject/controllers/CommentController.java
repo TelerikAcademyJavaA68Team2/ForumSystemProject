@@ -45,7 +45,7 @@ public class CommentController {
     @GetMapping("/comments")
     public List<CommentOutDto> getAllComments(@PathVariable Long postId) {
         try {
-            List<Comment> comments = commentService.getAll(postId);
+            List<Comment> comments = commentService.getAllComments(postId);
             return comments
                     .stream()
                     .map(commentMapper::commentToCommentOutDto)
