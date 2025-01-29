@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class ValidationHelpers {
 
     private static final String MODIFY_POSTS = "Only admins or the post's creator can modify posts!";
-    private static final String MODIFY_COMMENTS = "Only admins or the comment's creator can modify comments!";
+    public static final String UNAUTHORIZED_MESSAGE = "Only admins or the comment's creator can modify comments!";
 
 
     public static String ValidateUpdate(RequestUserProfileDto userUpdateDto, User user) {
@@ -114,7 +114,7 @@ public class ValidationHelpers {
 
     public static void validateUserIsAdminOrCommentAuthor(Comment comment, User user) {
         if (!(user.isAdmin() || comment.getAuthor().equals(user))) {
-            throw new UnauthorizedAccessException(MODIFY_COMMENTS);
+            throw new UnauthorizedAccessException(UNAUTHORIZED_MESSAGE);
         }
     }
 
