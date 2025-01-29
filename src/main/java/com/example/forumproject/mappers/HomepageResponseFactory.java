@@ -160,17 +160,17 @@ public class HomepageResponseFactory {
         return sb.toString();
     }
 
-    public HomepagePostsDto getHomepagePosts() {
-        HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums top commented posts!");
-        PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, "comments", "desc", null);
-        homepagePosts.setPosts(postService.getAll(filterOptions).stream().limit(10).map(postMapper::postToPostOutDto).toList());
-        return homepagePosts;
-    }
-
-    public HomepagePostsDto getHomepageRecentPosts() {
-        HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums newest posts!");
-        PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, "id", "desc", null);
-        homepagePosts.setPosts(postService.getAll(filterOptions).stream().limit(10).map(postMapper::postToPostOutDto).toList());
-        return homepagePosts;
+    public HomepagePostsDto getHomepagePosts(String orderBy) {
+        if (orderBy.equalsIgnoreCase("recent")) {
+            HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums newest posts!");
+            PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, "id", "desc", null);
+            homepagePosts.setPosts(postService.getAll(filterOptions).stream().limit(10).map(postMapper::postToPostOutDto).toList());
+            return homepagePosts;
+        } else {
+            HomepagePostsDto homepagePosts = new HomepagePostsDto("These are the Forums top commented posts!");
+            PostFilterOptions filterOptions = new PostFilterOptions(null, null, null, null, null, "comments", "desc", null);
+            homepagePosts.setPosts(postService.getAll(filterOptions).stream().limit(10).map(postMapper::postToPostOutDto).toList());
+            return homepagePosts;
+        }
     }
 }

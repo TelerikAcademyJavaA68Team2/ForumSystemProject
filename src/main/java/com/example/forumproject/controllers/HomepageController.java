@@ -18,6 +18,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/home")
 @Tag(name = "Homepage Management", description = "APIs for managing homepage, authentication, and registration")
@@ -44,16 +46,10 @@ public class HomepageController {
             @ApiResponse(description = "Success", responseCode = "200")
     })
     @GetMapping("/posts")
-    public ResponseEntity<HomepagePostsDto> getHomepagePosts() {
-        return ResponseEntity.ok(homepageResponseFactory.getHomepagePosts());
-    }
-
-    @Operation(summary = "Get Recent Homepage Posts", description = "Retrieve recent posts displayed on the homepage", responses = {
-            @ApiResponse(description = "Success", responseCode = "200")
-    })
-    @GetMapping("/posts/recent")
-    public ResponseEntity<HomepagePostsDto> getHomepageRecentPosts() {
-        return ResponseEntity.ok(homepageResponseFactory.getHomepageRecentPosts());
+    public ResponseEntity<HomepagePostsDto> getHomepagePosts(
+            @RequestParam(required = false) String orderBy) {
+        Optional<String> postsOrder = Optional.ofNullable(orderBy);
+        return ResponseEntity.ok(homepageResponseFactory.getHomepagePosts(postsOrder.orElse("default")));
     }
 
     @Operation(summary = "Register a New User", description = "Register a new user account", responses = {
