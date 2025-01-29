@@ -15,9 +15,7 @@ public class FullProfileUserDto {
     private String account_status;
     private String profile_photo;
 
-
     private List<PostOutDto> user_posts;
-
 
     public FullProfileUserDto(Long id, String first_name, String last_name, String username, String email, String account_type, String account_status, String profile_photo) {
         this.id = id;

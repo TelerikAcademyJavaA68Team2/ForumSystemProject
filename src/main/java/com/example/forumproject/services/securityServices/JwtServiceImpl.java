@@ -15,7 +15,10 @@ import java.util.function.Function;
 
 @Service
 public class JwtServiceImpl implements JwtService {
+
     private static final String SECRET_KEY = "9bfb230cbadfdf8af34f02be46188a222b105d14a1dd1f183e8934de0d78c354";
+    public static final String EXPIRED_TOKEN = "JWT Token has expired. Please log in again.";
+    public static final String LOGIN_MESSAGE = "Please log in again.";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -25,7 +28,7 @@ public class JwtServiceImpl implements JwtService {
         try {
             String username = extractUsername(token);
             if (!username.equals(user.getUsername())) {
-                throw new UnauthorizedAccessException("Please log in again.");
+                throw new UnauthorizedAccessException(LOGIN_MESSAGE);
             }
             return !isTokenExpired(token);
         } catch (Exception e) {
@@ -35,7 +38,7 @@ public class JwtServiceImpl implements JwtService {
 
     private boolean isTokenExpired(String token) {
         if (extractExpiration(token).before(new Date())) {
-            throw new UnauthorizedAccessException("JWT Token has expired. Please log in again.");
+            throw new UnauthorizedAccessException(EXPIRED_TOKEN);
         }
         return false;
     }
@@ -62,7 +65,8 @@ public class JwtServiceImpl implements JwtService {
         String token = Jwts.builder()
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000 * 24 * 101)) // 101 days
+                // Token expiration set to 101 days for extended testing, reducing the need for frequent token refreshes.
+                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000 * 24 * 101))
                 .signWith(getSigninKey())
                 .compact();
         return token;

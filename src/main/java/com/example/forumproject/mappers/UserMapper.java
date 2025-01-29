@@ -21,7 +21,6 @@ public class UserMapper {
         this.postMapper = postMapper;
     }
 
-
     public UserResponseDto mapUserToDtoOut(User user) {
         UserResponseDto userOut = new UserResponseDto(user.getId(),
                 user.getFirstName(),
@@ -49,9 +48,7 @@ public class UserMapper {
                     accountStatus,
                     profilePhoto,
                     user.getPhoneNumber() == null ? "No phone number provided" : user.getPhoneNumber());
-/*
-            userDto.setUser_posts(postService.getAllPostsFromUser(user.getId()).stream().map(postMapper::postToPostOutDto).toList());
-*/
+
             PostFilterOptions filterOptions = new PostFilterOptions
                     (null, null, null,
                             null, null,
@@ -69,9 +66,7 @@ public class UserMapper {
                     accountType,
                     accountStatus,
                     profilePhoto);
-/*
-            userDto.setUser_posts(postService.getAllPostsFromUser(user.getId()).stream().map(postMapper::postToPostOutDto).toList());
-*/
+
             PostFilterOptions filterOptions = new PostFilterOptions
                     (null, null, null,
                             null, null,

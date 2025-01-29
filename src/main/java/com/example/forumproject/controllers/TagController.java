@@ -129,27 +129,4 @@ public class TagController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
-
-//    @Operation(
-//            summary = "Delete a tag from a post by tag ID",
-//            description = "Remove a tag from a specific post using the tag ID",
-//            responses = {
-//                    @ApiResponse(responseCode = "200", description = "Successfully deleted tag"),
-//                    @ApiResponse(responseCode = "404", description = "Post or tag not found"),
-//                    @ApiResponse(responseCode = "401", description = "Unauthorized to delete tag")
-//            }
-//    )
- /*   @DeleteMapping("/tags/{tagId}")
-    public void deleteTagFromPost(@PathVariable Long postId,
-                                  @PathVariable Long tagId) {
-        try {
-            postTagService.deleteTagFromPost(postId, tagId);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (DuplicateEntityException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        } catch (UnauthorizedAccessException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-    }*/
 }

@@ -37,13 +37,6 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentOutDto> getAllCommentDtos(Long postId) {
-        //List<CommentDto> comments = commentRepository.getAllCommentsByPostId(postId)
-
-        return null;
-    }
-
-    @Override
     public List<Comment> getAllCommentsByPostId(Long postId) {
         return commentRepository.getAllCommentsByPostId(postId);
     }
@@ -63,29 +56,41 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void create(Long postId, Comment comment) {
         User user = userService.getAuthenticatedUser();
+
         Post postToAddCommentTo = postRepository.getById(postId);
+
         comment.setAuthor(user);
+
         comment.setPost(postToAddCommentTo);
+
         commentRepository.create(postId, comment);
     }
 
     @Override
     public void update(Long postId, Comment newComment) {
         User user = userService.getAuthenticatedUser();
+
         Comment commentToUpdate = commentRepository.getById(postId, newComment.getId());
+
         validateUserIsAdminOrCommentAuthor(commentToUpdate, user);
+
         if (isDuplicateComment(newComment, commentToUpdate)) {
             throw new DuplicateEntityException(DUPLICATE_COMMENT_MESSAGE);
         }
+
         commentToUpdate.setContent(newComment.getContent());
+
         commentRepository.update(postId, commentToUpdate);
     }
 
     @Override
     public void delete(Long postId, Long id) {
         User user = userService.getAuthenticatedUser();
+
         Comment commentToDelete = commentRepository.getById(postId, id);
+
         validateUserIsAdminOrCommentAuthor(commentToDelete, user);
+
         commentRepository.delete(postId, id);
     }
 

@@ -117,7 +117,6 @@ public class ReactionRepositoryImpl implements ReactionRepository {
         }
     }
 
-
     public Reaction getLike(Long post_id, Long user_id) {
         try (Session session = sessionFactory.openSession()) {
 
