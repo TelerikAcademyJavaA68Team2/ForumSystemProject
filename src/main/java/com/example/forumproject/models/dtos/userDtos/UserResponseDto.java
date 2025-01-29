@@ -10,7 +10,6 @@ public class UserResponseDto {
     private String account_type;
     private String account_status;
 
-
     public UserResponseDto(Long user_id, String first_name, String username, String email, String account_type, String account_status) {
         this.user_id = user_id;
         this.first_name = first_name;

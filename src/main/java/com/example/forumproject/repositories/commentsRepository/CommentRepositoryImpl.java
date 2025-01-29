@@ -36,7 +36,6 @@ public class CommentRepositoryImpl implements CommentRepository {
             }
             return comments;
         }
-
     }
 
     @Override

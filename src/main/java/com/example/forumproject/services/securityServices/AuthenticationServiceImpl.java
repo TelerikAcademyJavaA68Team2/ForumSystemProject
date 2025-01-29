@@ -17,6 +17,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+    public static final String WRONG_CREDENTIALS = "Wrong username or password!";
+
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -44,12 +46,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         } catch (BadCredentialsException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong username or password!");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, WRONG_CREDENTIALS);
         }
 
         User user = userService.loadUserByUsername(request.getUsername());
+
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 user, null, user.getAuthorities());
+
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         return jwtService.generateToken(user);
     }

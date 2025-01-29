@@ -1,7 +1,6 @@
 package com.example.forumproject.services.postTagService;
 
 import com.example.forumproject.models.Post;
-import com.example.forumproject.models.PostTag;
 import com.example.forumproject.models.Tag;
 
 import java.util.List;

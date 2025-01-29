@@ -124,7 +124,6 @@ public class PostController {
             responses = {
                     @ApiResponse(responseCode = "201", description = "Successfully disliked or removed dislike"),
                     @ApiResponse(responseCode = "404", description = "Post or user not found"),
-                    // @ApiResponse(responseCode = "400", description = "Duplicate dislike action")
             }
     )
     @PostMapping("/{postId}/dislike")

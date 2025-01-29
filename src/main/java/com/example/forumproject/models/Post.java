@@ -23,19 +23,6 @@ public class Post {
     @Column(name = "content")
     private String content;
 
-  //  private List<Comment> comments;
-
-    //A potential way of how post tags could be handled
-
-    //    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "post_tags",
-//            joinColumns = @JoinColumn(name = "post_id"),
-//            inverseJoinColumns = @JoinColumn(name = "tag_id")
-//    )
-//    private Set<Tag> tags;
-
     public Post() {
     }
 

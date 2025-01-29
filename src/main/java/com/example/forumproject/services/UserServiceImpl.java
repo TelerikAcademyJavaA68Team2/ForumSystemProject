@@ -17,6 +17,14 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    public static final String LOGIN_FIRST = "Please login first!";
+    public static final String USER_NOT_FOUND = "User not found!";
+    public static final String IDENTICAL_PHONE_NUMBER = "You provided the phone number that's already in your profile info!";
+    public static final String NOT_BLOCKED = "User with id: %d is not currently blocked!";
+    public static final String ALREADY_BLOCKED = "User with id: %d is already blocked! To unblock him, try /unblock";
+    public static final String ALREADY_USER = "User with id: %d is already with user privileges!";
+    public static final String ALREADY_ADMIN = "Admin with id: %d is already Admin! To demote him to User, try /make-user";
+
     private final UserRepository userRepository;
 
     @Autowired
@@ -66,7 +74,7 @@ public class UserServiceImpl implements UserService {
         User user = getById(userId);
         if (user.isAdmin()) {
             throw new InvalidUserInputException(String.format(
-                    "Admin with id: %d is already Admin! To demote him to User try /make-user", userId));
+                    ALREADY_ADMIN, userId));
         }
         user.setAdmin(true);
         userRepository.save(user);
@@ -76,7 +84,7 @@ public class UserServiceImpl implements UserService {
     public void demoteAdminToUser(Long userId) {
         User user = getById(userId);
         if (!user.isAdmin()) {
-            throw new InvalidUserInputException(String.format("User with id: %d is already User!", userId));
+            throw new InvalidUserInputException(String.format(ALREADY_USER, userId));
         }
         user.setAdmin(false);
         userRepository.save(user);
@@ -87,7 +95,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.getById(userId);
         if (user.isBlocked()) {
             throw new InvalidUserInputException(String.format(
-                    "User with id: %d is already blocked! To unblock him try /unblock", userId));
+                    ALREADY_BLOCKED, userId));
         }
         user.setBlocked(true);
         userRepository.save(user);
@@ -98,7 +106,7 @@ public class UserServiceImpl implements UserService {
         User user = getById(userId);
         if (!user.isBlocked()) {
             throw new InvalidUserInputException(String.format
-                    ("User with id: %d is not currently blocked!", userId));
+                    (NOT_BLOCKED, userId));
         }
         user.setBlocked(false);
         userRepository.save(user);
@@ -109,7 +117,7 @@ public class UserServiceImpl implements UserService {
         ValidationHelpers.validatePhoneNumber(phoneNumber);
         User user = getAuthenticatedUser();
         if (user.getPhoneNumber() != null && user.getPhoneNumber().equals(phoneNumber)) {
-            throw new InvalidUserInputException("You provided the phone number that's already in your profile info!");
+            throw new InvalidUserInputException(IDENTICAL_PHONE_NUMBER);
         }
         user.setPhoneNumber(phoneNumber);
         userRepository.save(user);
@@ -119,11 +127,11 @@ public class UserServiceImpl implements UserService {
         try {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (user == null) {
-                throw new EntityNotFoundException("User not found!");
+                throw new EntityNotFoundException(USER_NOT_FOUND);
             }
             return user;
         } catch (Exception e) {
-            throw new UnauthorizedAccessException("Please login first!");
+            throw new UnauthorizedAccessException(LOGIN_FIRST);
         }
     }
 }

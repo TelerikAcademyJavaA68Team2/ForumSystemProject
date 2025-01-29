@@ -18,6 +18,9 @@ import java.util.List;
 @Service
 public class PostTagServiceImpl implements PostTagService {
 
+    public static final String EXISTING_TAG_MESSAGE = "This tag is already assigned to the current post." +
+            " Please choose a different tag.";
+
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
     private final PostTagRepository postTagRepository;
@@ -51,9 +54,11 @@ public class PostTagServiceImpl implements PostTagService {
     @Transactional
     public void createTagOnPost(Long post_id, String tagName) {
         Post post = postRepository.getById(post_id);
+
         ValidationHelpers.validateUserIsAdminOrPostAuthor(post, userService.getAuthenticatedUser());
 
         Tag tag;
+
         try {
             tag = tagRepository.getTagByName(tagName);
         } catch (Exception e) {
@@ -61,6 +66,7 @@ public class PostTagServiceImpl implements PostTagService {
             tag.setTagName(tagName);
             tagRepository.create(tag);
         }
+
         if (postTagRepository.checkIfPostIsTagged(post.getId(), tag.getId())) {
             throw new DuplicateEntityException("This tag is already associated with the post");
         }
@@ -72,11 +78,15 @@ public class PostTagServiceImpl implements PostTagService {
     @Transactional
     public void updateTagOnPost(Long postId, Long oldTagId, String newTagName) {
         Post post = postRepository.getById(postId);
+
         ValidationHelpers.validateUserIsAdminOrPostAuthor(post, userService.getAuthenticatedUser());
+
         Tag oldTag = tagRepository.getTagById(oldTagId);
+
         PostTag postTag = postTagRepository.getPostTag(postId, oldTagId);
 
         Tag tag;
+
         try {
             tag = tagRepository.getTagByName(newTagName);
         } catch (Exception e) {
@@ -84,8 +94,9 @@ public class PostTagServiceImpl implements PostTagService {
             tag.setTagName(newTagName);
             tagRepository.create(tag);
         }
+
         if (postTagRepository.checkIfPostIsTagged(postId, tag.getId())) {
-            throw new DuplicateEntityException("You cant update the tag to existing tag for the current post");
+            throw new DuplicateEntityException(EXISTING_TAG_MESSAGE);
         }
 
         postTagRepository.update(postTag, tag);
@@ -94,8 +105,11 @@ public class PostTagServiceImpl implements PostTagService {
     @Transactional
     public void deleteTagFromPost(Long post_id, Long tag_id) {
         Post post = postRepository.getById(post_id);
+
         Tag tag = tagRepository.getTagById(post_id);
+
         postTagRepository.checkIfPostIsTagged(post_id, tag_id);
+
         ValidationHelpers.validateUserIsAdminOrPostAuthor(post, userService.getAuthenticatedUser());
 
         postTagRepository.delete(postTagRepository.getPostTag(post_id, tag_id));
