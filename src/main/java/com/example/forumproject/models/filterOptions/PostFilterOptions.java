@@ -6,28 +6,28 @@ public class PostFilterOptions {
 
     private Optional<String> title;
     private Optional<String> content;
-    private Optional<String> tags;
+    private Optional<String> tag;
     private Optional<Long> minLikes;
     private Optional<Long> maxLikes;
     private Optional<String> orderBy;
     private Optional<String> orderType;
-    private Optional<Long> user_id;
+    private Optional<String> author;
 
-    public PostFilterOptions(String title, String content, String tags,
+    public PostFilterOptions(String title, String content, String tag,
                              Long minLikes, Long maxLikes,
-                             String orderBy, String orderType, Long user_id) {
+                             String orderBy, String orderType, String author) {
         this.title = Optional.ofNullable(title);
         this.content = Optional.ofNullable(content);
-        this.tags = Optional.ofNullable(tags);
+        this.tag = Optional.ofNullable(tag);
         this.minLikes = Optional.ofNullable(minLikes);
         this.maxLikes = Optional.ofNullable(maxLikes);
         this.orderBy = Optional.ofNullable(orderBy);
         this.orderType = Optional.ofNullable(orderType);
-        this.user_id = Optional.ofNullable(user_id);
+        this.author = Optional.ofNullable(author);
     }
 
-    public Optional<Long> getUser_id() {
-        return user_id;
+    public Optional<String> getUsername() {
+        return author;
     }
 
     public Optional<String> getTitle() {
@@ -38,8 +38,8 @@ public class PostFilterOptions {
         return this.content;
     }
 
-    public Optional<String> getTags() {
-        return this.tags;
+    public Optional<String> getTag() {
+        return this.tag;
     }
 
     public Optional<Long> getMinLikes() {

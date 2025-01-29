@@ -52,10 +52,21 @@ public class PostRepositoryImpl implements PostRepository {
             StringBuilder sb = new StringBuilder("FROM Post p ");
 
             if (filterOptions.getTitle().isPresent() || filterOptions.getContent().isPresent() ||
-                    filterOptions.getTags().isPresent() || filterOptions.getMinLikes().isPresent() ||
-                    filterOptions.getMaxLikes().isPresent() || filterOptions.getUser_id().isPresent()) {
+                    filterOptions.getTag().isPresent() || filterOptions.getMinLikes().isPresent() ||
+                    filterOptions.getMaxLikes().isPresent() || filterOptions.getUsername().isPresent()) {
 
                 sb.append("WHERE ");
+
+                filterOptions.getUsername().ifPresent(username -> {
+                    sb.append("p.author.username LIKE :username ");
+                    sb.append("AND ");
+                });
+
+                filterOptions.getTag().ifPresent(tag -> {
+                    sb.append("p.id IN (SELECT pt.post.id FROM PostTag pt JOIN pt.tag t WHERE t.tagName LIKE :tag) ");
+                    sb.append("AND ");
+                });
+
                 filterOptions.getTitle().ifPresent(title -> {
                     sb.append("p.title LIKE :title ");
                     sb.append("AND ");
@@ -66,10 +77,6 @@ public class PostRepositoryImpl implements PostRepository {
                     sb.append("AND ");
                 });
 
-                filterOptions.getTags().ifPresent(tags -> {
-                    sb.append("p.id IN (SELECT pt.post.id FROM PostTag pt JOIN pt.tag t WHERE t.tagName LIKE :tags) ");
-                    sb.append("AND ");
-                });
 
                 filterOptions.getMinLikes().ifPresent(minLikes -> {
                     sb.append("p.id IN (SELECT pl.post.id FROM Reaction pl WHERE pl.isLike = true GROUP BY pl.post.id HAVING COUNT(pl.id) >= :minLikes) ");
@@ -81,11 +88,6 @@ public class PostRepositoryImpl implements PostRepository {
                     sb.append("AND ");
                 });
 
-                sb.append("WHERE ");
-                filterOptions.getUser_id().ifPresent(userId -> {
-                    sb.append("p.author.id = :userId ");
-                    sb.append("AND ");
-                });
                 sb.setLength(sb.length() - 4);
             }
 
@@ -110,10 +112,10 @@ public class PostRepositoryImpl implements PostRepository {
             Query<Post> query = session.createQuery(sb.toString(), Post.class);
             filterOptions.getTitle().ifPresent(title -> query.setParameter("title", "%" + title + "%"));
             filterOptions.getContent().ifPresent(content -> query.setParameter("content", "%" + content + "%"));
-            filterOptions.getTags().ifPresent(tags -> query.setParameter("tags", "%" + tags + "%"));
+            filterOptions.getTag().ifPresent(tag -> query.setParameter("tag", "%" + tag + "%"));
             filterOptions.getMinLikes().ifPresent(minLikes -> query.setParameter("minLikes", minLikes));
             filterOptions.getMaxLikes().ifPresent(maxLikes -> query.setParameter("maxLikes", maxLikes));
-            filterOptions.getUser_id().ifPresent(userId -> query.setParameter("userId", userId));
+            filterOptions.getUsername().ifPresent(username -> query.setParameter("username", username));
 
             return query.list();
         }

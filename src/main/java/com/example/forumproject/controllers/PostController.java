@@ -10,8 +10,8 @@ import com.example.forumproject.models.dtos.postDtos.PostInDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.PostService;
-import com.example.forumproject.services.reactionService.ReactionService;
 import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.reactionService.ReactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,13 +53,14 @@ public class PostController {
     @GetMapping
     public List<PostOutDto> getAllPosts(@RequestParam(required = false) String title,
                                         @RequestParam(required = false) String content,
-                                        @RequestParam(required = false) String tags,
+                                        @RequestParam(required = false) String tag,
                                         @RequestParam(required = false) Long minLikes,
                                         @RequestParam(required = false) Long maxLikes,
                                         @RequestParam(required = false) String orderBy,
-                                        @RequestParam(required = false) String orderType) {
-        PostFilterOptions filterOptions = new PostFilterOptions(title, content, tags,
-                minLikes, maxLikes, orderBy, orderType, null);
+                                        @RequestParam(required = false) String orderType,
+                                        @RequestParam(required = false) String author) {
+        PostFilterOptions filterOptions = new PostFilterOptions(title, content, tag,
+                minLikes, maxLikes, orderBy, orderType, author);
         try {
             List<Post> inPosts = postService.getAll(filterOptions);
             return inPosts.stream().map(postMapper::postToPostOutDto).toList();

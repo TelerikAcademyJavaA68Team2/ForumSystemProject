@@ -55,7 +55,7 @@ public class UserMapper {
             PostFilterOptions filterOptions = new PostFilterOptions
                     (null, null, null,
                             null, null,
-                            null, null, user.getId());
+                            null, null, user.getUsername());
 
             userDto.setUser_posts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
             return userDto;
@@ -75,7 +75,7 @@ public class UserMapper {
             PostFilterOptions filterOptions = new PostFilterOptions
                     (null, null, null,
                             null, null,
-                            null, null, user.getId());
+                            null, null, user.getUsername());
             userDto.setUser_posts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
             return userDto;
         }

@@ -29,7 +29,6 @@ public class PostTagServiceImpl implements PostTagService {
         this.tagRepository = tagRepository;
         this.postTagRepository = postTagRepository;
         this.userService = userService;
-
     }
 
     @Override
@@ -102,4 +101,3 @@ public class PostTagServiceImpl implements PostTagService {
         postTagRepository.delete(postTagRepository.getPostTag(post_id, tag_id));
     }
 }
-
