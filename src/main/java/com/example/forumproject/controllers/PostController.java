@@ -153,7 +153,7 @@ public class PostController {
             }
     )
     @PostMapping
-    public PostOutDto create(@Valid @RequestBody PostInDto postDto) { //todo maby otherDto with no id in? updatedto?
+    public PostOutDto create(@Valid @RequestBody PostInDto postDto) {
         try {
             User user = userService.getAuthenticatedUser();
             Post postToCreate = postMapper.createPostFromDto(postDto, user);

@@ -1,7 +1,5 @@
 package com.example.forumproject;
 
-import com.example.forumproject.models.Post;
-import com.example.forumproject.models.Tag;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
