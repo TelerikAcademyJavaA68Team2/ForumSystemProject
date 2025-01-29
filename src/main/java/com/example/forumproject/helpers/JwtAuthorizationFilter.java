@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -53,8 +54,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             response.getWriter().write("Unauthorized: Invalid token please login" + e.getMessage());
             return;
         }
+
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
+
                 UserDetails userDetails = userService.loadUserByUsername(username);
 
                 // check if user is blocked
@@ -78,6 +81,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("Unauthorized: " + e.getMessage());
                 return; // No further processing, response is already sent
+            } catch (UsernameNotFoundException e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Unauthorized: Your token is not valid!");
+                return;
             }
         }
         filterChain.doFilter(request, response);

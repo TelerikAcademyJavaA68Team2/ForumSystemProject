@@ -78,11 +78,11 @@ public class UserServiceTests {
 
         // Assert
         Assertions.assertEquals(1L, result.getId());
-        Assertions.assertEquals("MockFirstNameUser", result.getFirstName());
-        Assertions.assertEquals("MockLastNameUser", result.getLastName());
-        Assertions.assertEquals("mock@user.com", result.getEmail());
-        Assertions.assertEquals("MockUserName", result.getUsername());
-        Assertions.assertEquals("MockPassword", result.getPassword());
+        Assertions.assertEquals(Helpers.MOCK_USER_FIRST_NAME, result.getFirstName());
+        Assertions.assertEquals(Helpers.MOCK_USER_LAST_NAME, result.getLastName());
+        Assertions.assertEquals(Helpers.MOCK_USER_EMAIL, result.getEmail());
+        Assertions.assertEquals(Helpers.MOCK_USER_USERNAME, result.getUsername());
+        Assertions.assertEquals(Helpers.MOCK_PASSWORD, result.getPassword());
         Assertions.assertNull(result.getPhoto());
         Assertions.assertEquals("[USER]", result.getAuthorities().toString());
     }
@@ -106,17 +106,7 @@ public class UserServiceTests {
                 .thenReturn(Helpers.createMockUser());
 
         // Act, Assert
-        Assertions.assertDoesNotThrow(() -> service.deleteUser(1L));
-    }
-
-    @Test
-    public void deleteUser_ShouldThrowExc_When_UserWithIdDoesNotExist() {
-        // Arrange
-        Mockito.when(mockRepository.getById(Mockito.any()))
-                .thenThrow(EntityNotFoundException.class);
-
-        // Act, Assert
-        Assertions.assertThrows(EntityNotFoundException.class, () -> service.deleteUser(1L));
+        Assertions.assertDoesNotThrow(() -> service.deleteUser());
     }
 
     @Test

@@ -20,7 +20,7 @@ public interface UserService extends UserDetailsService {
 
     User loadUserByUsername(String username);
 
-    void deleteUser(Long userId);
+    void deleteUser();
 
     void promoteToAdmin(Long userId);
 
