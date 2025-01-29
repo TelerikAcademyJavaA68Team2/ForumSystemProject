@@ -1,13 +1,11 @@
 package com.example.forumproject.services.reactionService;
 
-import com.example.forumproject.models.Reaction;
 import com.example.forumproject.models.Post;
+import com.example.forumproject.models.Reaction;
 import com.example.forumproject.models.User;
 import com.example.forumproject.repositories.reactionRepository.ReactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ReactionServiceImpl implements ReactionService {
