@@ -18,6 +18,10 @@ repositories {
 }
 
 dependencies {
+// Test
+    tasks.withType(Test).configureEach { jvmArgs '-Xshare:off' }
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 // Spring Boot Web and JPA dependencies
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -40,7 +44,8 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'   // Jackson support for JJWT
 
     // Jackson dependency for JSON processing
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'  // Jackson Databind (serialization/deserialization)
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+    // Jackson Databind (serialization/deserialization)
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.0'  // Jackson Annotations (Optional)
     implementation 'com.fasterxml.jackson.core:jackson-core:2.15.0'  // Jackson Core (Optional)
 
