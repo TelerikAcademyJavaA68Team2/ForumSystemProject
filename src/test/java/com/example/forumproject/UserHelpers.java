@@ -4,7 +4,7 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
 
-public class Helpers {
+public class UserHelpers {
     public static User createMockUser() {
         var mockUser = new User();
         mockUser.setId(1L);
