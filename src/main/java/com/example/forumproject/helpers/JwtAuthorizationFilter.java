@@ -31,7 +31,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         this.userService = userService;
     }
 
-
     @Override
     protected void doFilterInternal(
             @Nonnull HttpServletRequest request,
@@ -57,17 +56,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
-
                 UserDetails userDetails = userService.loadUserByUsername(username);
 
-                // check if user is blocked
                 if (!userDetails.isEnabled()) {
                     throw new UnauthorizedAccessException("Your account is blocked!");
                 }
 
-                // Check if token is valid
                 if (jwtService.isValid(token, userDetails)) {
-                    // If token is valid, create authentication token and set it in the context
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
 
@@ -77,10 +72,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     throw new UnauthorizedAccessException("No valid token provided! Try login again.");
                 }
             } catch (UnauthorizedAccessException e) {
-                // Token is invalid or expired or the user is blocked, return an error response directly from the filter
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("Unauthorized: " + e.getMessage());
-                return; // No further processing, response is already sent
+                return;
             } catch (UsernameNotFoundException e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("Unauthorized: Your token is not valid!");

@@ -51,11 +51,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment create(Long postId, Comment comment) {
         User user = userService.getAuthenticatedUser();
-
         Post post = postService.getById(postId);
-
         comment.setPost(post);
-
         comment.setAuthor(user);
 
         commentRepository.create(comment);
@@ -65,15 +62,12 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void update(Long postId, Comment newComment) {
         User user = userService.getAuthenticatedUser();
-
         Comment commentToUpdate = getById(postId, newComment.getId());
-
         validateUserIsAdminOrCommentAuthor(commentToUpdate, user);
 
         if (isDuplicateComment(newComment, commentToUpdate)) {
             throw new DuplicateEntityException(DUPLICATE_COMMENT_MESSAGE);
         }
-
         commentToUpdate.setContent(newComment.getContent());
 
         commentRepository.update(commentToUpdate);
@@ -82,9 +76,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void delete(Long postId, Long id) {
         User user = userService.getAuthenticatedUser();
-
         Comment commentToDelete = getById(postId, id);
-
         validateUserIsAdminOrCommentAuthor(commentToDelete, user);
 
         commentRepository.delete(postId, id);

@@ -29,7 +29,6 @@ public class FullProfileAdminDto {
         this.phone_number = phone_number;
     }
 
-
     public Long getId() {
         return id;
     }
@@ -110,5 +109,3 @@ public class FullProfileAdminDto {
         this.user_posts = user_posts;
     }
 }
-
-
