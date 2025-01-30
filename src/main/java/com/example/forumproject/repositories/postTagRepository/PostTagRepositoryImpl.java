@@ -69,7 +69,7 @@ public class PostTagRepositoryImpl implements PostTagRepository {
             query.setParameter("tag_id", tagId);
             PostTag postTag = query.uniqueResult();
             if (postTag == null) {
-                throw new EntityNotFoundException("PostTag with postId " + postId + " and tagId " + tagId + " not found.");
+                throw new EntityNotFoundException("Post tag match not found!");
             }
             return postTag;
         }

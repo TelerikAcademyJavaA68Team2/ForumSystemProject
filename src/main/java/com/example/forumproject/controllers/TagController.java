@@ -91,11 +91,12 @@ public class TagController {
                     @ApiResponse(responseCode = "401", description = "Unauthorized to update tag")
             }
     )
-    @PostMapping("/tags/{tagId}")
+    @PutMapping("/tags/{tagName}")
     public Tag updateTagInPostByTagId(@Valid @RequestBody TagInDto tagDTO,
-                                      @PathVariable Long postId, @PathVariable Long tagId) {
+                                      @PathVariable Long postId, @PathVariable String tagName) {
         try {
-            postTagService.updateTagOnPost(postId, tagId, tagDTO.getTagName());
+            Tag tag = tagService.getTagByName(tagName);
+            postTagService.updateTagOnPost(postId, tag.getId(), tagDTO.getTagName());
             return tagService.getTagByName(tagDTO.getTagName());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
