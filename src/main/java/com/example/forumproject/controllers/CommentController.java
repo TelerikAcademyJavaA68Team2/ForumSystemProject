@@ -5,8 +5,10 @@ import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.CommentMapper;
 import com.example.forumproject.models.Comment;
+import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.commentDtos.CommentInDto;
 import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
+import com.example.forumproject.services.UserService;
 import com.example.forumproject.services.commentService.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -83,7 +85,8 @@ public class CommentController {
             description = "Add a new comment to a specific post",
             responses = {
                     @ApiResponse(description = "Comment created successfully", responseCode = "201"),
-                    @ApiResponse(description = "Unauthorized", responseCode = "401")
+                    @ApiResponse(description = "Unauthorized", responseCode = "401"),
+                    @ApiResponse(description = "Not Found", responseCode = "404")
             }
     )
     @PostMapping("/comments")
@@ -91,8 +94,10 @@ public class CommentController {
                                        @Valid @RequestBody CommentInDto commentDTO) {
         try {
             Comment comment = commentMapper.CommentInDtoToObject(commentDTO);
-            commentService.create(postId, comment);
+            comment = commentService.create(postId, comment);
             return commentMapper.commentToCommentOutDto(comment);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
@@ -103,7 +108,7 @@ public class CommentController {
             description = "Update the content of an existing comment",
             responses = {
                     @ApiResponse(description = "Comment updated successfully", responseCode = "200"),
-                    @ApiResponse(description = "Comment not found", responseCode = "404"),
+                    @ApiResponse(description = "Comment/Post not found", responseCode = "404"),
                     @ApiResponse(description = "Conflict with existing data", responseCode = "409"),
                     @ApiResponse(description = "Unauthorized", responseCode = "401")
             }
@@ -130,7 +135,7 @@ public class CommentController {
             description = "Remove a specific comment from a post",
             responses = {
                     @ApiResponse(description = "Comment deleted successfully", responseCode = "204"),
-                    @ApiResponse(description = "Comment not found", responseCode = "404"),
+                    @ApiResponse(description = "Comment/Post not found", responseCode = "404"),
                     @ApiResponse(description = "Unauthorized", responseCode = "401")
             }
     )
