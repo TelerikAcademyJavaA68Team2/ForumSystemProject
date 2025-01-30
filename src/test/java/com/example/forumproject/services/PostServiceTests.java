@@ -60,9 +60,7 @@ public class PostServiceTests {
                 .thenThrow(new EntityNotFoundException(POST_NOT_FOUND));
 
         // Act, Assert
-        Assertions.assertThrows(EntityNotFoundException.class , () -> {
-            postService.getById(99L);
-        } , EXCEPTION_EXPECTED);
+        Assertions.assertThrows(EntityNotFoundException.class , () -> postService.getById(99L), EXCEPTION_EXPECTED);
     }
 
     @Test
@@ -118,9 +116,8 @@ public class PostServiceTests {
                 .thenReturn(mockPost);
 
         // Act & Assert
-        UnauthorizedAccessException thrown = Assertions.assertThrows(UnauthorizedAccessException.class, () -> {
-            postService.delete(mockPost.getId(), anotherUser);
-        });
+        UnauthorizedAccessException thrown = Assertions.assertThrows(UnauthorizedAccessException.class,
+                () -> postService.delete(mockPost.getId(), anotherUser));
 
         assertEquals(UNAUTHORIZED_MESSAGE_POST, thrown.getMessage());
     }
@@ -132,9 +129,8 @@ public class PostServiceTests {
         User mockUser = createMockUser();
 
         // Act & Assert
-        EntityNotFoundException thrown = Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            postService.delete(999L, mockUser);
-        });
+        EntityNotFoundException thrown = Assertions.assertThrows(EntityNotFoundException.class,
+                () -> postService.delete(999L, mockUser));
 
         Assertions.assertEquals("Post with id 999 not found.", thrown.getMessage());
 
@@ -235,9 +231,8 @@ public class PostServiceTests {
         when(postRepository.getById(mockPost.getId())).thenReturn(mockPost);
 
         // Act & Assert
-        Assertions.assertThrows(UnauthorizedAccessException.class, () -> {
-            postService.update(updatedPost, anotherUser);
-        });
+        Assertions.assertThrows(UnauthorizedAccessException.class,
+                () -> postService.update(updatedPost, anotherUser));
 
         verify(postRepository, never()).update(any(Post.class));
     }
@@ -252,9 +247,8 @@ public class PostServiceTests {
         when(postRepository.getById(mockPost.getId())).thenReturn(mockPost);
 
         // Act & Assert
-        Assertions.assertThrows(DuplicateEntityException.class, () -> {
-            postService.update(duplicatePost, author);
-        });
+        Assertions.assertThrows(DuplicateEntityException.class,
+                () -> postService.update(duplicatePost, author));
 
         verify(postRepository, never()).update(any(Post.class));
     }
@@ -266,9 +260,8 @@ public class PostServiceTests {
         when(postRepository.getById(updatedPost.getId())).thenThrow(new EntityNotFoundException(POST_NOT_FOUND));
 
         // Act & Assert
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            postService.update(updatedPost, createMockUser());
-        });
+        Assertions.assertThrows(EntityNotFoundException.class,
+                () -> postService.update(updatedPost, createMockUser()));
 
         verify(postRepository, never()).update(any(Post.class));
     }

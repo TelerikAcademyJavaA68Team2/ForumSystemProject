@@ -4,7 +4,6 @@ import com.example.forumproject.Helpers;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
 import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
-import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.securityServices.AuthenticationServiceImpl;
 import com.example.forumproject.services.securityServices.JwtService;
 import org.junit.jupiter.api.Assertions;

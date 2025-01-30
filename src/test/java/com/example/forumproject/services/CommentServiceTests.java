@@ -106,9 +106,8 @@ public class CommentServiceTests {
                 .thenThrow(new EntityNotFoundException(POST_NOT_FOUND));
 
         // Act & Assert
-        assertThrows(EntityNotFoundException.class, () -> {
-            commentService.getAllCommentsByPostId(999L);
-        }, EXCEPTION_EXPECTED);
+        assertThrows(EntityNotFoundException.class,
+                () -> commentService.getAllCommentsByPostId(999L), EXCEPTION_EXPECTED);
     }
 
     @Test
@@ -118,9 +117,8 @@ public class CommentServiceTests {
                 .thenThrow(new EntityNotFoundException(POST_NOT_FOUND));
 
         // Act & Assert
-        assertThrows(EntityNotFoundException.class, () -> {
-            commentService.getById(999L, 999L);
-        }, EXCEPTION_EXPECTED);
+        assertThrows(EntityNotFoundException.class,
+                () -> commentService.getById(999L, 999L), EXCEPTION_EXPECTED);
     }
 
     @Test
@@ -132,9 +130,8 @@ public class CommentServiceTests {
         when(postService.getById(1L)).thenReturn(mockPost);
 
         // Act & Assert
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            commentService.getById(mockPost.getId(), 999L);
-        }, EXCEPTION_EXPECTED);
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
+                () -> commentService.getById(mockPost.getId(), 999L), EXCEPTION_EXPECTED);
         assertEquals(COMMENT_NOT_FOUND, exception.getMessage(), EXCEPTION_DOES_NOT_MATCH);
     }
 
@@ -146,9 +143,8 @@ public class CommentServiceTests {
                 .thenThrow(new EntityNotFoundException(POST_NOT_FOUND));
 
         // Act & Assert
-        assertThrows(EntityNotFoundException.class, () -> {
-            commentService.getAllComments(invalidPostId);
-        }, EXCEPTION_EXPECTED);
+        assertThrows(EntityNotFoundException.class,
+                () -> commentService.getAllComments(invalidPostId), EXCEPTION_EXPECTED);
     }
 
     @Test
@@ -223,9 +219,8 @@ public class CommentServiceTests {
         when(postService.getById(999L)).thenThrow(new EntityNotFoundException(POST_NOT_FOUND));
 
         // Act & Assert
-        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> {
-            commentService.create(999L, mockComment);
-        });
+        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class,
+                () -> commentService.create(999L, mockComment));
 
         assertEquals(POST_NOT_FOUND, thrown.getMessage());
 
@@ -241,9 +236,8 @@ public class CommentServiceTests {
         when(userService.getAuthenticatedUser()).thenThrow(new UnauthorizedAccessException(NOT_AUTHENTICATED));
 
         // Act & Assert
-        UnauthorizedAccessException thrown = assertThrows(UnauthorizedAccessException.class, () -> {
-            commentService.create(mockPost.getId(), mockComment);
-        });
+        UnauthorizedAccessException thrown = assertThrows(UnauthorizedAccessException.class,
+                () -> commentService.create(mockPost.getId(), mockComment));
 
         assertEquals(NOT_AUTHENTICATED, thrown.getMessage());
 
@@ -284,9 +278,8 @@ public class CommentServiceTests {
         when(commentMockRepository.getById(1L, 999L)).thenThrow(new EntityNotFoundException(COMMENT_NOT_FOUND));
 
         // Act & Assert
-        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> {
-            commentService.update(1L, mockComment);
-        });
+        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class,
+                () -> commentService.update(1L, mockComment));
 
         assertEquals(COMMENT_NOT_FOUND, thrown.getMessage());
         verify(commentMockRepository, never()).update(any(Comment.class));
@@ -308,9 +301,8 @@ public class CommentServiceTests {
         when(commentMockRepository.getById(1L, mockComment.getId())).thenReturn(mockComment);
 
         // Act & Assert
-        UnauthorizedAccessException thrown = assertThrows(UnauthorizedAccessException.class, () -> {
-            commentService.update(1L, updatedComment);
-        });
+        UnauthorizedAccessException thrown = assertThrows(UnauthorizedAccessException.class,
+                () -> commentService.update(1L, updatedComment));
 
         assertEquals(UNAUTHORIZED_MESSAGE_COMMENT, thrown.getMessage());
         verify(commentMockRepository, never()).update(any(Comment.class));
@@ -331,9 +323,8 @@ public class CommentServiceTests {
         when(commentMockRepository.getById(1L, mockComment.getId())).thenReturn(mockComment);
 
         // Act & Assert
-        DuplicateEntityException thrown = assertThrows(DuplicateEntityException.class, () -> {
-            commentService.update(1L, duplicateComment);
-        });
+        DuplicateEntityException thrown = assertThrows(DuplicateEntityException.class,
+                () -> commentService.update(1L, duplicateComment));
 
         assertEquals(DUPLICATE_COMMENT_MESSAGE, thrown.getMessage());
         verify(commentMockRepository, never()).update(any(Comment.class));
@@ -367,9 +358,8 @@ public class CommentServiceTests {
                 .thenThrow(new EntityNotFoundException(COMMENT_NOT_FOUND));
 
         // Act & Assert
-        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> {
-            commentService.delete(1L, 999L);
-        });
+        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class,
+                () -> commentService.delete(1L, 999L));
 
         assertEquals(COMMENT_NOT_FOUND, thrown.getMessage());
         verify(commentMockRepository, never()).delete(anyLong(), anyLong());
@@ -388,9 +378,8 @@ public class CommentServiceTests {
         when(commentMockRepository.getById(1L, 1L)).thenReturn(mockComment);
 
         // Act & Assert
-        UnauthorizedAccessException thrown = assertThrows(UnauthorizedAccessException.class, () -> {
-            commentService.delete(1L, 1L);
-        });
+        UnauthorizedAccessException thrown = assertThrows(UnauthorizedAccessException.class,
+                () -> commentService.delete(1L, 1L));
 
         assertEquals(UNAUTHORIZED_MESSAGE_COMMENT, thrown.getMessage());
         verify(commentMockRepository, never()).delete(anyLong(), anyLong());
