@@ -44,13 +44,16 @@ public class TagController {
     @GetMapping("/tags")
     public List<String> getTagsForPost(@PathVariable Long postId) {
         try {
-            return postTagService.getTagsByPostId(postId)
+            List<String> tags = postTagService.getTagsByPostId(postId)
                     .stream()
                     .map(Tag::getTagName)
-                    .collect(Collectors.toList());
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UnauthorizedAccessException e) {
+                    .toList();
+            if(tags.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("There are no tags for post with id %d!", postId));
+            }
+            return tags;
+        }  catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
