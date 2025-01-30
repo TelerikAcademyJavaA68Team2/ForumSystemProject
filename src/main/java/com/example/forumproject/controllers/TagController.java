@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
         description = "API for managing tags associated with posts")
 public class TagController {
 
+    public static final String NO_TAGS_MESSAGE = "There are no tags for post with id %d!";
     private final TagService tagService;
     private final PostTagService postTagService;
 
@@ -50,7 +51,7 @@ public class TagController {
                     .toList();
             if(tags.isEmpty()){
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        String.format("There are no tags for post with id %d!", postId));
+                        String.format(NO_TAGS_MESSAGE, postId));
             }
             return tags;
         }  catch (UnauthorizedAccessException e) {
