@@ -26,9 +26,7 @@ public class CommentMapper {
     }
 
     public Comment CommentInDtoToObject(CommentInDto commentDto) {
-        User user = userService.getAuthenticatedUser();
         Comment comment = new Comment();
-        comment.setAuthor(user);
         comment.setContent(commentDto.getContent());
         return comment;
     }
