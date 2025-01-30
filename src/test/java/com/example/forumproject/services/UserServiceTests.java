@@ -237,20 +237,29 @@ public class UserServiceTests {
     @Test
     public void blockUser_ShouldThrowExc_When_IdInvalid() {
         // Arrange
-        Mockito.when(mockRepository.getById(Mockito.any()))
+        User user = Helpers.createMockUser();
+        SecurityContextHolder.setContext(securityContext);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        Mockito.when(authentication.getPrincipal()).thenReturn(user);
+        Mockito.when(mockRepository.getById(Mockito.anyLong()))
                 .thenThrow(EntityNotFoundException.class);
 
         // Act, Assert
-        Assertions.assertThrows(EntityNotFoundException.class, () -> service.blockUser(Mockito.any()));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> service.blockUser(999L));
     }
 
     @Test
     public void blockUser_ShouldThrowExc_When_UserIsBlocked() {
         // Arrange
+        User admin = Helpers.createMockAdmin();
+        admin.setBlocked(false);
+        SecurityContextHolder.setContext(securityContext);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        Mockito.when(authentication.getPrincipal()).thenReturn(admin);
+
         User user = Helpers.createMockUser();
         user.setBlocked(true);
-        Mockito.when(mockRepository.getById(Mockito.any()))
-                .thenReturn(user);
+        Mockito.when(mockRepository.getById(1L)).thenReturn(user);
 
         // Act, Assert
         Assertions.assertThrows(InvalidUserInputException.class, () -> service.blockUser(1L));
@@ -259,13 +268,30 @@ public class UserServiceTests {
     @Test
     public void blockUser_ShouldNotThrowExc_When_ValidArgs() {
         // Arrange
-        User user = Helpers.createMockAdmin();
+        User admin = Helpers.createMockAdmin();
+        admin.setBlocked(false);
+        SecurityContextHolder.setContext(securityContext);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        Mockito.when(authentication.getPrincipal()).thenReturn(admin);
+
+        User user = Helpers.createMockUser();
         user.setBlocked(false);
-        Mockito.when(mockRepository.getById(Mockito.any()))
-                .thenReturn(user);
+        Mockito.when(mockRepository.getById(1L)).thenReturn(user);
 
         // Act, Assert
-        Assertions.assertDoesNotThrow(() -> service.blockUser(2L));
+        Assertions.assertDoesNotThrow(() -> service.blockUser(1L));
+    }
+
+    @Test
+    public void blockUser_ShouldThrowExc_When_BlockingSelf() {
+        // Arrange
+        User user = Helpers.createMockUser();
+        SecurityContextHolder.setContext(securityContext);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        Mockito.when(authentication.getPrincipal()).thenReturn(user);
+
+        // Act, Assert
+        Assertions.assertThrows(InvalidUserInputException.class, () -> service.blockUser(user.getId()));
     }
 
     @Test
