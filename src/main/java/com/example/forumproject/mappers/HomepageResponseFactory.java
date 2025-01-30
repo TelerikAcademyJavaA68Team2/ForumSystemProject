@@ -58,30 +58,23 @@ public class HomepageResponseFactory {
 
     public String getHomepageInfo() {
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(System.lineSeparator());
 
-        sb.append("Welcome to the best Car Forum EVER! :").append(System.lineSeparator());
-        sb.append(String.format("Active users: %d", userService.getNumberOfRegisteredUsers())).append(System.lineSeparator());
-        sb.append(String.format("Posts created: %d", postService.getTotalNumberOfPosts())).append(System.lineSeparator());
+        sb.append("    Welcome to the best Car Forum EVER!").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append(String.format(" Active users: %d           ", userService.getNumberOfRegisteredUsers()));
+        sb.append(String.format(" %d Posts created!", postService.getTotalNumberOfPosts())).append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append(" Possible Endpoints without registration:").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append(" /home/posts        ->    List of our top 10 most commented/recent posts.").append(System.lineSeparator());
+        sb.append(" /home/register     ->    Register to begin your exciting journey with us!").append(System.lineSeparator());
+        sb.append(" /home/login        ->    After you register you can get your amazing jwt token from here!");
         sb.append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("Possible Endpoints without registration:").append(System.lineSeparator());
+        sb.append(" But the real journey begins after registration!").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("/home/posts List the top 10 most commented posts.").append(System.lineSeparator());
-        sb.append("/home/posts/recent List the top 10 most recent posts.").append(System.lineSeparator());
-        sb.append("/home/register Register a new user.").append(System.lineSeparator());
-        sb.append("/home/login Log in a user.");
-        sb.append(System.lineSeparator());
-        sb.append(System.lineSeparator());
-        sb.append("Possible Endpoints after registration:").append(System.lineSeparator());
-        sb.append(System.lineSeparator());
-        sb.append("/posts: Create and view posts.").append(System.lineSeparator());
-        sb.append("/posts/{postId}: View, edit, or delete a specific post.").append(System.lineSeparator());
-        sb.append(System.lineSeparator());
-        sb.append("/users/profile: Get and update the user’s profile.").append(System.lineSeparator());
-        sb.append("/users/posts: Create, edit, view, and delete user's posts.").append(System.lineSeparator());
-        sb.append("/users/posts/{postId}/comments: Add comments to posts.").append(System.lineSeparator());
-        sb.append("/users/posts/{postId}/like: Like or dislike a post.").append(System.lineSeparator());
+
 
         return sb.toString();
     }
