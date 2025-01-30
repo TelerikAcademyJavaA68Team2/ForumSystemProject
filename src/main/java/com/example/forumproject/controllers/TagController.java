@@ -12,11 +12,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/posts/{postId}")
@@ -49,12 +49,12 @@ public class TagController {
                     .stream()
                     .map(Tag::getTagName)
                     .toList();
-            if(tags.isEmpty()){
+            if (tags.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format(NO_TAGS_MESSAGE, postId));
             }
             return tags;
-        }  catch (UnauthorizedAccessException e) {
+        } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
@@ -70,12 +70,12 @@ public class TagController {
             }
     )
     @PostMapping("/tags")
-    public Tag addTagToPost(@Valid @RequestBody TagInDto tagDTO,
-                            @PathVariable Long postId) {
+    public ResponseEntity<String> addTagToPost(@Valid @RequestBody TagInDto tagDTO,
+                                               @PathVariable Long postId) {
         try {
             String newTagName = tagDTO.getTagName();
             postTagService.createTagOnPost(postId, newTagName);
-            return tagService.getTagByName(newTagName);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Tag added successfully!");
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
@@ -96,12 +96,12 @@ public class TagController {
             }
     )
     @PutMapping("/tags/{tagName}")
-    public Tag updateTagInPostByTagId(@Valid @RequestBody TagInDto tagDTO,
-                                      @PathVariable Long postId, @PathVariable String tagName) {
+    public ResponseEntity<String> updateTagInPostByTagId(@Valid @RequestBody TagInDto tagDTO,
+                                                         @PathVariable Long postId, @PathVariable String tagName) {
         try {
             Tag tag = tagService.getTagByName(tagName);
             postTagService.updateTagOnPost(postId, tag.getId(), tagDTO.getTagName());
-            return tagService.getTagByName(tagDTO.getTagName());
+            return ResponseEntity.status(HttpStatus.CREATED).body("Tag changed successfully!");
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
@@ -121,11 +121,12 @@ public class TagController {
             }
     )
     @DeleteMapping("/tags/{tagName}")
-    public void deleteTagFromPost(@PathVariable Long postId,
-                                  @PathVariable String tagName) {
+    public ResponseEntity<String> deleteTagFromPost(@PathVariable Long postId,
+                                                    @PathVariable String tagName) {
         try {
             Tag tag = tagService.getTagByName(tagName);
             postTagService.deleteTagFromPost(postId, tag.getId());
+            return ResponseEntity.status(HttpStatus.OK).body("Tag deleted successfully!");
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
