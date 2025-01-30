@@ -19,6 +19,7 @@ import static com.example.forumproject.helpers.ValidationHelpers.validateUserIsA
 public class CommentServiceImpl implements CommentService {
 
     public static final String DUPLICATE_COMMENT_MESSAGE = "The comment already has the same content";
+
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final PostService postService;
@@ -48,23 +49,24 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void create(Long postId, Comment comment) {
+    public Comment create(Long postId, Comment comment) {
         User user = userService.getAuthenticatedUser();
 
-        Post postToAddCommentTo = postService.getById(postId);
+        Post post = postService.getById(postId);
+
+        comment.setPost(post);
 
         comment.setAuthor(user);
 
-        comment.setPost(postToAddCommentTo);
-
-        commentRepository.create(postId, comment);
+        commentRepository.create(comment);
+        return comment;
     }
 
     @Override
     public void update(Long postId, Comment newComment) {
         User user = userService.getAuthenticatedUser();
 
-        Comment commentToUpdate = commentRepository.getById(postId, newComment.getId());
+        Comment commentToUpdate = getById(postId, newComment.getId());
 
         validateUserIsAdminOrCommentAuthor(commentToUpdate, user);
 
@@ -74,19 +76,17 @@ public class CommentServiceImpl implements CommentService {
 
         commentToUpdate.setContent(newComment.getContent());
 
-        commentRepository.update(postId, commentToUpdate);
+        commentRepository.update(commentToUpdate);
     }
 
     @Override
     public void delete(Long postId, Long id) {
         User user = userService.getAuthenticatedUser();
 
-        Comment commentToDelete = commentRepository.getById(postId, id);
+        Comment commentToDelete = getById(postId, id);
 
         validateUserIsAdminOrCommentAuthor(commentToDelete, user);
 
         commentRepository.delete(postId, id);
     }
-
-
 }
