@@ -14,9 +14,10 @@ import java.util.regex.Pattern;
 
 public class ValidationHelpers {
 
-    private static final String MODIFY_POSTS = "Only admins or the post's creator can modify posts!";
-    public static final String UNAUTHORIZED_MESSAGE = "Only admins or the comment's creator can modify comments!";
-
+    public static final String UNAUTHORIZED_MESSAGE_POST = "Only admins or the " +
+            "post's creator can modify posts!";
+    public static final String UNAUTHORIZED_MESSAGE_COMMENT = "Only admins or the " +
+            "comment's creator can modify comments!";
 
     public static String ValidateUpdate(RequestUserProfileDto userUpdateDto, User user) {
 
@@ -72,7 +73,6 @@ public class ValidationHelpers {
         return sb.toString();
     }
 
-
     public static void validateEmailAndUsername(User user, UserRepository userRepository) {
         boolean usernameIsNotValid = true;
         try {
@@ -108,16 +108,15 @@ public class ValidationHelpers {
 
     public static void validateUserIsAdminOrPostAuthor(Post post, User user) {
         if (!(user.isAdmin() || post.getAuthor().equals(user))) {
-            throw new UnauthorizedAccessException(MODIFY_POSTS);
+            throw new UnauthorizedAccessException(UNAUTHORIZED_MESSAGE_POST);
         }
     }
 
     public static void validateUserIsAdminOrCommentAuthor(Comment comment, User user) {
         if (!(user.isAdmin() || comment.getAuthor().equals(user))) {
-            throw new UnauthorizedAccessException(UNAUTHORIZED_MESSAGE);
+            throw new UnauthorizedAccessException(UNAUTHORIZED_MESSAGE_COMMENT);
         }
     }
-
 
     public static boolean isDuplicatePost(Post newPost, Post postToUpdate) {
         return newPost.getContent().trim().equalsIgnoreCase(postToUpdate.getContent().trim()) &&
