@@ -9,5 +9,4 @@ class ForumProjectApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
