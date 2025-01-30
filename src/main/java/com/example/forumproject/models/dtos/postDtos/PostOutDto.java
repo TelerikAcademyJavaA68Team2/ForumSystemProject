@@ -10,15 +10,10 @@ import java.util.List;
 public class PostOutDto {
 
     private Long post_id;
-
     private String author;
-
     private String title;
-
     private String content;
-
     private Long likes;
-
     private Long dislikes;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

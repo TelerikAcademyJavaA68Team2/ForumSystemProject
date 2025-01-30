@@ -78,7 +78,6 @@ public class PostRepositoryImpl implements PostRepository {
                     sb.append("p.id IN (SELECT pl.post.id FROM Reaction pl WHERE pl.isLike = true GROUP BY pl.post.id HAVING COUNT(pl.id) <= :maxLikes) ");
                     sb.append("AND ");
                 });
-
                 sb.setLength(sb.length() - 4);
             }
 

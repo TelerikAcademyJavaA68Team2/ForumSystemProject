@@ -98,6 +98,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void blockUser(Long userId) {
+        if (userId.equals(getAuthenticatedUser().getId())) {
+            throw new InvalidUserInputException("You cant block yourself!");
+        }
         User user = userRepository.getById(userId);
         if (user.isBlocked()) {
             throw new InvalidUserInputException(String.format(
