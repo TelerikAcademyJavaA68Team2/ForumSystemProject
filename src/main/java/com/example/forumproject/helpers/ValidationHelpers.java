@@ -6,6 +6,7 @@ import com.example.forumproject.models.Post;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.userDtos.RequestUserProfileDto;
 import com.example.forumproject.repositories.UserRepository;
+import com.example.forumproject.services.UserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.regex.Matcher;
@@ -19,7 +20,7 @@ public class ValidationHelpers {
     public static final String UNAUTHORIZED_MESSAGE_COMMENT = "Only admins or the " +
             "comment's creator can modify comments!";
 
-    public static String ValidateUpdate(RequestUserProfileDto userUpdateDto, User user) {
+    public static String ValidateUpdate(RequestUserProfileDto userUpdateDto, User user, UserService service) {
 
         StringBuilder sb = new StringBuilder();
 
@@ -44,6 +45,15 @@ public class ValidationHelpers {
             noChanges = false;
             if (user.getEmail().equals(userUpdateDto.getEmail())) {
                 throw new DuplicateEntityException("Your Email is already set to " + user.getEmail());
+            }
+            boolean emailTaken = true;
+            try {
+                service.getByEmail(userUpdateDto.getEmail());
+            } catch (EntityNotFoundException e) {
+                emailTaken = false;
+            }
+            if (emailTaken) {
+                throw new DuplicateEntityException("Email is already taken!");
             }
             sb.append("Email updated successfully!").append(System.lineSeparator());
             user.setEmail(userUpdateDto.getEmail());
@@ -72,6 +82,7 @@ public class ValidationHelpers {
         }
         return sb.toString();
     }
+
 
     public static void validateEmailAndUsername(User user, UserRepository userRepository) {
         boolean usernameIsNotValid = true;
@@ -125,16 +136,5 @@ public class ValidationHelpers {
 
     public static boolean isDuplicateComment(Comment newComment, Comment commentToUpdate) {
         return newComment.getContent().trim().equalsIgnoreCase(commentToUpdate.getContent().trim());
-    }
-
-    public static void validatePhoneNumber(String phoneNumber) {
-        String regex = "^[\\d+\\- ]{6,20}$";
-
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(phoneNumber);
-
-        if (!matcher.matches()) {
-            throw new InvalidUserInputException("You provided wrong phone number -> 6-20 chars allowed symbols -> {+/{space}/-}");
-        }
     }
 }

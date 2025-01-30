@@ -384,13 +384,4 @@ public class CommentServiceTests {
         assertEquals(UNAUTHORIZED_MESSAGE_COMMENT, thrown.getMessage());
         verify(commentMockRepository, never()).delete(anyLong(), anyLong());
     }
-
 }
-
-
-
-
-
-
-
-

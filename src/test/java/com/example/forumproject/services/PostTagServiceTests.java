@@ -211,7 +211,7 @@ public class PostTagServiceTests {
                 .thenReturn(mockPost);
         Mockito.when(userService.getAuthenticatedUser())
                 .thenReturn(mockUser);
-        Mockito.when(tagRepository.getTagById(1L))
+        Mockito.when(tagRepository.getTagById(mockTag.getId()))
                 .thenReturn(mockTag);
         Mockito.when(postTagRepository.getPostTag(mockPost.getId(), mockTag.getId()))
                 .thenReturn(mockPostTag);
@@ -221,7 +221,7 @@ public class PostTagServiceTests {
                 .thenReturn(false);
 
         // Act, Assert
-        Assertions.assertDoesNotThrow(() -> service.updateTagOnPost(1L, 1L, "New Tag"));
+        Assertions.assertDoesNotThrow(() -> service.updateTagOnPost(1L, mockTag.getId(), "New Tag"));
     }
 
     @Test
@@ -241,7 +241,7 @@ public class PostTagServiceTests {
                 .thenReturn(mockPost);
         Mockito.when(userService.getAuthenticatedUser())
                 .thenReturn(mockUser);
-        Mockito.when(tagRepository.getTagById(1L))
+        Mockito.when(tagRepository.getTagById(mockTag.getId()))
                 .thenReturn(mockTag);
         Mockito.when(postTagRepository.getPostTag(mockPost.getId(), mockTag.getId())).thenReturn(mockPostTag);
         Mockito.when(tagRepository.getTagByName("New Tag")).thenReturn(mockNewTag);
@@ -249,7 +249,8 @@ public class PostTagServiceTests {
                 .thenReturn(true);
 
         // Act, Assert
-        Assertions.assertThrows(DuplicateEntityException.class, () -> service.updateTagOnPost(1L, 1L, "New Tag"));
+        Assertions.assertThrows(DuplicateEntityException.class, () ->
+                service.updateTagOnPost(1L, mockTag.getId(), "New Tag"));
     }
 
     @Test
