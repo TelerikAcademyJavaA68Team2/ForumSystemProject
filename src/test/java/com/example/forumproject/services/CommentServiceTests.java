@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.example.forumproject.Helpers.*;
-import static com.example.forumproject.helpers.ValidationHelpers.UNAUTHORIZED_MESSAGE;
+import static com.example.forumproject.helpers.ValidationHelpers.UNAUTHORIZED_MESSAGE_COMMENT;
 import static com.example.forumproject.services.PostServiceTests.POST_NOT_FOUND;
 import static com.example.forumproject.services.commentService.CommentServiceImpl.DUPLICATE_COMMENT_MESSAGE;
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,13 +38,13 @@ public class CommentServiceTests {
     public static final String UPDATED_COMMENT_CONTENT = "Updated comment content";
 
     @Mock
-    CommentRepository commentMockRepository;
+    private CommentRepository commentMockRepository;
 
     @Mock
-    UserService userService;
+    private UserService userService;
 
     @Mock
-    PostService postService;
+    private PostService postService;
 
     @InjectMocks
     CommentServiceImpl commentService;
@@ -58,7 +58,6 @@ public class CommentServiceTests {
         when(postService.getById(1L)).thenReturn(post);
 
         //Act
-
         Comment result = commentService.getById(1L, 1L);
 
         //Assert
@@ -80,7 +79,7 @@ public class CommentServiceTests {
 
         //Assert
         verify(commentMockRepository, Mockito.times(1))
-                .getAllCommentsByPostIdForMapper( 1L);
+                .getAllCommentsByPostIdForMapper(1L);
 
         assertEquals(1, result.size());
         assertEquals(List.of(expectedComment), result);
@@ -313,7 +312,7 @@ public class CommentServiceTests {
             commentService.update(1L, updatedComment);
         });
 
-        assertEquals(UNAUTHORIZED_MESSAGE, thrown.getMessage());
+        assertEquals(UNAUTHORIZED_MESSAGE_COMMENT, thrown.getMessage());
         verify(commentMockRepository, never()).update(any(Comment.class));
     }
 
@@ -393,7 +392,7 @@ public class CommentServiceTests {
             commentService.delete(1L, 1L);
         });
 
-        assertEquals(UNAUTHORIZED_MESSAGE, thrown.getMessage());
+        assertEquals(UNAUTHORIZED_MESSAGE_COMMENT, thrown.getMessage());
         verify(commentMockRepository, never()).delete(anyLong(), anyLong());
     }
 
