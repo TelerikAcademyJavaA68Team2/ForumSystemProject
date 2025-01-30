@@ -9,8 +9,6 @@ public interface PostRepository {
 
     Long getNumberOfPostsByUser(Long user_id);
 
-    /*List<Post> getAllPostsFromUser(Long user_id);*/
-
     Long getTotalNumberOfPosts();
 
     List<Post> getAll(PostFilterOptions filterOptions);

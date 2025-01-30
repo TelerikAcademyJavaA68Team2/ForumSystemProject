@@ -30,15 +30,6 @@ public class PostRepositoryImpl implements PostRepository {
         }
     }
 
-  /*  @Override
-    public List<Post> getAllPostsFromUser(Long user_id) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Post> query = session.createQuery("FROM Post p WHERE p.author.id = :userId", Post.class);
-            query.setParameter("userId", user_id);
-            return query.list();
-        }
-    }*/
-
     @Override
     public Long getTotalNumberOfPosts() {
         try (Session session = sessionFactory.openSession()) {

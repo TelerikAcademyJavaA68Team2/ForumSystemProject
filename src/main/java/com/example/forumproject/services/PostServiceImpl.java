@@ -30,11 +30,6 @@ public class PostServiceImpl implements PostService {
         return postRepository.getNumberOfPostsByUser(user_id);
     }
 
-  /*  @Override
-    public List<Post> getAllPostsFromUser(Long user_id) {
-        return postRepository.getAllPostsFromUser(user_id);
-    }*/
-
     @Override
     public Long getTotalNumberOfPosts() {
         return postRepository.getTotalNumberOfPosts();
@@ -73,6 +68,4 @@ public class PostServiceImpl implements PostService {
         validateUserIsAdminOrPostAuthor(postToDelete, user);
         postRepository.delete(id);
     }
-
-
 }
