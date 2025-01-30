@@ -1,5 +1,6 @@
 package com.example.forumproject.repositories;
 
+import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
@@ -122,6 +123,8 @@ public class UserRepositoryImpl implements UserRepository {
             session.beginTransaction();
             session.merge(user);
             session.getTransaction().commit();
+        }catch (Exception e){
+            throw new DuplicateEntityException("Email already");
         }
     }
 

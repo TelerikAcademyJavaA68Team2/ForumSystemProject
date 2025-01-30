@@ -95,7 +95,7 @@ public class AdminController {
                     @ApiResponse(description = "Invalid user input", responseCode = "400")
             }
     )
-    @PostMapping("/posts/{postId}/delete")
+    @DeleteMapping("/posts/{postId}")
     public ResponseEntity<String> deletePost(@PathVariable Long postId) {
         try {
             postService.delete(postId, userService.getAuthenticatedUser());
@@ -118,7 +118,7 @@ public class AdminController {
                     @ApiResponse(description = "Invalid user input", responseCode = "400")
             }
     )
-    @PostMapping("/posts/{postId}/comments/{commentId}/delete")
+    @DeleteMapping("/posts/{postId}/comments/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
         try {
             commentService.delete(postId, commentId);
@@ -142,7 +142,7 @@ public class AdminController {
                     @ApiResponse(description = "Invalid user input", responseCode = "400")
             }
     )
-    @PostMapping("/users/{userId}/block")
+    @PatchMapping("/users/{userId}/block")
     public ResponseEntity<String> blockUser(@PathVariable Long userId) {
         try {
             userService.blockUser(userId);
@@ -165,7 +165,7 @@ public class AdminController {
                     @ApiResponse(description = "Invalid user input", responseCode = "400")
             }
     )
-    @PostMapping("/users/{userId}/unblock")
+    @PatchMapping("/users/{userId}/unblock")
     public ResponseEntity<String> unblockUser(@PathVariable Long userId) {
         try {
             userService.unblockUser(userId);
@@ -188,7 +188,7 @@ public class AdminController {
                     @ApiResponse(description = "Invalid user input", responseCode = "400")
             }
     )
-    @PostMapping("/users/{userId}/make-admin")
+    @PatchMapping("/users/{userId}/make-admin")
     public ResponseEntity<String> updateToAdmin(@PathVariable Long userId) {
         try {
             userService.promoteToAdmin(userId);
@@ -211,7 +211,7 @@ public class AdminController {
                     @ApiResponse(description = "Invalid user input", responseCode = "400")
             }
     )
-    @PostMapping("/users/{userId}/make-user")
+    @PatchMapping("/users/{userId}/make-user")
     public ResponseEntity<String> demoteToUser(@PathVariable Long userId) {
         try {
             userService.demoteAdminToUser(userId);
