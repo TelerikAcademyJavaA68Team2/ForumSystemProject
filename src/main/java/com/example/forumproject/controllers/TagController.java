@@ -24,7 +24,7 @@ import java.util.List;
         description = "API for managing tags associated with posts")
 public class TagController {
 
-    public static final String NO_TAGS_MESSAGE = "There are no tags for post with id %d!";
+    private static final String NO_TAGS_MESSAGE = "There are no tags for post with id %d!";
     private final TagService tagService;
     private final PostTagService postTagService;
 

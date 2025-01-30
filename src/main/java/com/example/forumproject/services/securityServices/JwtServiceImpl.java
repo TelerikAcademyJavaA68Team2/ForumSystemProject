@@ -17,8 +17,8 @@ import java.util.function.Function;
 public class JwtServiceImpl implements JwtService {
 
     private static final String SECRET_KEY = "9bfb230cbadfdf8af34f02be46188a222b105d14a1dd1f183e8934de0d78c354";
-    public static final String EXPIRED_TOKEN = "JWT Token has expired. Please log in again.";
-    public static final String LOGIN_MESSAGE = "Please log in again.";
+    private static final String EXPIRED_TOKEN = "JWT Token has expired. Please log in again.";
+    private static final String LOGIN_MESSAGE = "Please log in again.";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

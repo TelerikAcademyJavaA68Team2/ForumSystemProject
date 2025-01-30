@@ -25,7 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Tag(name = "Profile Management", description = "API for managing user profiles")
 public class ProfileController {
 
-    public static final String ACCOUNT_DELETED_SUCCESSFULLY = "Account deleted successfully";
+    private static final String ACCOUNT_DELETED_SUCCESSFULLY = "Account deleted successfully";
 
     private final UserMapper userMapper;
     private final UserService userService;
