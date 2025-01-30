@@ -64,7 +64,7 @@ public class JwtServiceTests {
     }
 
     @Test
-    void isValid_ShouldThrowUnauthorizedAccessException_When_TokenIsInvalid() {
+    void isValid_ShouldThrowException_When_TokenIsInvalid() {
         // Arrange
         String invalidUsername = "invalidUser";
         String token = service.generateToken(new User("testUser", "password"));
@@ -82,7 +82,7 @@ public class JwtServiceTests {
     @Test
     void extractClaim_ShouldReturnCorrectClaim_WhenTokenIsValid() {
         // Arrange
-        String mockUsername = "testuser";
+        String mockUsername = "testUser";
         String token = service.generateToken(new User(mockUsername, "password"));
 
         // Act

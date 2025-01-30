@@ -1,6 +1,8 @@
 package com.example.forumproject;
 
 import com.example.forumproject.models.*;
+import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
+import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
 
@@ -45,6 +47,20 @@ public class Helpers {
         mockUser.setPassword(MOCK_PASSWORD);
         mockUser.setAdmin(true);
         return mockUser;
+    }
+
+    public static UserRegistrationDto createMockAUserRegistrationDto() {
+        var registrationRequest = new UserRegistrationDto();
+        registrationRequest.setFirstName(MOCK_USER_FIRST_NAME);
+        registrationRequest.setLastName(MOCK_USER_LAST_NAME);
+        registrationRequest.setEmail(MOCK_USER_EMAIL);
+        registrationRequest.setUsername(MOCK_USER_USERNAME);
+        registrationRequest.setPassword(MOCK_PASSWORD);
+        return registrationRequest;
+    }
+
+    public static LoginDto createMockALoginDto() {
+        return new LoginDto(MOCK_USER_USERNAME, MOCK_PASSWORD);
     }
 
     public static Tag createMockTag() {
