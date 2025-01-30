@@ -6,15 +6,15 @@ VALUES
     ('car culture'), ('off-road vehicles'), ('car restoration'), ('performance cars'), ('electric car charging'),
     ('muscle cars'), ('supercars'), ('road trips'), ('car insurance'), ('drifting'), ('BMW'), ('E60'), ('UAZ'), ('MOSKVICH');
 
--- Insert dummy data into the 'users' table (car enthusiasts and admins)
+-- for testing with the dummy data the PASSWORD is encoded so for logIn use any username and 12345678 as password or feel free to register!
 INSERT INTO forum_management_system.users (first_name, last_name, email, username, password, is_admin, is_blocked, profile_photo, phone_number)
 VALUES
     ('Georgi', 'Benchev', 'GeogriBenchev@gmail.com', 'georgi', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, '123-456-7890'),
     ('Ivan', 'Ivanov', 'Vankata@gmail.com', 'vankata', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, '098-765-4321'),
     ('Stoyanka', 'Karashtranova', 'tancheto@gmail.com', 'tancheto', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, '555-555-5555'),
     ('StoyankaUser', 'Karashtranova', 'tanchetoUser@gmail.com', 'tancheto_user', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, NULL, NULL),
-    ('GeorgiUser', 'Benchev', 'georgiUser@gmail.com', 'georgi_user', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, NULL, NULL),
-    ('IvanUser', 'Ivanov', 'vankataUser@gmail.com', 'vankata_user', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 1, NULL, NULL),
+    ('Elitsa', 'Savova', 'elitsa@gmail.com', 'elitsa', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, NULL),
+    ('ElitsaUser', 'Savova', 'elitsaUser@gmail.com', 'elitsa_user', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 1, NULL, NULL),
     ('Nikolai', 'Todorov', 'nikolai.todorov@gmail.com', 'nikolai', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, '777-123-4567'),
     ('Petya', 'Petrova', 'petya.petrova@gmail.com', 'petya', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, NULL, '555-666-7777'),
     ('Dimitrov', 'Boris', 'dimitrov.boris@gmail.com', 'dimodinamoto', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, '123-123-1234'),
