@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
         description = "API for managing tags associated with posts")
 public class TagController {
 
+    public static final String NO_TAGS_MESSAGE = "There are no tags for post with id %d!";
     private final TagService tagService;
     private final PostTagService postTagService;
 
@@ -44,13 +45,16 @@ public class TagController {
     @GetMapping("/tags")
     public List<String> getTagsForPost(@PathVariable Long postId) {
         try {
-            return postTagService.getTagsByPostId(postId)
+            List<String> tags = postTagService.getTagsByPostId(postId)
                     .stream()
                     .map(Tag::getTagName)
-                    .collect(Collectors.toList());
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UnauthorizedAccessException e) {
+                    .toList();
+            if(tags.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format(NO_TAGS_MESSAGE, postId));
+            }
+            return tags;
+        }  catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
