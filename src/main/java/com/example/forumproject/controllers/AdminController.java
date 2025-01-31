@@ -85,7 +85,6 @@ public class AdminController {
         }
     }
 
-
     @Operation(
             summary = "Delete a post",
             description = "Remove a specific post by ID",
