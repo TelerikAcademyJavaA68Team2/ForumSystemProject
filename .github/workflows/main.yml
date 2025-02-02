@@ -9,8 +9,8 @@ on:
       - master
 
 jobs:
-  test:
-    name: Run Unit Tests
+  build-and-test:
+    name: Build and Test Application
     runs-on: ubuntu-latest
 
     steps:
@@ -45,8 +45,5 @@ jobs:
           sudo systemctl start mariadb
           sudo mysql -u root -e "CREATE DATABASE forum_management_system;"
 
-      - name: Run Unit Tests
-        run: ./gradlew test --info
-
-      - name: Build the Application
-        run: ./gradlew build --info
+      - name: Build and Run Tests
+        run: ./gradlew clean build --info
