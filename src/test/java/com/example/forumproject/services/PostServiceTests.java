@@ -222,13 +222,10 @@ public class PostServiceTests {
     @Test
     public void update_ShouldThrowUnauthorizedAccessException_WhenUserIsNotAuthorOrAdmin() {
         // Arrange
-        Post mockPost = createMockPost();
         User anotherUser = createMockUser();
         anotherUser.setId(99L);
         Post updatedPost = createMockPost();
         updatedPost.setTitle("Unauthorized Update");
-
-        when(postRepository.getById(mockPost.getId())).thenReturn(mockPost);
 
         // Act & Assert
         Assertions.assertThrows(UnauthorizedAccessException.class,
