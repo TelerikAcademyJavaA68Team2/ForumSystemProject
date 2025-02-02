@@ -3,10 +3,10 @@ name: Run Unit Tests on Commit
 on:
   push:
     branches:
-      - master  # Run tests on every push to the master branch
+      - master
   pull_request:
     branches:
-      - master  # Run tests on PRs targeting the master branch
+      - master
 
 jobs:
   test:
@@ -27,10 +27,15 @@ jobs:
       - name: Grant Execute Permission for Gradle Wrapper
         run: chmod +x gradlew
 
-      - name: Set Up MariaDB Database
+      - name: Install MariaDB
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mariadb-server mariadb-client
+
+      - name: Start MariaDB Service
         run: |
           sudo systemctl start mariadb
-          mysql -u root -e "CREATE DATABASE forum_management_system;"
+          sudo mysql -u root -e "CREATE DATABASE forum_management_system;"
 
       - name: Build and Run Unit Tests
         run: ./gradlew clean build --info
