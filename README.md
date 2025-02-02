@@ -60,7 +60,7 @@ Follow these steps to set up and run the application:
 
 ## Database Diagram
 
-![Database Diagram]
+![database_relations_diagram](https://github.com/user-attachments/assets/e0692b79-b92f-4d2a-83c0-96db44d3d428)
 
 <br>
 
