@@ -1,14 +1,12 @@
-package com.example.forumproject.controllers;
+package com.example.forumproject.controllers.rest;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.CommentMapper;
 import com.example.forumproject.models.Comment;
-import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.commentDtos.CommentInDto;
 import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
-import com.example.forumproject.services.UserService;
 import com.example.forumproject.services.commentService.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
