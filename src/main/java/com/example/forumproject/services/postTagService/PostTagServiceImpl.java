@@ -20,6 +20,7 @@ public class PostTagServiceImpl implements PostTagService {
 
     public static final String EXISTING_TAG_MESSAGE = "This tag is already assigned to the current post." +
             " Please choose a different tag.";
+    public static final String TAG_ALREADY_SET = "This tag is already associated with the post";
 
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
@@ -66,7 +67,7 @@ public class PostTagServiceImpl implements PostTagService {
         }
 
         if (postTagRepository.checkIfPostIsTagged(post.getId(), tag.getId())) {
-            throw new DuplicateEntityException("This tag is already associated with the post");
+            throw new DuplicateEntityException(TAG_ALREADY_SET);
         }
 
         PostTag postTag = new PostTag(post, tag);
