@@ -80,7 +80,6 @@ public class ProfileController {
     @PatchMapping
     public ResponseEntity<String> updateProfile(@Valid @RequestBody RequestUserProfileDto userUpdateDto) {
         try {
-
             User user = userService.getAuthenticatedUser();
             String result = ValidationHelpers.ValidateUpdate(userUpdateDto, user,userService);
             userService.update(user);
