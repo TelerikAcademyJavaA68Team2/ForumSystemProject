@@ -18,22 +18,23 @@ repositories {
 }
 
 dependencies {
-// Test
-    tasks.withType(Test).configureEach { jvmArgs '-Xshare:off' }
+    // Tests
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-// Spring Boot Web and JPA dependencies
+    // Spring Boot Web and JPA dependencies
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-// MariaDB/JDBC driver
+
+    // MariaDB/JDBC driver
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
- // Spring Boot DevTools (for development)
+
+    // Spring Boot DevTools (for development)
     implementation 'org.springframework.boot:spring-boot-devtools'
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

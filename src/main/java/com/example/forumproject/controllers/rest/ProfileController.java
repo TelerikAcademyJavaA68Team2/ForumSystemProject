@@ -1,4 +1,4 @@
-package com.example.forumproject.controllers;
+package com.example.forumproject.controllers.rest;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.InvalidUserInputException;

@@ -1,9 +1,8 @@
-package com.example.forumproject.controllers;
+package com.example.forumproject.controllers.rest;
 
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
-import com.example.forumproject.mappers.HomepageResponseFactory;
 import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
@@ -26,6 +25,9 @@ import java.util.List;
 @RequestMapping("/api/admin")
 @Tag(name = "Admin Management", description = "Endpoints for admin actions like user, post, and comment management")
 public class AdminController {
+
+    public static final String DELETED_SUCCESSFULLY = "Post with id: %d was deleted successfully!";
+    public static final String COMMENT_DELETED_SUCCESSFULLY = "Comment with id: %d was deleted from Post with id: %d successfully!";
 
     private final UserService userService;
     private final PostService postService;
@@ -98,7 +100,7 @@ public class AdminController {
     public ResponseEntity<String> deletePost(@PathVariable Long postId) {
         try {
             postService.delete(postId, userService.getAuthenticatedUser());
-            return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Post with id: %d was deleted successfully!", postId));
+            return ResponseEntity.status(HttpStatus.CREATED).body(String.format(DELETED_SUCCESSFULLY, postId));
         } catch (InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (EntityNotFoundException e) {
@@ -122,7 +124,7 @@ public class AdminController {
         try {
             commentService.delete(postId, commentId);
             return ResponseEntity.status(HttpStatus.CREATED).body(String.format
-                    ("Comment with id: %d was deleted from Post with id: %d successfully!", commentId, postId));
+                    (COMMENT_DELETED_SUCCESSFULLY, commentId, postId));
         } catch (InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (EntityNotFoundException e) {

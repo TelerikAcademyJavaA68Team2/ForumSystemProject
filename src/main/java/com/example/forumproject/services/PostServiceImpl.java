@@ -52,8 +52,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void update(Post newPost, User user) {
+        validateUserIsAdminOrPostAuthor(newPost, user);
         Post postToUpdate = postRepository.getById(newPost.getId());
-        validateUserIsAdminOrPostAuthor(postToUpdate, user);
         if (isDuplicatePost(newPost, postToUpdate)) {
             throw new DuplicateEntityException(DUPLICATE_POST_MESSAGE);
         }
