@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class ValidationHelpers {
 
     public static final String UNAUTHORIZED_MESSAGE_POST = "Only admins or the " +
@@ -82,7 +81,6 @@ public class ValidationHelpers {
         }
         return sb.toString();
     }
-
 
     public static void validateEmailAndUsername(User user, UserRepository userRepository) {
         boolean usernameIsNotValid = true;

@@ -22,4 +22,3 @@ public interface PostTagRepository {
 
     void delete(PostTag postTag);
 }
-
