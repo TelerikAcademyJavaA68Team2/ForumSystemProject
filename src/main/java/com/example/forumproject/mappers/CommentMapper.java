@@ -17,12 +17,10 @@ import java.util.stream.Collectors;
 public class CommentMapper {
 
     private final CommentService commentService;
-    private final UserService userService;
 
     @Autowired
-    public CommentMapper(CommentService commentService, UserService userService) {
+    public CommentMapper(CommentService commentService) {
         this.commentService = commentService;
-        this.userService = userService;
     }
 
     public Comment CommentInDtoToObject(CommentInDto commentDto) {

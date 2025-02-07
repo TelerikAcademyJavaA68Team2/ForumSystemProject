@@ -15,13 +15,11 @@ public class UserMapper {
 
     private final PostService postService;
     private final PostMapper postMapper;
-    private final UserService userService;
 
     @Autowired
-    public UserMapper(PostService postService, PostMapper postMapper, UserService userService) {
+    public UserMapper(PostService postService, PostMapper postMapper) {
         this.postService = postService;
         this.postMapper = postMapper;
-        this.userService = userService;
     }
 
 
