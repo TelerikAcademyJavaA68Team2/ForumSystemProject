@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+  <meta charset="UTF-8">
+  <title th:text="'BeerTag | ' + ${title}">Title</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.ico" th:href="@{/images/favicon.ico}">
+  <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+</head>
+<body>
+<header th:fragment="header">
+  <div>
+    <img src="../static/images/logo.png" alt="BeerTag Logo" class="header-image" th:src="@{/images/logo.png}">
+    <h3 class="login">
+      <a href="#" th:if="${session.isAdmin}" th:href="@{/admin}" th:text="#{navigation.admin}">Admin</a>
+      <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}" th:text="#{navigation.register}">Register</a>
+      | <a href="#" th:if="${isAuthenticated}"
+      th:href="@{/auth/logout}" th:text="#{navigation.logout}">Logout</a>
+
+      <a href="#" th:unless="${isAuthenticated}"
+      th:href="@{/auth/login}" th:text="#{navigation.login}">Login</a>
+    </h3>
+    <h3>
+      <a href="./HomeView.html" th:href="@{/}" th:text="#{navigation.home}"> Home</a>
+      | <a href="./BeersView.html" th:href="@{/beers}" th:text="#{navigation.all-beers}">Beers</a>
+      | <a href="./AboutView.html" th:href="@{/about}" th:text="#{navigation.about}">About</a>
+    </h3>
+  </div>
+</header>
+</body>
+<footer th:fragment="footer">
+  <small th:text="${'©️ Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">BeerTag</small>
+</footer>
+</html>

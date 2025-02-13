@@ -25,7 +25,7 @@ public class SecurityConfig {
             "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
             "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html", "/api/auth/**",
             "/api/test/**", "/authenticate"};
-    private static final String[] PUBLIC_URL_LIST = {"/api/home/**", "/error"};
+    private static final String[] PUBLIC_URL_LIST = {"/api/home/**", "/error", "/"}; //added main page as public just to boot it
     private static final String[] RESTRICTED_URL_LIST = {"/api/admin/**", "/api/users/**"};
 
     private final UserDetailsService userDetailsService;
