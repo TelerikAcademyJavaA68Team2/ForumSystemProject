@@ -39,14 +39,13 @@ public class MvcHomepageController {
         return "About-View";
     }
 
-
-    @GetMapping("/login")
+    @GetMapping("/auth/login")
     public String getLoginPage(Model model) {
         model.addAttribute("loginRequest", new LoginDto());
         return "Login-View";
     }
 
-    @PostMapping
+    @PostMapping(("/auth/login"))
     public String executeLoginRequest(@Valid @ModelAttribute("loginRequest") LoginDto loginRequest, BindingResult errors, HttpSession session) {
         if (errors.hasErrors()) {
             return "Login-View";
@@ -57,13 +56,12 @@ public class MvcHomepageController {
                 throw new EntityNotFoundException("");
             }
             session.setAttribute("currentUser", loginRequest.getUsername());
-            return "redirect:/home";
+            return "redirect:/mvc/home";
         } catch (EntityNotFoundException e) {
             errors.rejectValue("username", "username.mismatch", "invalid username or password");
             return "Login-View";
         }
     }
-
 
     @GetMapping("/admin")
     public String showAdminPortalView(HttpSession session, Model model) {

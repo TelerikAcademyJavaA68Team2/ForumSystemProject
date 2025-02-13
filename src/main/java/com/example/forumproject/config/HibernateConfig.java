@@ -32,7 +32,6 @@ public class HibernateConfig {
         sessionFactory.setPackagesToScan("com.example.forumproject.models");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
-
     }
 
     @Bean
@@ -48,7 +47,6 @@ public class HibernateConfig {
     private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MariaDBDialect");
-
         return hibernateProperties;
     }
 }
