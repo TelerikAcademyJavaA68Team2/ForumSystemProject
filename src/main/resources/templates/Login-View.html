@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+  <link rel="icon" th:href="@{/images/smalLogo.png}" type="image/png">
+</head>
+<body>
+<header>
+  <div class="header-layout">
+    <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
+    <h3 class="action-buttons">
+      <a class="btn-primary" th:href="@{/home}">Back to Home</a>
+    </h3>
+    <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
+  </div>
+</header>
+<div class="form-container margin12">
+  <form action="#" th:action="@{/auth/login}" th:object="${loginRequest}" method="post">
+
+    <div class="form-group">
+      <label class="form-label" th:text="#{user.label.username}">Username</label>
+      <input class="form-input" type="text" th:field="*{username}" placeholder="Enter Username"/>
+      <label class="form-error" th:errors="*{username}">Username error placeholder! </label>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" th:text="#{user.label.password}">Password</label>
+      <input class="form-input" type="password" th:field="*{password}" placeholder="Enter Password"/>
+      <label class="form-error" th:errors="*{password}">Password error placeholder! </label>
+    </div>
+
+    <div class="form-group">
+      <input type="submit" class="btn-primary form-button" value="Login"/>
+    </div>
+  </form>
+
+</div>
+
+<h3 class="center-h3">
+  <p>Not a user yet?</p>
+  <a class="btn-primary" th:href="@{/auth/register}">Register</a>
+</h3>
+<footer>
+  <small>©️ Copyright 2024, BeerTag</small>
+</footer>
+
+
+</body>
+</html>
