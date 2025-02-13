@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,8 +39,40 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Order(1) // Higher priority
+    public SecurityFilterChain mvcSecurityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .securityMatcher("/mvc/**")
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/mvc/**").permitAll() // Public MVC endpoints
+                        .requestMatchers("/mvc/profile", "/mvc/admin/**").authenticated() // Secured MVC endpoints
+                        .anyRequest().denyAll()) // Deny all other requests
+                .userDetailsService(userDetailsService)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // Stateful for MVC
+                .formLogin(form -> form
+                        .loginPage("/mvc/login") // Custom login page for MVC
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/mvc/logout") // Custom logout URL for MVC
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .logoutSuccessUrl("/mvc/login?logout"))
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendRedirect("/mvc/login"); // Redirect to login for unauthorized access
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.sendRedirect("/mvc/access-denied"); // Redirect to access-denied for forbidden access
+                        }))
+                .build();
+    }
+
+
+    @Bean
+    @Order(2) // Lower priority
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
+                .securityMatcher("/api/**") // Apply this chain only to /api/**
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(WHITE_LIST_SWAGGER_URL).permitAll()
                         .requestMatchers(PUBLIC_URL_LIST).permitAll()
@@ -54,8 +87,7 @@ public class SecurityConfig {
                         })
                         .accessDeniedHandler((request, response, accessDeniedException) -> { // Handle 403 (Forbidden)
                             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden: You don't have permission to access this page!");
-                        })
-                )
+                        }))
                 .build();
     }
 
