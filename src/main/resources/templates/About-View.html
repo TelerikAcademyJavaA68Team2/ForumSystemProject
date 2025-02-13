@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeerTag - About</title>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/png">
+</head>
+<body>
+<header>
+    <div class="header-layout">
+<!--
+        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
+-->
+        <h3 class="action-buttons">
+            <a class="btn-primary" th:href="@{/home}">Home</a>
+            <a class="btn-primary" th:href="@{/mvc/beers}">Beers</a>
+            <a class="btn-primary active" th:href="@{/about}">About</a>
+        </h3>
+<!--
+        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
+-->
+    </div>
+</header>
+<div class="body-content">
+    <h1>About BeerTag!</h1>
+    <p>BeerTag is a web application designed to help beer enthusiasts discover new beers and learn more about their
+        favorite brands.</p>
+    <p>Our mission is to:</p>
+    <ul>
+        <li>Provide detailed information about beers, including their name, alcohol by volume (ABV), and style.</li>
+        <li>Create a platform where beer lovers can explore and share their experiences.</li>
+    </ul>
+    <p>We hope you enjoy using BeerTag and find it useful in your beer exploration journey!</p>
+</div>
+
+<footer>
+    <small>©️ Copyright 2024, BeerTag</small>
+</footer>
+</body>
+</html>
