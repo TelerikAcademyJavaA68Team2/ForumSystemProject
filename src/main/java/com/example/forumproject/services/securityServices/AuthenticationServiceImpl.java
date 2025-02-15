@@ -5,11 +5,13 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
 import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
 import com.example.forumproject.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,8 +38,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
+    @Override
+    public void authenticateForMvc(LoginDto request, HttpSession session) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        User user = (User) authentication.getPrincipal();
+
+        session.setAttribute("currentUser", request.getUsername());
+        session.setAttribute("hasActiveUser", true);
+        session.setAttribute("isUserAdmin", user.isAdmin());
+    }
+
+    @Override
+    public void registerForMvc(UserRegistrationDto request) {
+        if (!request.getPassword().equals(request.getPasswordConfirm())) {
+            throw new InvalidUserInputException("invalid password confirmation");
+        }
+        User user = createUserFromRequest(request);
+        userService.save(user);
+    }
+
     public String register(UserRegistrationDto request) {
-        if (!request.getPasswordConfirm().equals(request.getPassword())){
+        if (!request.getPasswordConfirm().equals(request.getPassword())) {
             throw new InvalidUserInputException("Password Confirmation failed");
         }
         User user = createUserFromRequest(request);
