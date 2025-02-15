@@ -56,6 +56,9 @@ public class HomepageMvc {
             if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 throw new EntityNotFoundException("");
             }
+           /* if (user.isBlocked()){ redundant for spring security but test anyway
+                return "redirect:/mvc/blocked";
+            }*/
             session.setAttribute("currentUser", loginRequest.getUsername());
             session.setAttribute("hasActiveUser", true);
             session.setAttribute("isUserAdmin", user.isAdmin());
@@ -66,8 +69,8 @@ public class HomepageMvc {
         }
     }
 
-    @ModelAttribute("isAuthenticated")
+    /*@ModelAttribute("isAuthenticated") redundant we have boolean "hasActiveUser" in the session
     public boolean populateIsAuthenticated(HttpSession session) {
         return session.getAttribute("currentUser") != null;
-    }
+    }*/
 }
