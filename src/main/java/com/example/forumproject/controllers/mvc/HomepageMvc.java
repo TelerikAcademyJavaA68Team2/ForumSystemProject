@@ -46,7 +46,7 @@ public class HomepageMvc {
         return "Login-View";
     }
 
-    @PostMapping(("/login"))
+    @PostMapping("/login")
     public String executeLoginRequest(@Valid @ModelAttribute("loginRequest") LoginDto loginRequest, BindingResult errors, HttpSession session) {
         if (errors.hasErrors()) {
             return "Login-View";
