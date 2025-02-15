@@ -1,12 +1,15 @@
 package com.example.forumproject.controllers.mvc;
 
+import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
+import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
 import com.example.forumproject.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -41,7 +44,10 @@ public class HomepageMvc {
     }
 
     @GetMapping("/login")
-    public String getLoginPage(Model model) {
+    public String getLoginPage(Model model, HttpSession session) {
+        if ((boolean) session.getAttribute("hasActiveUser")) {
+            return "redirect:/mvc/home";
+        }
         model.addAttribute("loginRequest", new LoginDto());
         return "Login-View";
     }
@@ -56,9 +62,7 @@ public class HomepageMvc {
             if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 throw new EntityNotFoundException("");
             }
-           /* if (user.isBlocked()){ redundant for spring security but test anyway
-                return "redirect:/mvc/blocked";
-            }*/
+
             session.setAttribute("currentUser", loginRequest.getUsername());
             session.setAttribute("hasActiveUser", true);
             session.setAttribute("isUserAdmin", user.isAdmin());
@@ -69,8 +73,57 @@ public class HomepageMvc {
         }
     }
 
-    /*@ModelAttribute("isAuthenticated") redundant we have boolean "hasActiveUser" in the session
-    public boolean populateIsAuthenticated(HttpSession session) {
-        return session.getAttribute("currentUser") != null;
-    }*/
+    @GetMapping("/register")
+    public String getRegisterPage(Model model, HttpSession session) {
+        if ((boolean) session.getAttribute("hasActiveUser")) {
+            return "redirect:/mvc/home";
+        }
+        model.addAttribute("registerRequest", new UserRegistrationDto());
+        return "Register-View";
+    }
+
+    @PostMapping(("/register"))
+    public String executeRegisterRequest(@Valid @ModelAttribute("registerRequest") UserRegistrationDto registerRequest, BindingResult errors) {
+        if (errors.hasErrors()) {
+            return "Register-View";
+        }
+        try {
+            if (!registerRequest.getPassword().equals(registerRequest.getPasswordConfirm())) {
+                errors.rejectValue("passwordConfirm", "password.mismatch", "invalid password confirmation");
+                return "Register-View";
+            }
+            User user = new User();
+            user.setFirstName(registerRequest.getFirstName());
+            user.setLastName(registerRequest.getLastName());
+            user.setEmail(registerRequest.getEmail());
+            user.setUsername(registerRequest.getUsername());
+            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+            userService.save(user);
+
+            return "redirect:/mvc/login";
+        } catch (DuplicateEntityException e) {
+            String field;
+            String errorCode;
+            String defaultMsg;
+            if (e.getMessage().startsWith("User with email")) {
+                field = "email";
+                errorCode = "email.mismatch";
+                defaultMsg = "Email already taken";
+            } else {
+                field = "username";
+                errorCode = "username.mismatch";
+                defaultMsg = "Username already taken";
+            }
+            errors.rejectValue(field, errorCode, defaultMsg);
+            return "Register-View";
+        }
+    }
+
+    @GetMapping("/logout")
+    public String handleLogout(HttpSession session) {
+        session.invalidate();
+        SecurityContextHolder.clearContext();
+
+        return "redirect:/mvc/home";
+    }
 }
