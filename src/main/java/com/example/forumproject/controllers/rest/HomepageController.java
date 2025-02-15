@@ -2,6 +2,7 @@ package com.example.forumproject.controllers.rest;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.InvalidEmailFormatException;
+import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.mappers.HomepageResponseFactory;
 import com.example.forumproject.models.dtos.homepageResponseDtos.HomepagePostsDto;
 import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
@@ -10,6 +11,7 @@ import com.example.forumproject.services.securityServices.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,12 +60,12 @@ public class HomepageController {
             @ApiResponse(description = "Bad Request - Invalid email format", responseCode = "400")
     })
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRegistrationDto request) {
+    public ResponseEntity<String> register(@Valid @RequestBody UserRegistrationDto request) {
         try {
             return ResponseEntity.ok(authService.register(request));
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        } catch (InvalidEmailFormatException e) {
+        } catch (InvalidEmailFormatException | InvalidUserInputException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
