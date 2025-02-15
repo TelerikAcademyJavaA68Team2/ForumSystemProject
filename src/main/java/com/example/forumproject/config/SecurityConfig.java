@@ -26,8 +26,10 @@ public class SecurityConfig {
             "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
             "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html", "/api/auth/**",
             "/api/test/**", "/authenticate"};
-    private static final String[] PUBLIC_URL_LIST = {"/api/home/**", "/error", "/", "/css/**", "/js/**", "/images/**"}; //added main page as public just to boot it
+    private static final String[] PUBLIC_URL_LIST = {"/api/home/**", "/error", "/", "/css/**", "/js/**", "/images/**"};
+    private static final String[] PUBLIC_MVC_URL_LIST = {"/mvc/home/**", "/error", "/mvc/login","/mvc/register"};
     private static final String[] RESTRICTED_URL_LIST = {"/api/admin/**", "/api/users/**"};
+    private static final String[] RESTRICTED_MVC_URL_LIST = {"/mvc/admin/**", "/mvc/users/**"};
 
     private final UserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
@@ -44,9 +46,9 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .securityMatcher("/mvc/**")
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/mvc/**").permitAll() // Public MVC endpoints
-                        .requestMatchers("/mvc/profile", "/mvc/admin/**").authenticated() // Secured MVC endpoints
-                        .anyRequest().denyAll()) // Deny all other requests
+                        .requestMatchers(PUBLIC_MVC_URL_LIST).permitAll() // Public MVC endpoints
+                        .requestMatchers(RESTRICTED_MVC_URL_LIST).hasAuthority("ADMIN") // Restricted MVC endpoints
+                        .anyRequest().authenticated()) //All other requests authenticated
                 .userDetailsService(userDetailsService)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // Stateful for MVC
                 .formLogin(form -> form
