@@ -1,6 +1,7 @@
 package com.example.forumproject.services;
 
 import com.example.forumproject.Helpers;
+import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
 import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
@@ -53,6 +54,18 @@ public class AuthenticationServiceTests {
 
         // Assert
         Assertions.assertEquals("generatedToken", token);
+    }
+
+    @Test
+    void register_ShouldThrowExc_WhenPasswordConfirmInvalid() {
+        // Arrange
+        UserRegistrationDto registrationRequest = Helpers.createMockAUserRegistrationDto();
+        registrationRequest.setPasswordConfirm("invalid");
+        User user = Helpers.createMockUser();
+        user.setId(null);
+
+        // Act, Assert
+        Assertions.assertThrows(InvalidUserInputException.class, () -> authenticationService.register(registrationRequest));
     }
 
     @Test

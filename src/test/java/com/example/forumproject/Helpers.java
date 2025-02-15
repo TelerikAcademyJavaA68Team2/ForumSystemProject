@@ -56,6 +56,7 @@ public class Helpers {
         registrationRequest.setEmail(MOCK_USER_EMAIL);
         registrationRequest.setUsername(MOCK_USER_USERNAME);
         registrationRequest.setPassword(MOCK_PASSWORD);
+        registrationRequest.setPasswordConfirm(MOCK_PASSWORD);
         return registrationRequest;
     }
 
