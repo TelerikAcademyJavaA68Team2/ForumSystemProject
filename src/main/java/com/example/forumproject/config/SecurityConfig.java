@@ -1,6 +1,8 @@
 package com.example.forumproject.config;
 
+import com.example.forumproject.helpers.CustomAuthenticationFailureHandler;
 import com.example.forumproject.helpers.JwtAuthorizationFilter;
+import com.example.forumproject.helpers.MvcBlockedUserFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,11 +35,15 @@ public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final MvcBlockedUserFilter mvcBlockedUserFilter;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService, JwtAuthorizationFilter authorizationFilter) {
+    public SecurityConfig(UserDetailsService userDetailsService, JwtAuthorizationFilter authorizationFilter, MvcBlockedUserFilter mvcBlockedUserFilter, CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
         this.userDetailsService = userDetailsService;
         this.jwtAuthorizationFilter = authorizationFilter;
+        this.mvcBlockedUserFilter = mvcBlockedUserFilter;
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
     }
 
     @Bean
@@ -52,13 +58,15 @@ public class SecurityConfig {
                 .userDetailsService(userDetailsService)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // Stateful for MVC
                 .formLogin(form -> form
-                        .loginPage("/mvc/login") // Custom login page for MVC
+                        .loginPage("/mvc/login")
+                        .failureHandler(customAuthenticationFailureHandler)
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutUrl("/mvc/logout") // Custom logout URL for MVC
+                        .logoutUrl("/mvc/logout")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
-                        .logoutSuccessUrl("/mvc/login?logout"))
+                        .logoutSuccessUrl("/mvc/home"))
+                .addFilterBefore(mvcBlockedUserFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.sendRedirect("/mvc/login"); // Redirect to login for unauthorized access
