@@ -1,17 +1,16 @@
 package com.example.forumproject.controllers.mvc;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
-import com.example.forumproject.exceptions.EntityNotFoundException;
-import com.example.forumproject.models.User;
+import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
 import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
-import com.example.forumproject.services.UserService;
+import com.example.forumproject.services.securityServices.AuthenticationService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,13 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/mvc")
 public class HomepageMvc {
 
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationService authenticationService;
 
     @Autowired
-    public HomepageMvc(UserService userService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
+    public HomepageMvc(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping("/home")
@@ -58,17 +55,15 @@ public class HomepageMvc {
             return "Login-View";
         }
         try {
-            User user = userService.loadUserByUsername(loginRequest.getUsername());
-            if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-                throw new EntityNotFoundException("");
-            }
-
-            session.setAttribute("currentUser", loginRequest.getUsername());
-            session.setAttribute("hasActiveUser", true);
-            session.setAttribute("isUserAdmin", user.isAdmin());
+            authenticationService.authenticateForMvc(loginRequest, session);
             return "redirect:/mvc/home";
-        } catch (EntityNotFoundException | UsernameNotFoundException e) {
-            errors.rejectValue("username", "username.mismatch", "invalid username or password");
+        } catch (BadCredentialsException e) {
+            errors.rejectValue("username", "username.mismatch", "Invalid username or password");
+            return "Login-View";
+        } catch (DisabledException e) {
+            return "redirect:/mvc/blocked";
+        } catch (Exception e) {
+            errors.rejectValue("username", "username.error", "An error occurred during login");
             return "Login-View";
         }
     }
@@ -88,33 +83,22 @@ public class HomepageMvc {
             return "Register-View";
         }
         try {
-            if (!registerRequest.getPassword().equals(registerRequest.getPasswordConfirm())) {
-                errors.rejectValue("passwordConfirm", "password.mismatch", "invalid password confirmation");
-                return "Register-View";
-            }
-            User user = new User();
-            user.setFirstName(registerRequest.getFirstName());
-            user.setLastName(registerRequest.getLastName());
-            user.setEmail(registerRequest.getEmail());
-            user.setUsername(registerRequest.getUsername());
-            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-            userService.save(user);
-
+            authenticationService.registerForMvc(registerRequest);
             return "redirect:/mvc/login";
         } catch (DuplicateEntityException e) {
-            String field;
-            String errorCode;
-            String defaultMsg;
-            if (e.getMessage().startsWith("User with email")) {
-                field = "email";
-                errorCode = "email.mismatch";
-                defaultMsg = "Email already taken";
-            } else {
+            String field = "email";
+            String errorCode = "email.mismatch";
+            String defaultMsg = "Email already taken";
+
+            if (e.getMessage().startsWith("User with username")) {
                 field = "username";
                 errorCode = "username.mismatch";
                 defaultMsg = "Username already taken";
             }
             errors.rejectValue(field, errorCode, defaultMsg);
+            return "Register-View";
+        } catch (InvalidUserInputException e) {
+            errors.rejectValue("passwordConfirm", "password.mismatch", e.getMessage());
             return "Register-View";
         }
     }
