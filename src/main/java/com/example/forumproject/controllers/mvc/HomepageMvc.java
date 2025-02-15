@@ -6,7 +6,9 @@ import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
 import com.example.forumproject.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,9 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomepageMvc {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public HomepageMvc(UserService userService) {
+    @Autowired
+    public HomepageMvc(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/home")
@@ -48,7 +53,7 @@ public class HomepageMvc {
         }
         try {
             User user = userService.loadUserByUsername(loginRequest.getUsername());
-            if (!user.getPassword().equals(loginRequest.getPassword())) {
+            if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 throw new EntityNotFoundException("");
             }
             session.setAttribute("currentUser", loginRequest.getUsername());
