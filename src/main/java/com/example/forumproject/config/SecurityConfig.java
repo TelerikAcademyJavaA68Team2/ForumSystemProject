@@ -67,7 +67,6 @@ public class SecurityConfig {
                 .build();
     }
 
-
     @Bean
     @Order(2) // Lower priority
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -79,7 +78,7 @@ public class SecurityConfig {
                         .requestMatchers(RESTRICTED_URL_LIST).hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .userDetailsService(userDetailsService)
-                .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> { // Handle 401 (Unauthorized)

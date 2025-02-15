@@ -28,6 +28,6 @@
 </header>
 </body>
 <footer th:fragment="footer">
-  <small th:text="${'©️ Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">BeerTag</small>
+  <small th:text="${'©️ Copyright ' + #dates.year(#dates.createNow()) +  #{forum.name}}">Moto Forum</small>
 </footer>
 </html>
