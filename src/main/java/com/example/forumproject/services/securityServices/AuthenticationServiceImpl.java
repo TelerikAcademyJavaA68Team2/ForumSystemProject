@@ -1,5 +1,6 @@
 package com.example.forumproject.services.securityServices;
 
+import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
 import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
@@ -36,6 +37,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public String register(UserRegistrationDto request) {
+        if (!request.getPasswordConfirm().equals(request.getPassword())){
+            throw new InvalidUserInputException("Password Confirmation failed");
+        }
         User user = createUserFromRequest(request);
         userService.save(user);
         return jwtService.generateToken(user);

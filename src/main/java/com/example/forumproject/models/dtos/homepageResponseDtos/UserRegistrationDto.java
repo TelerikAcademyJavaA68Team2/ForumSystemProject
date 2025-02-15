@@ -1,5 +1,6 @@
 package com.example.forumproject.models.dtos.homepageResponseDtos;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -16,6 +17,7 @@ public class UserRegistrationDto {
 
     @NotBlank(message = "Email can't be blank")
     @Size(min = 5, max = 200, message = "Email should be between 5 and 250 symbols!")
+    @Email(message = "Email address is invalid!")
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Email address is invalid!")
     private String email;
 
@@ -27,15 +29,11 @@ public class UserRegistrationDto {
     @Size(min = 2, max = 20, message = "password should be between 2 and 20 symbols!")
     private String password;
 
-    public UserRegistrationDto() {
-    }
+    @NotBlank(message = "Password can't be blank")
+    @Size(min = 2, max = 20, message = "password should be between 2 and 20 symbols!")
+    private String passwordConfirm;
 
-    public UserRegistrationDto(String firstName, String lastName, String email, String username, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.username = username;
-        this.password = password;
+    public UserRegistrationDto() {
     }
 
     public String getFirstName() {
@@ -76,5 +74,13 @@ public class UserRegistrationDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 }
