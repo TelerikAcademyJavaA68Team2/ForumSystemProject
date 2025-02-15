@@ -1,14 +1,11 @@
 package com.example.forumproject.controllers.mvc;
 
-import com.example.forumproject.exceptions.AuthenticationFailureException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
-import com.example.forumproject.helpers.AuthenticationHelper;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
 import com.example.forumproject.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,11 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/mvc")
 public class HomepageMvc {
 
-    private final AuthenticationHelper authenticationHelper;
     private final UserService userService;
 
-    public HomepageMvc(AuthenticationHelper authenticationHelper, UserService userService) {
-        this.authenticationHelper = authenticationHelper;
+    public HomepageMvc(UserService userService) {
         this.userService = userService;
     }
 
@@ -65,7 +60,6 @@ public class HomepageMvc {
             return "Login-View";
         }
     }
-
 
     @ModelAttribute("isAuthenticated")
     public boolean populateIsAuthenticated(HttpSession session) {
