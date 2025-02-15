@@ -9,6 +9,7 @@ import com.example.forumproject.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,12 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/mvc")
-public class MvcHomepageController {
+public class HomepageMvc {
 
     private final AuthenticationHelper authenticationHelper;
     private final UserService userService;
 
-    public MvcHomepageController(AuthenticationHelper authenticationHelper, UserService userService) {
+    public HomepageMvc(AuthenticationHelper authenticationHelper, UserService userService) {
         this.authenticationHelper = authenticationHelper;
         this.userService = userService;
     }
@@ -57,8 +58,10 @@ public class MvcHomepageController {
                 throw new EntityNotFoundException("");
             }
             session.setAttribute("currentUser", loginRequest.getUsername());
+            session.setAttribute("hasActiveUser", true);
+            session.setAttribute("isUserAdmin", user.isAdmin());
             return "redirect:/home";
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | UsernameNotFoundException e) {
             errors.rejectValue("username", "username.mismatch", "invalid username or password");
             return "Login-View";
         }
