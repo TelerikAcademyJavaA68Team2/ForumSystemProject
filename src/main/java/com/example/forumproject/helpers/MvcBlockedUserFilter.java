@@ -35,7 +35,6 @@ public class MvcBlockedUserFilter extends OncePerRequestFilter {
 
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
             try {
-                // Re-check the user's status using Spring Security's built-in checker
                 accountStatusChecker.check(userDetails);
             } catch (DisabledException e) {
                 request.getSession().invalidate();
