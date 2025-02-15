@@ -40,13 +40,13 @@ public class HomepageMvc {
         return "About-View";
     }
 
-    @GetMapping("/auth/login")
+    @GetMapping("/login")
     public String getLoginPage(Model model) {
         model.addAttribute("loginRequest", new LoginDto());
         return "Login-View";
     }
 
-    @PostMapping(("/auth/login"))
+    @PostMapping(("/login"))
     public String executeLoginRequest(@Valid @ModelAttribute("loginRequest") LoginDto loginRequest, BindingResult errors, HttpSession session) {
         if (errors.hasErrors()) {
             return "Login-View";
@@ -66,21 +66,6 @@ public class HomepageMvc {
         }
     }
 
-    @GetMapping("/admin")
-    public String showAdminPortalView(HttpSession session, Model model) {
-        try {
-            User user = authenticationHelper.tryGetUser(session);
-            if (!user.isAdmin()) {
-                model.addAttribute("status", HttpStatus.NOT_FOUND.value()
-                        + " " + HttpStatus.NOT_FOUND.getReasonPhrase());
-                model.addAttribute("error", "You are not allowed to view this page!");
-                return "Not-Found-View";
-            }
-        } catch (AuthenticationFailureException e) {
-            return "redirect:/auth/login";
-        }
-        return "Admin-View";
-    }
 
     @ModelAttribute("isAuthenticated")
     public boolean populateIsAuthenticated(HttpSession session) {
