@@ -1,27 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeerTag - About</title>
-    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/png">
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/PageLayout :: head('About')}"></head>
 <body>
-<header>
-    <div class="header-layout">
-<!--
-        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
--->
-        <h3 class="action-buttons">
-            <a class="btn-primary" th:href="@{/home}">Home</a>
-            <a class="btn-primary" th:href="@{/mvc/beers}">Beers</a>
-            <a class="btn-primary active" th:href="@{/about}">About</a>
-        </h3>
-<!--
-        <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
--->
-    </div>
+<header th:insert="~{fragments/PageLayout :: header}">
 </header>
 <div class="body-content">
     <h1>About BeerTag!</h1>
