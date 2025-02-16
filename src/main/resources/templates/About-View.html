@@ -1,23 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{fragments/PageLayout :: head('About')}"></head>
+<head th:insert="~{fragments/PageLayout :: head('About')}">About</head>
 <body>
-<header th:insert="~{fragments/PageLayout :: header}">
-</header>
+<header th:insert="~{fragments/PageLayout :: header}"></header>
 <div class="body-content">
-    <h1>About BeerTag!</h1>
-    <p>BeerTag is a web application designed to help beer enthusiasts discover new beers and learn more about their
-        favorite brands.</p>
-    <p>Our mission is to:</p>
-    <ul>
-        <li>Provide detailed information about beers, including their name, alcohol by volume (ABV), and style.</li>
-        <li>Create a platform where beer lovers can explore and share their experiences.</li>
-    </ul>
-    <p>We hope you enjoy using BeerTag and find it useful in your beer exploration journey!</p>
+    <div class="py-5 bg-light border-bottom mb-4">
+        <div class="container">
+            <div class="text-center my-5">
+                <h1 class="fw-bolder" th:text="#{about.title}">Welcome to Blog Home!</h1>
+                <p class="lead mb-0" th:utext="#{about.description}">A Bootstrap 5 starter layout for your next blog homepage</p>
+            </div>
+        </div>
+    </div>
 </div>
-
-<footer>
-    <small>©️ Copyright 2024, BeerTag</small>
-</footer>
 </body>
+<footer th:insert="~{fragments/PageLayout :: footer}"></footer>
 </html>
