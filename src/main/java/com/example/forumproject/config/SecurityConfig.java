@@ -3,7 +3,9 @@ package com.example.forumproject.config;
 import com.example.forumproject.helpers.CustomAuthenticationFailureHandler;
 import com.example.forumproject.helpers.JwtAuthorizationFilter;
 import com.example.forumproject.helpers.MvcBlockedUserFilter;
+import com.example.forumproject.models.User;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -29,7 +32,7 @@ public class SecurityConfig {
             "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html", "/api/auth/**",
             "/api/test/**", "/authenticate"};
     private static final String[] PUBLIC_URL_LIST = {"/api/home/**", "/error", "/", "/css/**", "/js/**", "/images/**"};
-    private static final String[] PUBLIC_MVC_URL_LIST = {"/mvc/home/**", "/mvc/login","/mvc/register", "/mvc/about/**"};
+    private static final String[] PUBLIC_MVC_URL_LIST = {"/mvc/home/**", "/mvc/auth/login**", "/mvc/auth/register", "/mvc/about/**", "/error", "/", "/css/**", "/js/**", "/images/**"};
     private static final String[] RESTRICTED_URL_LIST = {"/api/admin/**", "/api/users/**"};
     private static final String[] RESTRICTED_MVC_URL_LIST = {"/mvc/admin/**", "/mvc/users/**"};
 
@@ -49,7 +52,8 @@ public class SecurityConfig {
     @Bean
     @Order(1) // Higher priority
     public SecurityFilterChain mvcSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
                 .securityMatcher("/mvc/**")
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(PUBLIC_MVC_URL_LIST).permitAll() // Public MVC endpoints
@@ -59,7 +63,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // Stateful for MVC
                 .formLogin(form -> form
                         .loginPage("/mvc/auth/login")
-                        .failureHandler(customAuthenticationFailureHandler)
+                        .successHandler(customSuccessHandler()) // Redirect to /mvc/home after login
+                        .failureHandler(customAuthenticationFailureHandler) // Use the custom failure handler
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/mvc/auth/logout")
@@ -75,6 +80,16 @@ public class SecurityConfig {
                             response.sendRedirect("/mvc/access-denied"); // Redirect to access-denied for forbidden access
                         }))
                 .build();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler customSuccessHandler() {
+        return (request, response, authentication) -> {
+            HttpSession session = request.getSession();
+            User user = (User) authentication.getPrincipal();
+            session.setAttribute("currentUser", user.getUsername());
+            response.sendRedirect("/mvc/home"); // Custom redirect URL
+        };
     }
 
     @Bean
