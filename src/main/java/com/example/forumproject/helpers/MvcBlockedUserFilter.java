@@ -38,7 +38,7 @@ public class MvcBlockedUserFilter extends OncePerRequestFilter {
                 accountStatusChecker.check(userDetails);
             } catch (DisabledException e) {
                 request.getSession().invalidate();
-                response.sendRedirect("/mvc/blocked");
+                response.sendRedirect("/mvc/auth/logout");
                 return;
             }
         }
@@ -47,6 +47,13 @@ public class MvcBlockedUserFilter extends OncePerRequestFilter {
 
     private boolean isPublicRequest(HttpServletRequest request) {
         String requestUri = request.getRequestURI();
-        return requestUri.startsWith("/mvc/auth/login") || requestUri.startsWith("/mvc/auth/register") || requestUri.startsWith("/mvc/home");
+        return requestUri.startsWith("/mvc/auth/login") ||
+                requestUri.startsWith("/mvc/auth/register") ||
+                requestUri.startsWith("/mvc/home") ||
+                requestUri.startsWith("/css/") ||
+                requestUri.startsWith("/js/") ||
+                requestUri.startsWith("/images/") ||
+                requestUri.startsWith("/static**") ||
+                requestUri.equals("/error");
     }
 }
