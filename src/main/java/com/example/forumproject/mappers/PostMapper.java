@@ -51,7 +51,7 @@ public class PostMapper {
         postOutDto.setPost_id(post.getId());
         postOutDto.setAuthor(post.getAuthor().getUsername());
         postOutDto.setAuthorId(post.getAuthor().getId());
-        
+
         postOutDto.setProfilePicture(
                 post.getAuthor().getPhoto() != null ?
                         post.getAuthor().getPhoto() : "/images/default-profile-pic.png"
