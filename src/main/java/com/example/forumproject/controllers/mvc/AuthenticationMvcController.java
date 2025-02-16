@@ -46,9 +46,11 @@ public class AuthenticationMvcController {
 
     @GetMapping("/register")
     public String getRegisterPage(Model model, HttpSession session) {
-        if ((boolean) session.getAttribute("hasActiveUser")) {
+        Boolean hasActiveUser = (Boolean) session.getAttribute("hasActiveUser");
+        if (hasActiveUser != null && hasActiveUser) {
             return "redirect:/mvc/home";
         }
+
         model.addAttribute("registerRequest", new UserRegistrationDto());
         return "Register-View";
     }

@@ -16,8 +16,8 @@ public class UserRegistrationDto {
     private String lastName;
 
     @NotBlank(message = "Email can't be blank")
-    @Size(min = 5, max = 200, message = "Email should be between 5 and 250 symbols!")
     @Email(message = "Email address is invalid!")
+    @Size(min = 5, max = 200, message = "Email should be between 5 and 250 symbols!")
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Email address is invalid!")
     private String email;
 
