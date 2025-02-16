@@ -58,18 +58,18 @@ public class SecurityConfig {
                 .userDetailsService(userDetailsService)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // Stateful for MVC
                 .formLogin(form -> form
-                        .loginPage("/mvc/login")
+                        .loginPage("/mvc/auth/login")
                         .failureHandler(customAuthenticationFailureHandler)
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutUrl("/mvc/logout")
+                        .logoutUrl("/mvc/auth/logout")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .logoutSuccessUrl("/mvc/home"))
                 .addFilterBefore(mvcBlockedUserFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendRedirect("/mvc/login"); // Redirect to login for unauthorized access
+                            response.sendRedirect("/mvc/auth/login"); // Redirect to login for unauthorized access
                         })
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             response.sendRedirect("/mvc/access-denied"); // Redirect to access-denied for forbidden access

@@ -21,7 +21,7 @@
 <!--</header>-->
 <body>
 <div class="form-container margin12">
-  <form action="#" th:action="@{/mvc/login}" th:object="${loginRequest}" method="post">
+  <form action="#" th:action="@{/mvc/auth/login}" th:object="${loginRequest}" method="post">
 
     <div class="form-group">
       <label class="form-label" th:text="#{user.label.username}">Username</label>
@@ -44,7 +44,7 @@
 
 <h3 class="center-h3">
   <p>Not a user yet?</p>
-  <a class="btn-primary" th:href="@{/auth/register}">Register</a>
+  <a class="btn-primary" th:href="@{mvc/auth/register}">Register</a>
 </h3>
 
 

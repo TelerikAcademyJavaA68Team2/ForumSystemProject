@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/mvc")
-public class AdminMvc {
+@RequestMapping("/mvc/admin")
+public class AdminMvcController {
 
     private final UserService userService;
 
     @Autowired
-    public AdminMvc(UserService userService) {
+    public AdminMvcController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/admin")
+    @GetMapping
     public String showAdminPortalView2(HttpSession session, Model model) {
         String redirectUrl = redirectIfNecessary(session);
         if (redirectUrl != null) return redirectUrl;
@@ -33,7 +33,7 @@ public class AdminMvc {
 
     private static String redirectIfNecessary(HttpSession session) {
         if (!(boolean) session.getAttribute("hasActiveUser")) {
-            return "redirect:/mvc/login";
+            return "redirect:/mvc/auth/login";
         }
         if (!(boolean) session.getAttribute("isUserAdmin")) {
             return "Forbidden-View";

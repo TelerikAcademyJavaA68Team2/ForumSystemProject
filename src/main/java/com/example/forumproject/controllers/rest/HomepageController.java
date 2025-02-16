@@ -24,15 +24,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/home")
-@Tag(name = "Homepage Management", description = "APIs for managing homepage, authentication, and registration")
+@Tag(name = "Homepage Management", description = "APIs for managing homepage")
 public class HomepageController {
 
-    private final AuthenticationService authService;
     private final HomepageResponseFactory homepageResponseFactory;
 
     @Autowired
-    public HomepageController(AuthenticationService authService, HomepageResponseFactory homepageResponseFactory) {
-        this.authService = authService;
+    public HomepageController(HomepageResponseFactory homepageResponseFactory) {
         this.homepageResponseFactory = homepageResponseFactory;
     }
 
@@ -54,55 +52,4 @@ public class HomepageController {
         return ResponseEntity.ok(homepageResponseFactory.getHomepagePosts(postsOrder.orElse("default")));
     }
 
-    @Operation(summary = "Register a New User", description = "Register a new user account", responses = {
-            @ApiResponse(description = "Success", responseCode = "200"),
-            @ApiResponse(description = "Conflict - Duplicate user", responseCode = "409"),
-            @ApiResponse(description = "Bad Request - Invalid email format", responseCode = "400")
-    })
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody UserRegistrationDto request) {
-        try {
-            return ResponseEntity.ok(authService.register(request));
-        } catch (DuplicateEntityException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        } catch (InvalidEmailFormatException | InvalidUserInputException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-    }
-
-    @Operation(summary = "User Login", description = "Authenticate an existing user", responses = {
-            @ApiResponse(description = "Success", responseCode = "200"),
-            @ApiResponse(description = "Bad Request - User not found", responseCode = "400"),
-            @ApiResponse(description = "Unauthorized - Account blocked", responseCode = "401")
-    })
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto request) {
-        try {
-            return ResponseEntity.ok(authService.authenticate(request));
-        } catch (UsernameNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        } catch (DisabledException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Your account is blocked!");
-        }
-    }
-
-    @Operation(
-            summary = "Get Login Information",
-            description = "Retrieve information related to the login process, such as tips or instructions.",
-            responses = {
-                    @ApiResponse(description = "Success", responseCode = "200")
-            }
-    )
-    @GetMapping("/login")
-    public ResponseEntity<String> getLoginInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getLoginInfo());
-    }
-
-    @Operation(summary = "Get Register Info", description = "Retrieve registration-related information", responses = {
-            @ApiResponse(description = "Success", responseCode = "200")
-    })
-    @GetMapping("/register")
-    public ResponseEntity<String> getRegisterInfo() {
-        return ResponseEntity.ok(homepageResponseFactory.getRegisterInfo());
-    }
 }

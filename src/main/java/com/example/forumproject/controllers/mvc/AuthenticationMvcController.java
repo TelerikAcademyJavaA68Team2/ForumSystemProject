@@ -20,24 +20,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/mvc")
-public class HomepageMvc {
+@RequestMapping("/mvc/auth")
+public class AuthenticationMvcController {
 
     private final AuthenticationService authenticationService;
 
     @Autowired
-    public HomepageMvc(AuthenticationService authenticationService) {
+    public AuthenticationMvcController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
-    }
-
-    @GetMapping("/home")
-    public String showHomepage() {
-        return "Home-View";
-    }
-
-    @GetMapping("/about")
-    public String showAboutPage() {
-        return "About-View";
     }
 
     @GetMapping("/login")
@@ -84,7 +74,7 @@ public class HomepageMvc {
         }
         try {
             authenticationService.registerForMvc(registerRequest);
-            return "redirect:/mvc/login";
+            return "redirect:/mvc/auth/login";
         } catch (DuplicateEntityException e) {
             String field = "email";
             String errorCode = "email.mismatch";

@@ -21,18 +21,20 @@
                                   th:href="@{/mvc/admin}" th:text="#{navigation.admin}">Admin Panel</a></li>
 
           <li class="nav-item"><a class="nav-link" href="../Register-View.html" sec:authorize="!isAuthenticated()"
-                                  th:text="#{navigation.register}" th:href="@{/mvc/register}">Register</a></li>
+                                  th:text="#{navigation.register}" th:href="@{/mvc/auth/register}">Register</a></li>
 
           <li class="nav-item"><a class="nav-link" href="../Home-View.html" sec:authorize="isAuthenticated()"
-                                  th:text="#{navigation.logout}" th:href="@{/mvc/logout}">Logout</a></li>
+                                  th:text="#{navigation.logout}" th:href="@{/mvc/auth/logout}">Logout</a></li>
 
           <li class="nav-item"><a class="nav-link" href="../Login-View.html" sec:authorize="!isAuthenticated()"
-                                  th:text="#{navigation.login}" th:href="@{/mvc/login}">Login</a></li>
+                                  th:text="#{navigation.login}" th:href="@{/mvc/auth/login}">Login</a></li>
 
           <li class="nav-item"><a class="nav-link" href="../Home-View.html" th:text="#{navigation.home}"
                                   th:href="@{/mvc/home}">Home</a></li>
+
           <li class="nav-item"><a class="nav-link" href="../About-View.html" th:text="#{navigation.about}"
                                   th:href="@{/mvc/about}">About</a></li>
+
           <li class="nav-item"><a class="nav-link" href="../Posts-View.html" th:text="#{navigation.all-posts}"
                                   th:href="@{/mvc/posts}">Posts</a></li>
         </ul>
