@@ -42,9 +42,9 @@ public class HomepageMvc {
 
     @GetMapping("/login")
     public String getLoginPage(Model model, HttpSession session) {
-        if ((boolean) session.getAttribute("hasActiveUser")) {
-            return "redirect:/mvc/home";
-        }
+//        if ((boolean) session.getAttribute("hasActiveUser")) {
+//            return "redirect:/mvc/home";
+//        }
         model.addAttribute("loginRequest", new LoginDto());
         return "Login-View";
     }
