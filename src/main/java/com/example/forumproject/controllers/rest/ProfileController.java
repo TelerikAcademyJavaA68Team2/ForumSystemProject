@@ -6,7 +6,7 @@ import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.helpers.ValidationHelpers;
 import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
+import com.example.forumproject.models.dtos.userDtos.LoginDto;
 import com.example.forumproject.models.dtos.userDtos.RequestUserProfileDto;
 import com.example.forumproject.services.UserService;
 import com.example.forumproject.services.securityServices.AuthenticationService;

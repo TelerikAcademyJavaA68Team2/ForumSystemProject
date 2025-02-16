@@ -1,4 +1,4 @@
-package com.example.forumproject.models.dtos.homepageResponseDtos;
+package com.example.forumproject.models.dtos.userDtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

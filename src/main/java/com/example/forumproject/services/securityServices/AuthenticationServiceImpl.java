@@ -2,8 +2,8 @@ package com.example.forumproject.services.securityServices;
 
 import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
-import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
+import com.example.forumproject.models.dtos.userDtos.LoginDto;
+import com.example.forumproject.models.dtos.userDtos.UserRegistrationDto;
 import com.example.forumproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

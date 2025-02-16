@@ -2,8 +2,8 @@ package com.example.forumproject.controllers.mvc;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.InvalidUserInputException;
-import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
-import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
+import com.example.forumproject.models.dtos.userDtos.LoginDto;
+import com.example.forumproject.models.dtos.userDtos.UserRegistrationDto;
 import com.example.forumproject.services.securityServices.AuthenticationService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;

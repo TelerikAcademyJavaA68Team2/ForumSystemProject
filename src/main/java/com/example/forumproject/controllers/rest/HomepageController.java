@@ -1,24 +1,13 @@
 package com.example.forumproject.controllers.rest;
 
-import com.example.forumproject.exceptions.DuplicateEntityException;
-import com.example.forumproject.exceptions.InvalidEmailFormatException;
-import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.mappers.HomepageResponseFactory;
 import com.example.forumproject.models.dtos.homepageResponseDtos.HomepagePostsDto;
-import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
-import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
-import com.example.forumproject.services.securityServices.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package com.example.forumproject.models.dtos.homepageResponseDtos;
+package com.example.forumproject.models.dtos.userDtos;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

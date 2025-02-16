@@ -1,8 +1,8 @@
 package com.example.forumproject;
 
 import com.example.forumproject.models.*;
-import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
-import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
+import com.example.forumproject.models.dtos.userDtos.LoginDto;
+import com.example.forumproject.models.dtos.userDtos.UserRegistrationDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
 

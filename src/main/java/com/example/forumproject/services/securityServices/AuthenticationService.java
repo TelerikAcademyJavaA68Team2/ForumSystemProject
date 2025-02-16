@@ -1,8 +1,7 @@
 package com.example.forumproject.services.securityServices;
 
-import com.example.forumproject.models.dtos.homepageResponseDtos.LoginDto;
-import com.example.forumproject.models.dtos.homepageResponseDtos.UserRegistrationDto;
-import jakarta.servlet.http.HttpSession;
+import com.example.forumproject.models.dtos.userDtos.LoginDto;
+import com.example.forumproject.models.dtos.userDtos.UserRegistrationDto;
 
 public interface AuthenticationService {
 
