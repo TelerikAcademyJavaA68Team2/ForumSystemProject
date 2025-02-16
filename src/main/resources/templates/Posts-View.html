@@ -1,8 +1,94 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:insert="~{fragments/PageLayout :: head('Posts')}">Posts</head>
+<head th:insert="~{fragments/PageLayout :: head('Posts')}">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
 <header th:insert="~{fragments/PageLayout :: header}"></header>
 <body>
+<!--<div class="container px-4 px-lg-5">-->
+<!--    <div class="row gx-4 gx-lg-5 justify-content-center">-->
+<!--        <div th:if="${posts.isEmpty()}">No posts</div>-->
+<!--        <div th:unless="${posts.isEmpty()}" th:each="post : ${posts}" class="col-md-10 col-lg-8 col-xl-7 post-card">-->
+<!--            &lt;!&ndash; Post Block &ndash;&gt;-->
+<!--            <div class="post-preview">-->
+<!--                &lt;!&ndash; User Info &ndash;&gt;-->
+<!--                <div class="post-header">-->
+<!--                    <img th:src="${post.authorProfilePicture}" class="author-avatar" alt="User Profile Pic">-->
+<!--                    <a class="author-name" th:text="${post.author}"-->
+<!--                       th:href="@{/users/{id}(id=${post.author})}">Username</a>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Post Title &ndash;&gt;-->
+<!--                <a href="#" th:href="@{/posts/{id}(id=${post.getPost_id()})}">-->
+<!--                    <h2 class="post-title" th:text="${post.title}">Post Title</h2>-->
+<!--                </a>-->
+
+<!--                &lt;!&ndash; Post Content Preview &ndash;&gt;-->
+<!--                <p class="post-content" th:text="${post.content}"></p>-->
+
+<!--                &lt;!&ndash; Tags &ndash;&gt;-->
+<!--                <div class="post-tags">-->
+<!--                    <span th:each="tagName : ${post.tags}">-->
+<!--                        <a class="tag-button" th:text="${tagName}"-->
+<!--                           th:href="@{/posts/filter/tag/{tagText}(tagText=${tagName})}">Tag</a>-->
+<!--                    </span>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Post Interactions &ndash;&gt;-->
+<!--                <div class="post-interactions">-->
+<!--                    <span class="icon">-->
+<!--                        <i class="far fa-comment"></i> <span th:text="${post.comments.size()}">0</span>-->
+<!--                    </span>-->
+<!--                    <span class="icon">-->
+<!--                        <i class="far fa-thumbs-up"></i> <span th:text="${post.likes}">0</span>-->
+<!--                    </span>-->
+<!--                    <span class="icon">-->
+<!--                        <i class="far fa-thumbs-down"></i> <span th:text="${post.dislikes}">0</span>-->
+<!--                    </span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <hr class="divider" />-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!-- Main Content-->
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div th:if="${posts.isEmpty()}">No posts</div>
+        <div th:unless="${posts.isEmpty()}" th:each="post : ${posts}" class="col-md-10 col-lg-8 col-xl-7">
+            <!-- Post preview-->
+            <div class="post-preview">
+                <a href="#" th:href="@{/posts/{id}(id=${post.getPost_id()})}">
+                    <h2 class="post-title" th:text="${post.title}">Post Title</h2>
+                </a>
+                <p class="post-meta">
+                    <span th:text="#{post.label}"></span>
+                    <a href="#" th:text="${post.author}"
+                       th:href="@{/users/{id}(id=${post.getAuthorId})}">Author Username</a>
+                    <img th:src="${post.profilePicture}" alt="Profile Picture" class="profile-pic" style="width: 64px;">
+                </p>
+                <span th:text="#{post.tags}"></span>
+                <span th:each="tagName : ${post.tags}">
+                    <a class=myTagButton th:text="${tagName}" href="#" th:href="@{/posts/filter/tag/{tagText}(tagText=${tagName})}">Web Design</a>
+
+                </span><br>
+                <li class="list-inline-item">
+                    <i class="far fa-fw fa-comment"></i>
+                    <span th:text="|Comments: ${post.comments.size()}|">25</span>
+                    <br>
+                    <i class="far fa-fw fa-thumbs-up"></i>
+                    <span th:text="|Likes: ${post.likes}|">25</span>
+                    <br>
+                    <i class="far fa-fw fa-thumbs-down"></i>
+                    <span th:text="|Dislikes: ${post.dislikes}|">25</span>
+                </li>
+
+            </div>
+            <!-- Divider-->
+            <hr class="my-4" />
+        </div>
+    </div>
+</div>
 
 </body>
 <footer th:insert="~{fragments/PageLayout :: footer}"></footer>

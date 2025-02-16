@@ -70,7 +70,7 @@ public class PostServiceTests {
                 .thenReturn(new ArrayList<>());
 
         // Act
-        postService.getAll(filterOptions);
+        postService.getAllPosts(filterOptions);
 
         // Assert
         verify(postRepository, Mockito.times(1))
@@ -264,7 +264,7 @@ public class PostServiceTests {
     }
 
     @Test
-    public void getAll_ShouldReturnFilteredPosts_WhenValidFilterOptionsAreGiven() {
+    public void getAllPosts_ShouldReturnFilteredPosts_WhenValidFilterOptionsAreGiven() {
         // Arrange
         PostFilterOptions filterOptions = new PostFilterOptions(
                 "Electric", "Future of electric cars", "electric",
@@ -275,7 +275,7 @@ public class PostServiceTests {
         when(postRepository.getAll(filterOptions)).thenReturn(expectedPosts);
 
         // Act
-        List<Post> result = postService.getAll(filterOptions);
+        List<Post> result = postService.getAllPosts(filterOptions);
 
         // Assert
         Assertions.assertEquals(expectedPosts, result);
@@ -283,7 +283,7 @@ public class PostServiceTests {
     }
 
     @Test
-    public void getAll_ShouldReturnEmptyList_WhenNoPostsMatchFilter() {
+    public void getAllPosts_ShouldReturnEmptyList_WhenNoPostsMatchFilter() {
         // Arrange
         PostFilterOptions filterOptions = new PostFilterOptions(
                 "NonExistingTitle", "No matching content", "nonexistent",
@@ -292,7 +292,7 @@ public class PostServiceTests {
         when(postRepository.getAll(filterOptions)).thenReturn(List.of());
 
         // Act
-        List<Post> result = postService.getAll(filterOptions);
+        List<Post> result = postService.getAllPosts(filterOptions);
 
         // Assert
         Assertions.assertTrue(result.isEmpty());
@@ -300,14 +300,14 @@ public class PostServiceTests {
     }
 
     @Test
-    public void getAll_ShouldReturnAllPosts_WhenFilterOptionsAreNull() {
+    public void getAllPosts_ShouldReturnAllPosts_WhenFilterOptionsAreNull() {
         // Arrange
         List<Post> expectedPosts = List.of(createMockPost(), createMockPost());
 
         when(postRepository.getAll(null)).thenReturn(expectedPosts);
 
         // Act
-        List<Post> result = postService.getAll(null);
+        List<Post> result = postService.getAllPosts(null);
 
         // Assert
         Assertions.assertEquals(expectedPosts, result);

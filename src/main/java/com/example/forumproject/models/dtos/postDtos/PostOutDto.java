@@ -11,10 +11,12 @@ public class PostOutDto {
 
     private Long post_id;
     private String author;
+    private Long authorId;
     private String title;
     private String content;
     private Long likes;
     private Long dislikes;
+    private String profilePicture;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CommentOutDto> comments;
@@ -25,7 +27,7 @@ public class PostOutDto {
     public PostOutDto() {
     }
 
-    public PostOutDto(Long dislikes, Long likes, List<String> tags, List<CommentOutDto> comments, String content, String title, String author, Long post_id) {
+    public PostOutDto(Long dislikes, Long likes, List<String> tags, List<CommentOutDto> comments, String content, String title, String author, Long post_id, Long authorId, String profilePicture) {
         this.dislikes = dislikes;
         this.likes = likes;
         this.tags = tags;
@@ -34,6 +36,8 @@ public class PostOutDto {
         this.title = title;
         this.author = author;
         this.post_id = post_id;
+        this.authorId = authorId;
+        this.profilePicture = profilePicture;
     }
 
     public Long getPost_id() {
@@ -98,5 +102,21 @@ public class PostOutDto {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

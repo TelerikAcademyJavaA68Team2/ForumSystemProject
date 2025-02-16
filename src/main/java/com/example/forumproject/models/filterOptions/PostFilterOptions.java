@@ -13,6 +13,10 @@ public class PostFilterOptions {
     private Optional<String> orderType;
     private Optional<String> author;
 
+    public PostFilterOptions() {
+        this(null, null, null, null, null, null, null, null);
+    }
+
     public PostFilterOptions(String title, String content, String tag,
                              Long minLikes, Long maxLikes,
                              String orderBy, String orderType, String author) {

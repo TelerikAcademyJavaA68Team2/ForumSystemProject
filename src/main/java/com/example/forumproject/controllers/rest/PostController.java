@@ -62,7 +62,7 @@ public class PostController {
         PostFilterOptions filterOptions = new PostFilterOptions(title, content, tag,
                 minLikes, maxLikes, orderBy, orderType, author);
         try {
-            List<Post> inPosts = postService.getAll(filterOptions);
+            List<Post> inPosts = postService.getAllPosts(filterOptions);
             return inPosts.stream().map(postMapper::postToPostOutDto).toList();
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
