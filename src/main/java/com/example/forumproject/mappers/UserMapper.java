@@ -6,7 +6,6 @@ import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileUserDto
 import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.PostService;
-import com.example.forumproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,8 +53,8 @@ public class UserMapper {
                     (null, null, null,
                             null, null,
                             null, null, user.getUsername());
-            userDto.setUser_posts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
-            userDto.setUser_posts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
+            userDto.setUser_posts(postService.getAllPosts(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
+            userDto.setUser_posts(postService.getAllPosts(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
             return userDto;
         } else {
             FullProfileUserDto userDto = new FullProfileUserDto(
@@ -72,7 +71,7 @@ public class UserMapper {
                     (null, null, null,
                             null, null,
                             null, null, user.getUsername());
-            userDto.setUser_posts(postService.getAll(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
+            userDto.setUser_posts(postService.getAllPosts(filterOptions).stream().map(postMapper::postToPostOutDto).toList());
             return userDto;
         }
     }
