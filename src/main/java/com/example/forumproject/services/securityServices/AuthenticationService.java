@@ -10,7 +10,5 @@ public interface AuthenticationService {
 
     String register(UserRegistrationDto request);
 
-    void authenticateForMvc(LoginDto request, HttpSession session);
-
     void registerForMvc(UserRegistrationDto request);
 }
