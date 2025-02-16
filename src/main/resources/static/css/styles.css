@@ -10881,13 +10881,11 @@ textarea.form-control-lg {
   }
 
   .profile-pic {
-    width: 50px;  /* Adjust the size to fit nicely */
+    width: 50px; /* Adjust profile pic size */
     height: 50px;
-    border-radius: 50%;  /* Make it circular */
-    object-fit: cover;  /* Ensure the image is properly scaled */
-    margin-right: 10px;  /* Space between the image and username */
-    vertical-align: middle;  /* Align with text */
-    display: inline-block;
+    object-fit: cover;
+    border-radius: 50%;
   }
+
 
 }
