@@ -8,16 +8,11 @@ import com.example.forumproject.services.securityServices.AuthenticationService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/mvc/auth")
@@ -31,31 +26,22 @@ public class AuthenticationMvcController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage(Model model, HttpSession session) {
-//        if ((boolean) session.getAttribute("hasActiveUser")) {
-//            return "redirect:/mvc/home";
-//        }
-        model.addAttribute("loginRequest", new LoginDto());
-        return "Login-View";
-    }
+    public String getLoginPage(Model model, HttpSession session,
+                               @RequestParam(value = "error", required = false) Boolean error,
+                               @RequestParam(value = "blocked", required = false) Boolean blocked) {
+        if (Boolean.TRUE.equals(error)) {
+            model.addAttribute("errorMessage", "Invalid username or password");
+        } else if (Boolean.TRUE.equals(blocked)) {
+            model.addAttribute("errorMessage", "Your account is blocked");
+        }
 
-    @PostMapping("/login")
-    public String executeLoginRequest(@Valid @ModelAttribute("loginRequest") LoginDto loginRequest, BindingResult errors, HttpSession session) {
-        if (errors.hasErrors()) {
-            return "Login-View";
-        }
-        try {
-            authenticationService.authenticateForMvc(loginRequest, session);
+        Boolean hasActiveUser = (Boolean) session.getAttribute("hasActiveUser");
+        if (hasActiveUser != null && hasActiveUser) {
             return "redirect:/mvc/home";
-        } catch (BadCredentialsException e) {
-            errors.rejectValue("username", "username.mismatch", "Invalid username or password");
-            return "Login-View";
-        } catch (DisabledException e) {
-            return "redirect:/mvc/blocked";
-        } catch (Exception e) {
-            errors.rejectValue("username", "username.error", "An error occurred during login");
-            return "Login-View";
         }
+
+        model.addAttribute("loginDto", new LoginDto());
+        return "Login-View";
     }
 
     @GetMapping("/register")
