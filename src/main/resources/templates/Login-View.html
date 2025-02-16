@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-  <link rel="icon" th:href="@{/images/smalLogo.png}" type="image/png">
-</head>
-<body>
-<header>
-  <div class="header-layout">
-    <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
-    <h3 class="action-buttons">
-      <a class="btn-primary" th:href="@{/home}">Back to Home</a>
-    </h3>
-    <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">
-  </div>
-</header>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--  <title>Login</title>-->
+<!--  <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>-->
+<!--  <link rel="icon" th:href="@{/images/smalLogo.png}" type="image/png">-->
+<!--</head>-->
+<!--<body>-->
+<!--<header>-->
+<!--  <div class="header-layout">-->
+<!--    <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">-->
+<!--    <h3 class="action-buttons">-->
+<!--      <a class="btn-primary" th:href="@{/home}">Back to Home</a>-->
+<!--    </h3>-->
+<!--    <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">-->
+<!--  </div>-->
+<!--</header>-->
 <div class="form-container margin12">
   <form action="#" th:action="@{/mvc/login}" th:object="${loginRequest}" method="post">
 
