@@ -10823,4 +10823,71 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+
+  .myTagButton{
+    appearance: none;
+    background-color: #6c6a64;
+    border: 1px solid rgba(27, 31, 35, .15);
+    border-radius: 6px;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 10px;
+    padding: 5px 8px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  .post-preview > a {
+    color: #212529;
+  }
+  .post-preview > a:focus, .post-preview > a:hover {
+    text-decoration: none;
+    color: #0085A1;
+  }
+  .post-preview > a > .post-title {
+    font-size: 1.875rem;
+    margin-top: 1.875rem;
+    margin-bottom: 0.625rem;
+  }
+  .post-preview > a > .post-subtitle {
+    font-weight: 300;
+    margin-bottom: 0.625rem;
+  }
+  .post-preview > .post-meta {
+    font-size: 1.125rem;
+    font-style: italic;
+    margin-top: 0;
+    color: #6c757d;
+  }
+  .post-preview > .post-meta > a {
+    text-decoration: none;
+  }
+  @media (min-width: 992px) {
+    .post-preview > a > .post-title {
+      font-size: 2.25rem;
+    }
+  }
+
+  .profile-pic {
+    width: 50px;  /* Adjust the size to fit nicely */
+    height: 50px;
+    border-radius: 50%;  /* Make it circular */
+    object-fit: cover;  /* Ensure the image is properly scaled */
+    margin-right: 10px;  /* Space between the image and username */
+    vertical-align: middle;  /* Align with text */
+    display: inline-block;
+  }
+
 }
