@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:insert="~{fragments/PageLayout :: head('About')}">About</head>
-<body>
 <header th:insert="~{fragments/PageLayout :: header}"></header>
+<body>
 <div class="body-content">
     <div class="py-5 bg-light border-bottom mb-4">
         <div class="container">
             <div class="text-center my-5">
-                <h1 class="fw-bolder" th:text="#{about.title}">Welcome to Blog Home!</h1>
-                <p class="lead mb-0" th:utext="#{about.description}">A Bootstrap 5 starter layout for your next blog homepage</p>
+                <h1 class="fw-bolder" th:text="#{about.title}">About title</h1>
+                <p class="lead mb-0" th:utext="#{about.description}">About Description</p>
             </div>
         </div>
     </div>

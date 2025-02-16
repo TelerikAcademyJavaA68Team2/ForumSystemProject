@@ -41,9 +41,12 @@
   </nav>
 </header>
 </body>
-<footer th:fragment="footer" class="container">
-  ©️ Copyright <span  th:text="${#dates.year(#dates.createNow())}"></span>
-  <span th:text="#{forum.name}"></span>
+<footer th:fragment="footer" class="py-5 bg-dark">
+  <div class="container text-center">
+    <p class="m-0 text-white">
+      Copyright &copy; <span th:text="${#dates.year(#dates.createNow())}"></span> <span th:text="#{forum.name}"></span>
+    </p>
+  </div>
   <!-- Bootstrap core JS-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Core theme JS-->

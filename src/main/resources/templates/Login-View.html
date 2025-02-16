@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{fragments/PageLayout :: head('Login')}">Login</head>
+<header th:insert="~{fragments/PageLayout :: header}"></header>
 <!--<head>-->
 <!--  <meta charset="UTF-8">-->
 <!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
@@ -17,6 +19,7 @@
 <!--    <img th:src="@{/images/logo.png}" alt="BeerTag Logo" style="width: 100px; height: auto;">-->
 <!--  </div>-->
 <!--</header>-->
+<body>
 <div class="form-container margin12">
   <form action="#" th:action="@{/mvc/login}" th:object="${loginRequest}" method="post">
 
@@ -43,10 +46,8 @@
   <p>Not a user yet?</p>
   <a class="btn-primary" th:href="@{/auth/register}">Register</a>
 </h3>
-<footer>
-  <small>©️ Copyright 2024, BeerTag</small>
-</footer>
 
 
 </body>
+<footer th:insert="~{fragments/PageLayout :: footer}"></footer>
 </html>

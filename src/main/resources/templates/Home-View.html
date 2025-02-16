@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:insert="~{fragments/PageLayout :: head('Home')}">Home</head>
+<header th:insert="~{fragments/PageLayout :: header}"></header>
     <body>
     <!-- Responsive navbar-->
-    <header th:insert="~{fragments/PageLayout :: header}"></header>
         <!-- Page header with logo and tagline-->
 
         <!-- Page content-->
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">Welcome to Blog Home!</h1>
-                    <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
+                    <h1 class="fw-bolder" th:text="#{home.welcome}">Welcome Message</h1>
+                    <p class="lead mb-0" th:text="#{home.description}">Home message</p>
                 </div>
             </div>
         </header>
@@ -133,12 +133,6 @@
             </div>
         </div>
         <!-- Footer-->
-        <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
-        </footer>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
     </body>
+<footer th:insert="~{fragments/PageLayout :: footer}"></footer>
 </html>
