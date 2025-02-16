@@ -4,7 +4,6 @@ import com.example.forumproject.mappers.PostMapper;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.dtos.postDtos.PostFilterDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
-import com.example.forumproject.models.dtos.postDtos.PostOutDtoMvc;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.PostService;
 import com.example.forumproject.services.UserService;
