@@ -36,7 +36,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getAll(PostFilterOptions filterOptions) {
+    public List<Post> getAllPosts(PostFilterOptions filterOptions) {
         return postRepository.getAll(filterOptions);
     }
 
