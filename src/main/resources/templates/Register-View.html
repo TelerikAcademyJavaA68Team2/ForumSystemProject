@@ -21,8 +21,8 @@
         </div>
 
         <div class="form-group">
-            <label class="form-label" th:text="#{user.label.email}">Username</label>
-            <input class="form-input" type="text" th:field="*{email}" placeholder="Enter Username"/>
+            <label class="form-label" th:text="#{user.label.email}">Email</label>
+            <input class="form-input" type="text" th:field="*{email}" placeholder="Enter Email"/>
             <label class="form-error" th:if="${#fields.hasErrors('email')}"
                    th:text="${#fields.errors('email')[0]}">Email error placeholder! </label>
         </div>
