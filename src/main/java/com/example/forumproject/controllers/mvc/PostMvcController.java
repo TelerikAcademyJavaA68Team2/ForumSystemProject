@@ -2,12 +2,13 @@ package com.example.forumproject.controllers.mvc;
 
 import com.example.forumproject.mappers.PostMapper;
 import com.example.forumproject.models.Post;
+import com.example.forumproject.models.Tag;
 import com.example.forumproject.models.dtos.postDtos.PostFilterDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.PostService;
 import com.example.forumproject.services.UserService;
-import jakarta.servlet.http.HttpSession;
+import com.example.forumproject.services.tagService.TagService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,22 +23,22 @@ import java.util.stream.Collectors;
 public class PostMvcController {
 
     private final PostService postService;
-    private final UserService userService;
     private final PostMapper postMapper;
+    private final TagService tagService;
 
-    public PostMvcController(PostService postService, UserService userService, PostMapper postMapper) {
+    public PostMvcController(PostService postService, PostMapper postMapper, TagService tagService) {
         this.postService = postService;
-        this.userService = userService;
         this.postMapper = postMapper;
+        this.tagService = tagService;
     }
 
-    @ModelAttribute("isAuthenticated")
-    public boolean populateIsAuthenticated(HttpSession session) {
-        return session.getAttribute("currentUser") != null;
+    @ModelAttribute("tags")
+    public List<Tag> populateTags() {
+        return tagService.getAllTags();
     }
 
     @GetMapping
-    public String showAllPosts(@ModelAttribute("filterOptions") PostFilterDto postFilterDto, Model model, HttpSession session){
+    public String showAllPosts(@ModelAttribute("filterOptions") PostFilterDto postFilterDto, Model model){
         PostFilterOptions postFilterOptions = new PostFilterOptions(
                 postFilterDto.getTitle(),
                 postFilterDto.getContent(),
@@ -53,11 +54,6 @@ public class PostMvcController {
         List<PostOutDto> posts = postsObjects.stream()
                 .map(postMapper::postToPostOutDto)
                 .collect(Collectors.toList());
-
-        if (populateIsAuthenticated(session)){
-            String currentUsername = (String) session.getAttribute("currentUser");
-            model.addAttribute("currentUser", userService.loadUserByUsername(currentUsername));
-        }
 
         model.addAttribute("filterOptions", postFilterDto);
         model.addAttribute("posts", posts);

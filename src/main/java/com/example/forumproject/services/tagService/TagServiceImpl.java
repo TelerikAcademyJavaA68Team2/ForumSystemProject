@@ -5,6 +5,8 @@ import com.example.forumproject.repositories.tagsRepository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TagServiceImpl implements TagService {
 
@@ -13,6 +15,11 @@ public class TagServiceImpl implements TagService {
     @Autowired
     public TagServiceImpl(TagRepository tagRepository) {
         this.tagRepository = tagRepository;
+    }
+
+    @Override
+    public List<Tag> getAllTags() {
+        return tagRepository.getAllTags();
     }
 
     @Override
