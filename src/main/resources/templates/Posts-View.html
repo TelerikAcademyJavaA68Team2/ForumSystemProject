@@ -24,7 +24,7 @@
                 <div class="card mb-3 shadow-sm"> <!-- Reduced margin-bottom -->
                     <div class="card-body">
                         <!-- Post Title -->
-                        <a href="#" th:href="@{/posts/{id}(id=${post.getPost_id()})}">
+                        <a href="#" th:href="@{mvc/posts/{id}(id=${post.getPost_id()})}">
                             <h2 class="card-title h4" th:text="${post.title}">Post Title</h2>
                         </a>
                         <!-- Author Info -->
@@ -33,8 +33,10 @@
                                  class="profile-pic rounded-circle me-2" style="width: 40px; height: 40px;">
                             <p class="m-0">
                                 <span th:text="'Posted by '"></span>
-                                <a href="#" th:href="@{/users/{id}(id=${post.getAuthorId()})}"
+                                <a href="#" sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/mvc/admin/users{id}(id=${post.getAuthorId()})}"
                                    th:text="${post.author}" class="fw-bold text-primary">Author Name</a>
+                                <a sec:authorize="!hasAnyAuthority('ADMIN')"
+                                   th:text="${post.author}">Author Name</a>
                             </p>
                         </div>
                         <!-- Tags -->
@@ -43,7 +45,7 @@
                             <span th:each="tagName : ${post.tags}">
                                 <a class="badge bg-primary text-white text-decoration-none me-1"
                                    th:text="${tagName}" href="#"
-                                   th:href="@{/posts/filter/tag/{tagText}(tagText=${tagName})}">Tag</a>
+                                   th:href="@{mvc/posts/filter/tag/{tagText}(tagText=${tagName})}">Tag</a>
                             </span>
                         </div>
                         <!-- Reactions -->
@@ -62,7 +64,7 @@
                             </li>
                         </ul>
                         <!-- Read More Button -->
-                        <a class="btn btn-primary" th:href="@{/posts/{id}(id=${post.getPost_id()})}">Read more →</a>
+                        <a class="btn btn-primary" th:href="@{mvc/posts/{id}(id=${post.getPost_id()})}">Read more →</a>
                     </div>
                 </div>
                 <!-- Divider -->
@@ -127,6 +129,28 @@
                         </div>
                         <button class="btn btn-primary w-100" type="submit">Search</button>
                     </form>
+                </div>
+            </div>
+            <!-- Tags Widget -->
+            <div class="card mb-4">
+                <div class="card-header">Tags</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul class="list-unstyled mb-0">
+                                <li th:each="tag, iterStat : ${tags}" th:if="${iterStat.index % 2 == 0}">
+                                    <a th:href="@{mvc/posts/filter/tag/{tagText}(tagText=${tag.tagName})}" th:text="${tag.tagName}">Tag</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <ul class="list-unstyled mb-0">
+                                <li th:each="tag, iterStat : ${tags}" th:if="${iterStat.index % 2 == 1}">
+                                    <a th:href="@{mvc/posts/filter/tag/{tagText}(tagText=${tag.tagName})}" th:text="${tag.tagName}">Tag</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

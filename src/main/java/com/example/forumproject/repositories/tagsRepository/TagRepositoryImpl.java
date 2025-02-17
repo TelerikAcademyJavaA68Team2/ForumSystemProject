@@ -8,6 +8,8 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class TagRepositoryImpl implements TagRepository {
 
@@ -16,6 +18,14 @@ public class TagRepositoryImpl implements TagRepository {
     @Autowired
     public TagRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    @Override
+    public List<Tag> getAllTags(){
+        try (Session session = sessionFactory.openSession()) {
+            Query<Tag> query = session.createQuery("from Tag", Tag.class);
+            return query.list();
+        }
     }
 
     @Override

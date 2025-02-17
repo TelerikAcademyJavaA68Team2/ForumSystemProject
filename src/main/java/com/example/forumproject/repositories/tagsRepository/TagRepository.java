@@ -2,7 +2,11 @@ package com.example.forumproject.repositories.tagsRepository;
 
 import com.example.forumproject.models.Tag;
 
+import java.util.List;
+
 public interface TagRepository {
+
+    List<Tag> getAllTags();
 
     Tag getTagById(Long tag_id);
 
