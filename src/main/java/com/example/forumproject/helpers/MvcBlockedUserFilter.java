@@ -48,6 +48,7 @@ public class MvcBlockedUserFilter extends OncePerRequestFilter {
     private boolean isPublicRequest(HttpServletRequest request) {
         String requestUri = request.getRequestURI();
         return requestUri.startsWith("/mvc/auth/login") ||
+                requestUri.startsWith("/mvc/posts/**") ||
                 requestUri.startsWith("/mvc/auth/register") ||
                 requestUri.startsWith("/mvc/home") ||
                 requestUri.startsWith("/css/") ||

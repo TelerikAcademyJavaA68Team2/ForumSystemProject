@@ -45,7 +45,7 @@
                             <span th:each="tagName : ${post.tags}">
                                 <a class="badge bg-primary text-white text-decoration-none me-1"
                                    th:text="${tagName}" href="#"
-                                   th:href="@{/mvc/posts/filter/tag/{tagText}(tagText=${tagName})}">Tag</a>
+                                   th:href="@{/mvc/posts?tag={tagText}(tagText=${tagName})}">Tag</a>
                             </span>
                         </div>
                         <!-- Reactions -->
@@ -139,7 +139,7 @@
                         <div class="col-sm-6">
                             <ul class="list-unstyled mb-0">
                                 <li th:each="tag, iterStat : ${tags}" th:if="${iterStat.index % 2 == 0}">
-                                    <a href="#" th:href="@{/mvc/posts/filter/tag/{tagText}(tagText=${tag.tagName})}"
+                                    <a href="#" th:href="@{/mvc/posts?tag={tagText}(tagText=${tag.tagName})}"
                                        th:text="${tag.tagName}">Tag</a>
                                 </li>
                             </ul>
@@ -147,7 +147,7 @@
                         <div class="col-sm-6">
                             <ul class="list-unstyled mb-0">
                                 <li th:each="tag, iterStat : ${tags}" th:if="${iterStat.index % 2 == 1}">
-                                    <a href="#" th:href="@{/mvc/posts/filter/tag/{tagText}(tagText=${tag.tagName})}"
+                                    <a href="#" th:href="@{/mvc/posts?tag={tagText}(tagText=${tag.tagName})}"
                                        th:text="${tag.tagName}">Tag</a>
                                 </li>
                             </ul>
