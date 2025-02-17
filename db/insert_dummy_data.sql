@@ -9,22 +9,22 @@ VALUES
 -- for testing with the dummy data the PASSWORD is encoded so for logIn use any username and 12345678 as password or feel free to register!
 INSERT INTO forum_management_system.users (first_name, last_name, email, username, password, is_admin, is_blocked, profile_photo, phone_number)
 VALUES
-    ('Georgi', 'Benchev', 'GeogriBenchev@gmail.com', 'georgi', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, '123-456-7890'),
-    ('Ivan', 'Ivanov', 'Vankata@gmail.com', 'vankata', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, '098-765-4321'),
-    ('Stoyanka', 'Karashtranova', 'tancheto@gmail.com', 'tancheto', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, '555-555-5555'),
-    ('ElitsaUser', 'Savova', 'elitsaUser@gmail.com', 'elitsa_user', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, NULL, NULL),
-    ('Elitsa', 'Savova', 'elitsa@gmail.com', 'elitsa', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, NULL),
-    ('StoyankaUser', 'Karashtranova', 'tanchetoUser@gmail.com', 'tancheto_user', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, NULL, NULL),
-    ('Nikolai', 'Todorov', 'nikolai.todorov@gmail.com', 'nikolai', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, '777-123-4567'),
-    ('Petya', 'Petrova', 'petya.petrova@gmail.com', 'petya', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, NULL, '555-666-7777'),
-    ('Dimitrov', 'Boris', 'dimitrov.boris@gmail.com', 'dimodinamoto', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, '123-123-1234'),
-    ('Petar', 'Petrov', 'petar@example.com', 'petar', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, NULL, NULL),
-    ('Maria', 'Georgieva', 'maria@example.com', 'maria', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, NULL, NULL),
-    ('Elena', 'Dimitrova', 'elena@example.com', 'elena', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, NULL, NULL),
-    ('Stefan', 'Kostov', 'stefan@example.com', 'stefan', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 1, NULL, NULL),
-    ('Tanya', 'Ivanova', 'tanya@example.com', 'tanya', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, NULL, NULL),
-    ('Boris', 'Dimitrov', 'boris@example.com', 'boris', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, NULL, NULL),
-    ('Kristina', 'Vasileva', 'kristina@example.com', 'kristina', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, NULL, NULL);
+    ('Georgi', 'Benchev', 'GeogriBenchev@gmail.com', 'georgi', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, '/images/default-profile-pic.png', '123-456-7890'),
+    ('Ivan', 'Ivanov', 'Vankata@gmail.com', 'vankata', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, '/images/default-profile-pic.png', '098-765-4321'),
+    ('Stoyanka', 'Karashtranova', 'tancheto@gmail.com', 'tancheto', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, '/images/default-profile-pic.png', '555-555-5555'),
+    ('ElitsaUser', 'Savova', 'elitsaUser@gmail.com', 'elitsa_user', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL),
+    ('Elitsa', 'Savova', 'elitsa@gmail.com', 'elitsa', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, '/images/default-profile-pic.png', NULL),
+    ('StoyankaUser', 'Karashtranova', 'tanchetoUser@gmail.com', 'tancheto_user', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL),
+    ('Nikolai', 'Todorov', 'nikolai.todorov@gmail.com', 'nikolai', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, '/images/default-profile-pic.png', '777-123-4567'),
+    ('Petya', 'Petrova', 'petya.petrova@gmail.com', 'petya', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', '555-666-7777'),
+    ('Dimitrov', 'Boris', 'dimitrov.boris@gmail.com', 'dimodinamoto', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, '/images/default-profile-pic.png', '123-123-1234'),
+    ('Petar', 'Petrov', 'petar@example.com', 'petar', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL),
+    ('Maria', 'Georgieva', 'maria@example.com', 'maria', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL),
+    ('Elena', 'Dimitrova', 'elena@example.com', 'elena', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL),
+    ('Stefan', 'Kostov', 'stefan@example.com', 'stefan', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 1, '/images/default-profile-pic.png', NULL),
+    ('Tanya', 'Ivanova', 'tanya@example.com', 'tanya', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL),
+    ('Boris', 'Dimitrov', 'boris@example.com', 'boris', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, '/images/default-profile-pic.png', NULL),
+    ('Kristina', 'Vasileva', 'kristina@example.com', 'kristina', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL);
 
 -- Insert dummy data into the 'posts' table (car-related posts, 5x larger dataset)
 INSERT INTO forum_management_system.posts (user_id, title, content)
