@@ -6,10 +6,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/")
-public class IndexMvc {
+public class PublicMvc {
 
     @GetMapping
     public String redirectToHomepage() {
         return "redirect:/mvc/home";
+    }
+
+    @GetMapping("/mvc/home")
+    public String showHomepage() {
+        return "Home-View";
+    }
+
+    @GetMapping("/mvc/about")
+    public String showAboutPage() {
+        return "About-View";
     }
 }

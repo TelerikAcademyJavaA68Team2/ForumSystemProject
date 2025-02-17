@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{fragments/PageLayout :: head('Profile')}">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<header th:insert="~{fragments/PageLayout :: header}"></header>
+<!-- Page content-->
+<!--<header class="py-5 bg-light border-bottom mb-4">
+    <div class="container">
+        <div class="text-center my-5">
+            <h1 class="fw-bolder" th:text="#{posts.browse}">Browse posts</h1>
+            <p class="lead mb-0" th:text="#{posts.description}">Description</p>
+        </div>
+    </div>
+</header>-->
+<body>
+<!-- Posts -->
+<div class="container">
+    <div class="row gx-2"> <!-- Reduced the spacing using gx-2 -->
+        <!-- Left Column for Posts -->
+        <div class="col-lg-8">
+            <div th:each="post : ${posts}">
+                <!-- First Post -->
+                <div class="card mb-3 shadow-sm"> <!-- Reduced margin-bottom -->
+                    <div class="card-body">
+                        <!-- Post Title -->
+                        <a href="#" th:href="@{/posts/{id}(id=${post.getPost_id()})}">
+                            <h2 class="card-title h4" th:text="${post.title}">Post Title</h2>
+                        </a>
+                        <!-- Author Info -->
+                        <div class="d-flex align-items-center mb-2">
+                            <img th:src="${post.profilePicture}" alt="Profile Picture"
+                                 class="profile-pic rounded-circle me-2" style="width: 40px; height: 40px;">
+                            <p class="m-0">
+                                <span th:text="'Posted by '"></span>
+                                <a href="#" th:href="@{/users/{id}(id=${post.getAuthorId()})}"
+                                   th:text="${post.author}" class="fw-bold text-primary">Author Name</a>
+                            </p>
+                        </div>
+                        <!-- Tags -->
+                        <div class="mb-2" th:unless="${post.tags.isEmpty()}">
+                            <span class="fw-bold" th:text="#{post.tags}">Tags:</span>
+                            <span th:each="tagName : ${post.tags}">
+                                <a class="badge bg-primary text-white text-decoration-none me-1"
+                                   th:text="${tagName}" href="#"
+                                   th:href="@{/posts/filter/tag/{tagText}(tagText=${tagName})}">Tag</a>
+                            </span>
+                        </div>
+                        <!-- Reactions -->
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <i class="far fa-comment"></i>
+                                <span th:text="|${post.comments.size()} Comments|">25</span>
+                            </li>
+                            <li class="list-inline-item">
+                                <i class="far fa-thumbs-up"></i>
+                                <span th:text="|${post.likes} Likes|">25</span>
+                            </li>
+                            <li class="list-inline-item">
+                                <i class="far fa-thumbs-down"></i>
+                                <span th:text="|${post.dislikes} Dislikes|">25</span>
+                            </li>
+                        </ul>
+                        <!-- Read More Button -->
+                        <a class="btn btn-primary" th:href="@{/posts/{id}(id=${post.getPost_id()})}">Read more →</a>
+                    </div>
+                </div>
+                <!-- Divider -->
+                <hr class="my-4" />
+            </div>
+            <nav aria-label="Pagination">
+                <hr class="my-0" />
+                <ul class="pagination justify-content-center my-4">
+                    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
+                    <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                    <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
+                    <li class="page-item"><a class="page-link" href="#!">15</a></li>
+                    <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Right Column for Search Widget -->
+        <div class="col-lg-4">
+            <div class="card mb-3"> <!-- Reduced margin-bottom -->
+                <div class="card-header">Search</div>
+                <div class="card-body">
+                    <form th:action="@{/mvc/posts}" method="get">
+                        <div class="mb-2">
+                            <input class="form-control" type="text" name="title" placeholder="Search by title..."
+                                   th:value="${filterOptions.title}"/>
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-control" type="text" name="author" placeholder="Search by author..."
+                                   th:value="${filterOptions.author}"/>
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-control" type="text" name="tag" placeholder="Search by tag..."
+                                   th:value="${filterOptions.tag}"/>
+                        </div>
+                        <div class="mb-2">
+                            <label for="minLikes">Min Likes:</label>
+                            <input class="form-control" type="number" name="minLikes" id="minLikes"
+                                   th:value="${filterOptions.minLikes}"/>
+                        </div>
+                        <div class="mb-2">
+                            <label for="maxLikes">Max Likes:</label>
+                            <input class="form-control" type="number" name="maxLikes" id="maxLikes"
+                                   th:value="${filterOptions.maxLikes}"/>
+                        </div>
+                        <div class="mb-2">
+                            <label for="orderBy">Sort By:</label>
+                            <select class="form-control" name="orderBy" id="orderBy">
+                                <option value="title" th:selected="${filterOptions.orderBy == 'title'}">Title</option>
+                                <option value="likes" th:selected="${filterOptions.orderBy == 'likes'}">Likes</option>
+                                <option value="author" th:selected="${filterOptions.orderBy == 'author'}">Author</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label for="orderType">Order:</label>
+                            <select class="form-control" name="orderType" id="orderType">
+                                <option value="asc" th:selected="${filterOptions.orderType == 'asc'}">Ascending</option>
+                                <option value="desc" th:selected="${filterOptions.orderType == 'desc'}">Descending</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary w-100" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pagination-->
+<!--            <nav aria-label="Pagination">-->
+<!--                <hr class="my-0" />-->
+<!--                <ul class="pagination justify-content-center my-4">-->
+<!--                    &lt;!&ndash; Newer Button (Previous Page) &ndash;&gt;-->
+<!--                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">-->
+<!--                        <a class="page-link" th:href="@{/mvc/posts(page=${currentPage - 1}, size=5)}">Newer</a>-->
+<!--                    </li>-->
+
+<!--                    &lt;!&ndash; Page Numbers &ndash;&gt;-->
+<!--                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"-->
+<!--                        th:classappend="${i == currentPage} ? 'active'">-->
+<!--                        <a class="page-link" th:href="@{/mvc/posts(page=${i}, size=5)}" th:text="${i + 1}"></a>-->
+<!--                    </li>-->
+
+<!--                    &lt;!&ndash; Older Button (Next Page) &ndash;&gt;-->
+<!--                    <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">-->
+<!--                        <a class="page-link" th:href="@{/mvc/posts(page=${currentPage + 1}, size=5)}">Older</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
+</body>
+<footer th:insert="~{fragments/PageLayout :: footer}"></footer>
+</html>
