@@ -14,20 +14,42 @@ public class PostFilterOptions {
     private Optional<String> author;
 
     public PostFilterOptions() {
-        this(null, null, null, null, null, null, null, null);
+        this.title = Optional.empty();
+        this.content = Optional.empty();
+        this.tag = Optional.empty();
+        this.minLikes = Optional.empty();
+        this.maxLikes = Optional.empty();
+        this.orderBy = Optional.empty();
+        this.orderType = Optional.empty();
+        this.author = Optional.empty();
     }
 
     public PostFilterOptions(String title, String content, String tag,
                              Long minLikes, Long maxLikes,
                              String orderBy, String orderType, String author) {
-        this.title = Optional.ofNullable(title);
-        this.content = Optional.ofNullable(content);
-        this.tag = Optional.ofNullable(tag);
+        this.title = sanitizeOptional(title);
+        this.content = sanitizeOptional(content);
+        this.tag = sanitizeOptional(tag);
         this.minLikes = Optional.ofNullable(minLikes);
         this.maxLikes = Optional.ofNullable(maxLikes);
-        this.orderBy = Optional.ofNullable(orderBy);
-        this.orderType = Optional.ofNullable(orderType);
-        this.author = Optional.ofNullable(author);
+        this.orderBy = sanitizeOptional(orderBy);
+        this.orderType = sanitizeOptional(orderType);
+        this.author = sanitizeOptional(author);
+    }
+
+    public PostFilterOptions(String tag) {
+        this.title = Optional.empty();
+        this.content = Optional.empty();
+        this.tag = sanitizeOptional(tag);
+        this.minLikes = Optional.empty();
+        this.maxLikes = Optional.empty();
+        this.orderBy = Optional.empty();
+        this.orderType = Optional.empty();
+        this.author = Optional.empty();
+    }
+
+    private Optional<String> sanitizeOptional(String value) {
+        return (value == null || value.trim().isEmpty()) ? Optional.empty() : Optional.of(value);
     }
 
     public Optional<String> getUsername() {

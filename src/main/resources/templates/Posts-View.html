@@ -24,7 +24,7 @@
                 <div class="card mb-3 shadow-sm"> <!-- Reduced margin-bottom -->
                     <div class="card-body">
                         <!-- Post Title -->
-                        <a href="#" th:href="@{mvc/posts/{id}(id=${post.getPost_id()})}">
+                        <a href="#" th:href="@{/mvc/posts/{id}(id=${post.getPost_id()})}">
                             <h2 class="card-title h4" th:text="${post.title}">Post Title</h2>
                         </a>
                         <!-- Author Info -->
@@ -45,7 +45,7 @@
                             <span th:each="tagName : ${post.tags}">
                                 <a class="badge bg-primary text-white text-decoration-none me-1"
                                    th:text="${tagName}" href="#"
-                                   th:href="@{mvc/posts/filter/tag/{tagText}(tagText=${tagName})}">Tag</a>
+                                   th:href="@{/mvc/posts/filter/tag/{tagText}(tagText=${tagName})}">Tag</a>
                             </span>
                         </div>
                         <!-- Reactions -->
@@ -64,12 +64,13 @@
                             </li>
                         </ul>
                         <!-- Read More Button -->
-                        <a class="btn btn-primary" th:href="@{mvc/posts/{id}(id=${post.getPost_id()})}">Read more →</a>
+                        <a class="btn btn-primary" th:href="@{/mvc/posts/{id}(id=${post.getPost_id()})}">Read more →</a>
                     </div>
                 </div>
                 <!-- Divider -->
                 <hr class="my-4" />
             </div>
+            <!-- Pagination-->
             <nav aria-label="Pagination">
                 <hr class="my-0" />
                 <ul class="pagination justify-content-center my-4">
@@ -83,7 +84,6 @@
                 </ul>
             </nav>
         </div>
-
         <!-- Right Column for Search Widget -->
         <div class="col-lg-4">
             <div class="card mb-3"> <!-- Reduced margin-bottom -->
@@ -117,7 +117,7 @@
                             <select class="form-control" name="orderBy" id="orderBy">
                                 <option value="title" th:selected="${filterOptions.orderBy == 'title'}">Title</option>
                                 <option value="likes" th:selected="${filterOptions.orderBy == 'likes'}">Likes</option>
-                                <option value="author" th:selected="${filterOptions.orderBy == 'author'}">Author</option>
+                                <option value="id" th:selected="${filterOptions.orderBy == 'id'}">Newest</option>
                             </select>
                         </div>
                         <div class="mb-2">
@@ -139,14 +139,16 @@
                         <div class="col-sm-6">
                             <ul class="list-unstyled mb-0">
                                 <li th:each="tag, iterStat : ${tags}" th:if="${iterStat.index % 2 == 0}">
-                                    <a th:href="@{mvc/posts/filter/tag/{tagText}(tagText=${tag.tagName})}" th:text="${tag.tagName}">Tag</a>
+                                    <a href="#" th:href="@{/mvc/posts/filter/tag/{tagText}(tagText=${tag.tagName})}"
+                                       th:text="${tag.tagName}">Tag</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-sm-6">
                             <ul class="list-unstyled mb-0">
                                 <li th:each="tag, iterStat : ${tags}" th:if="${iterStat.index % 2 == 1}">
-                                    <a th:href="@{mvc/posts/filter/tag/{tagText}(tagText=${tag.tagName})}" th:text="${tag.tagName}">Tag</a>
+                                    <a href="#" th:href="@{/mvc/posts/filter/tag/{tagText}(tagText=${tag.tagName})}"
+                                       th:text="${tag.tagName}">Tag</a>
                                 </li>
                             </ul>
                         </div>
@@ -156,28 +158,6 @@
         </div>
     </div>
 </div>
-
-<!-- Pagination-->
-<!--            <nav aria-label="Pagination">-->
-<!--                <hr class="my-0" />-->
-<!--                <ul class="pagination justify-content-center my-4">-->
-<!--                    &lt;!&ndash; Newer Button (Previous Page) &ndash;&gt;-->
-<!--                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">-->
-<!--                        <a class="page-link" th:href="@{/mvc/posts(page=${currentPage - 1}, size=5)}">Newer</a>-->
-<!--                    </li>-->
-
-<!--                    &lt;!&ndash; Page Numbers &ndash;&gt;-->
-<!--                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"-->
-<!--                        th:classappend="${i == currentPage} ? 'active'">-->
-<!--                        <a class="page-link" th:href="@{/mvc/posts(page=${i}, size=5)}" th:text="${i + 1}"></a>-->
-<!--                    </li>-->
-
-<!--                    &lt;!&ndash; Older Button (Next Page) &ndash;&gt;-->
-<!--                    <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">-->
-<!--                        <a class="page-link" th:href="@{/mvc/posts(page=${currentPage + 1}, size=5)}">Older</a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </nav>-->
 </body>
 <footer th:insert="~{fragments/PageLayout :: footer}"></footer>
 </html>

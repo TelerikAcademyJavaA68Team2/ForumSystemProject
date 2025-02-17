@@ -7,14 +7,15 @@ import com.example.forumproject.models.dtos.postDtos.PostFilterDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.PostService;
-import com.example.forumproject.services.UserService;
 import com.example.forumproject.services.tagService.TagService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,5 +61,20 @@ public class PostMvcController {
 
         return "Posts-View";
     }
+
+    @GetMapping("/filter/tag/{tagText}")
+    public String filterByTag(@PathVariable String tagText, Model model) {
+        String decodedTag = java.net.URLDecoder.decode(tagText, StandardCharsets.UTF_8);
+        PostFilterOptions postFilterOptions = new PostFilterOptions(decodedTag);
+        List<Post> objectPosts = postService.getAllPosts(postFilterOptions);
+        List<PostOutDto> posts = objectPosts.stream()
+                .map(postMapper::postToPostOutDto)
+                .collect(Collectors.toList());
+        model.addAttribute("filterOptions", postFilterOptions);
+        model.addAttribute("posts", posts);
+        return "Posts-View";
+    }
+
+
 
 }
