@@ -31,8 +31,10 @@ public class SecurityConfig {
             "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
             "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html", "/api/auth/**",
             "/api/test/**", "/authenticate"};
-    private static final String[] PUBLIC_URL_LIST = {"/api/home/**", "/api/auth/**", "/error", "/", "/css/**", "/js/**", "/images/**"};
-    private static final String[] PUBLIC_MVC_URL_LIST = {"/mvc/home/**", "/mvc/auth/login**", "/mvc/auth/register", "/mvc/posts/**","/mvc/about/**", "/error", "/", "/css/**", "/js/**", "/images/**"};
+    private static final String[] PUBLIC_URL_LIST = {"/api/home/**", "/api/auth/**", "/error", "/",
+            "/css/**", "/js/**", "/images/**"};
+    private static final String[] PUBLIC_MVC_URL_LIST = {"/mvc/home/**", "/mvc/auth/login**",
+            "/mvc/auth/register", "/mvc/posts/**","/mvc/about/**", "/error", "/", "/css/**", "/js/**", "/images/**"};
     private static final String[] RESTRICTED_URL_LIST = {"/api/admin/**", "/api/users/**"};
     private static final String[] RESTRICTED_MVC_URL_LIST = {"/mvc/admin/**", "/mvc/users/**"};
 
