@@ -6,7 +6,6 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileAdminDto;
 import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileUserDto;
 import com.example.forumproject.models.dtos.userDtos.RequestUserProfileDto;
-import com.example.forumproject.services.PostService;
 import com.example.forumproject.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -41,9 +40,10 @@ public class ProfileMvc {
         return "Profile-View";
     }
 
+
     @GetMapping("/{id}")
     public String showUserProfile(@PathVariable Long id, Model model) {
-        User user = userService.getById(id);
+        User user = userService.getAuthenticatedUser();
         if(!user.isAdmin()) {
             throw new UnauthorizedAccessException("Only Admins can see user profiles!");
         }
