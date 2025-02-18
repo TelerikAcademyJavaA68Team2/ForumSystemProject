@@ -2,7 +2,7 @@ package com.example.forumproject.config;
 
 import com.example.forumproject.helpers.CustomAuthenticationFailureHandler;
 import com.example.forumproject.helpers.JwtAuthorizationFilter;
-import com.example.forumproject.helpers.MvcBlockedUserFilter;
+import com.example.forumproject.helpers.MvcUserValidationFilter;
 import com.example.forumproject.models.User;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -31,23 +31,24 @@ public class SecurityConfig {
             "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
             "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html", "/api/auth/**",
             "/api/test/**", "/authenticate"};
-    private static final String[] PUBLIC_URL_LIST = {"/api/home/**", "/api/auth/**", "/error", "/",
-            "/css/**", "/js/**", "/images/**"};
-    private static final String[] PUBLIC_MVC_URL_LIST = {"/mvc/home/**", "/mvc/auth/login**",
-            "/mvc/auth/register", "/mvc/posts/**","/mvc/about/**", "/error", "/", "/css/**", "/js/**", "/images/**"};
+    private static final String[] PUBLIC_URL_LIST =
+            {"/api/home/**", "/api/auth/**", "/error", "/", "/css/**", "/js/**", "/images/**"};
     private static final String[] RESTRICTED_URL_LIST = {"/api/admin/**", "/api/users/**"};
-    private static final String[] RESTRICTED_MVC_URL_LIST = {"/mvc/admin/**", "/mvc/users/**"};
+
+    private static final String[] PUBLIC_MVC_URL_LIST =
+            {"/mvc/home/**", "/mvc/auth/**", "/mvc/posts/**", "/mvc/about/**", "/error", "/", "/css/**", "/js/**", "/images/**"};
+    private static final String[] RESTRICTED_MVC_URL_LIST = {"/mvc/admin/**"};
 
     private final UserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
-    private final MvcBlockedUserFilter mvcBlockedUserFilter;
+    private final MvcUserValidationFilter mvcUserValidationFilter;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService, JwtAuthorizationFilter authorizationFilter, MvcBlockedUserFilter mvcBlockedUserFilter, CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
+    public SecurityConfig(UserDetailsService userDetailsService, JwtAuthorizationFilter authorizationFilter, MvcUserValidationFilter mvcUserValidationFilter, CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
         this.userDetailsService = userDetailsService;
         this.jwtAuthorizationFilter = authorizationFilter;
-        this.mvcBlockedUserFilter = mvcBlockedUserFilter;
+        this.mvcUserValidationFilter = mvcUserValidationFilter;
         this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
     }
 
@@ -73,7 +74,7 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .logoutSuccessUrl("/mvc/home"))
-                .addFilterBefore(mvcBlockedUserFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(mvcUserValidationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.sendRedirect("/mvc/auth/login"); // Redirect to login for unauthorized access
