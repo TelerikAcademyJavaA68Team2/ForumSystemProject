@@ -91,7 +91,7 @@ public class CommentController {
     public CommentOutDto createComment(@PathVariable Long postId,
                                        @Valid @RequestBody CommentInDto commentDTO) {
         try {
-            Comment comment = commentMapper.CommentInDtoToObject(commentDTO);
+            Comment comment = commentMapper.commentInDtoToObject(commentDTO);
             comment = commentService.create(postId, comment);
             return commentMapper.commentToCommentOutDto(comment);
         } catch (EntityNotFoundException e) {

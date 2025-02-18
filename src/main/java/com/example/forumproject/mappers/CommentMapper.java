@@ -1,12 +1,10 @@
 package com.example.forumproject.mappers;
 
 
-import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.dtos.commentDtos.CommentInDto;
 import com.example.forumproject.services.commentService.CommentService;
-import com.example.forumproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +21,7 @@ public class CommentMapper {
         this.commentService = commentService;
     }
 
-    public Comment CommentInDtoToObject(CommentInDto commentDto) {
+    public Comment commentInDtoToObject(CommentInDto commentDto) {
         Comment comment = new Comment();
         comment.setContent(commentDto.getContent());
         return comment;
