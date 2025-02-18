@@ -1,6 +1,5 @@
 package com.example.forumproject.controllers.mvc;
 
-import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileAdminDto;
@@ -11,7 +10,10 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/mvc/profile")
@@ -41,7 +43,7 @@ public class ProfileMvc {
     }
 
 
-    @GetMapping("/{id}")
+  /*  @GetMapping("/{id}")
     public String showUserProfile(@PathVariable Long id, Model model) {
         User user = userService.getById(id);
         if (!user.isAdmin()) {
@@ -57,7 +59,7 @@ public class ProfileMvc {
         }
 
         return "Profile-View";
-    }
+    }*/
 
     @GetMapping("/update")
     public String showEditProfileForm(Model model) {

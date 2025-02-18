@@ -31,7 +31,7 @@
                                  class="profile-pic rounded-circle me-2" style="width: 40px; height: 40px;">
                             <p class="m-0">
                                 <span th:text="#{post.label}"></span>
-                                <a href="#" sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/mvc/profile/{id}(id=${post.getAuthorId()})}"
+                                <a href="#" sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/mvc/admin/users/{id}(id=${post.getAuthorId()})}"
                                    th:text="${post.author}" class="fw-bold text-primary">Author Name</a>
                                 <a sec:authorize="!hasAnyAuthority('ADMIN')"
                                    th:text="${post.author}">Author Name</a>

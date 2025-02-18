@@ -1,10 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{fragments/PageLayout :: head('Profile')}">Profile</head>
+<header th:insert="~{fragments/PageLayout :: header}"></header>
+<!-- Page content-->
+<header class="py-2 bg-light border-bottom mb-4">
+    <div class="container">
+        <div class="text-center my-3">
+            <h1 class="fw-bolder" th:text="${user.username}">User Username</h1>
+            <p class="lead mb-0" th:text="#{admin.profile.check.description}">Description</p>
+        </div>
+    </div>
+</header>
 <body>
+<!-- Posts -->
+<div class="container">
+    <div class="row gx-2"> <!-- Reduced the spacing using gx-2 -->
+        <!-- Left Column for Posts -->
+        <div class="col-lg-8">
+            <div th:each="post : ${user.user_posts}">
+                <!-- Post Card -->
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <!-- Post Title -->
+                        <a href="#" th:href="@{/mvc/posts/{id}(id=${post.getPost_id()})}">
+                            <h2 class="card-title h4" th:text="${post.title}">Post Title</h2>
+                        </a>
+                        <!-- Author Info -->
+                        <div class="d-flex align-items-center mb-2">
+                            <img th:src="${post.profilePicture}" alt="Profile Picture"
+                                 class="profile-pic rounded-circle me-2" style="width: 40px; height: 40px;">
+                            <p class="m-0">
+                                <span th:text="#{post.label}"></span>
+                                <a href="#" sec:authorize="hasAnyAuthority('ADMIN')"
+                                   th:href="@{/mvc/admin/users/{id}(id=${post.getAuthorId()})}"
+                                   th:text="${post.author}" class="fw-bold text-primary">Author Name</a>
+                                <a sec:authorize="!hasAnyAuthority('ADMIN')"
+                                   th:text="${post.author}">Author Name</a>
+                            </p>
+                        </div>
+                        <!-- Tags -->
+                        <div class="mb-2" th:unless="${post.tags.isEmpty()}">
+                            <span class="fw-bold" th:text="#{post.tags}">Tags:</span>
+                            <span th:each="tagName : ${post.tags}">
+                                <a class="badge bg-primary text-white text-decoration-none me-1"
+                                   th:text="${tagName}" href="#"
+                                   th:href="@{/mvc/posts?tag={tagText}(tagText=${tagName})}">Tag</a>
+                            </span>
+                        </div>
+                        <!-- Reactions -->
+                        <ul class="list-inline">
+                            <!-- Likes Button -->
+                            <button class="btn btn-outline-success" disabled>
+                                <i class="fas fa-thumbs-up"></i>
+                                <span th:text="|👍 ${post.likes} Likes|">25 Likes</span>
+                            </button>
 
+                            <!-- Dislikes Button -->
+                            <button class="btn btn-outline-danger" disabled>
+                                <i class="fas fa-thumbs-down"></i>
+                                <span th:text="|👎 ${post.dislikes} Dislikes|">25 Dislikes</span>
+                            </button>
+                        </ul>
+                        <!-- Comments -->
+                        <button class="btn btn-outline-primary" disabled>
+                            <i class="fas fa-comment"></i>
+                            <span th:text="|💬 ${post.comments.size()} Comments|">25 Comments</span>
+                        </button>
+                        <!-- Read More Button -->
+                        <a class="btn btn-primary" th:href="@{/mvc/posts/{id}(id=${post.getPost_id()})}">Read more →</a>
+                    </div>
+                </div>
+                <!-- Divider -->
+                <hr class="my-4"/>
+            </div>
+        </div>
+
+
+
+        <!-- Right Column for Profile Info -->
+        <div class="col-lg-4">
+            <!-- Profile Picture -->
+            <div class="text-center mb-3">
+                <img th:src="${user.profile_photo}" alt="Profile Picture"
+                     class="rounded-circle profile-pic-large">
+            </div>
+            <!-- Profile Card -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <span th:text="${user.first_name} + ' ' + ${user.last_name}"></span>
+                    <img th:src="${user.account_status == 'ACTIVE ACCOUNT'} ? @{/images/activeUserIcon.png} : @{/images/blockedUserIcon.png}"
+                         alt="Account Status Icon" class="img-right">
+                    <img th:if="${user.account_type} == 'ADMIN'" th:src="@{/images/adminIcon.png}"
+                         alt="Admin Icon" class="img-right">
+                </div>
+
+
+                <div class="card-body">
+                    <!-- Username -->
+                    <div class="row mb-2 align-items-center">
+                        <div class="col-sm-6 col-md-5 fw-bold"> <!-- Static Label: 35-40% width -->
+                            Username:
+                        </div>
+                        <div class="col-sm-6 col-md-7"> <!-- Dynamic Value: Remaining width -->
+                            <span th:text="${user.username}">Username</span>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="row mb-2 align-items-center">
+                        <div class="col-sm-6 col-md-5 fw-bold"> <!-- Static Label: 35-40% width -->
+                            Email:
+                        </div>
+                        <div class="col-sm-6 col-md-7"> <!-- Dynamic Value: Remaining width -->
+                            <span th:text="${user.email}">Email</span>
+                        </div>
+                    </div>
+
+                    <!-- Phone Number (Optional for Admins) -->
+                    <div class="row mb-2 align-items-center" th:if="${user.account_type} == 'ADMIN'">
+                        <div class="col-sm-6 col-md-5 fw-bold"> <!-- Static Label: 35-40% width -->
+                            Phone Number:
+                        </div>
+                        <div class="col-sm-6 col-md-7"> <!-- Dynamic Value: Remaining width -->
+                            <span th:text="${user.phone_number}">Phone number</span>
+                        </div>
+                    </div>
+
+                    <!-- Buttons Row -->
+                    <div class="mt-2 text-end">
+                        <div class="d-flex justify-content-between gap-2"> <!-- Flexbox container -->
+                            <!-- Block/Unblock Button -->
+                            <a class="btn btn-danger" style="width: 48%;"
+                               th:if="${user.account_status == 'ACTIVE ACCOUNT'}"
+                               th:href="@{/mvc/admin/users/{id}/block(id=${user.id})}">
+                                Block User
+                            </a>
+                            <a class="btn btn-success" style="width: 48%;"
+                               th:unless="${user.account_status == 'ACTIVE ACCOUNT'}"
+                               th:href="@{/mvc/admin/users/{id}/unblock(id=${user.id})}">
+                                Unblock User
+                            </a>
+
+                            <!-- Promote/Demote Button -->
+                            <a class="btn btn-danger" style="width: 48%;"
+                               th:if="${user.account_type == 'ADMIN'}"
+                               th:href="@{/mvc/admin/users/{id}/make-user(id=${user.id})}">
+                                Demote to User
+                            </a>
+                            <a class="btn btn-success" style="width: 48%;"
+                               th:unless="${user.account_type == 'ADMIN'}"
+                               th:href="@{/mvc/admin/users/{id}/make-admin(id=${user.id})}">
+                                Promote to Admin
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:insert="~{fragments/PageLayout :: footer}"></footer>
 </body>
 </html>
