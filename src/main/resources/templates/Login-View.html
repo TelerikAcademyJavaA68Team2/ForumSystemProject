@@ -17,6 +17,10 @@
       <div class="card">
         <div class="card-body">
           <!-- Login Form -->
+          <!-- Error Message (Only appears when redirected with an error) -->
+          <div th:if="${error}" class="alert alert-danger text-center">
+            <span th:text="${error}"></span>
+          </div>
           <form action="#" th:action="@{/mvc/auth/login}" th:object="${loginDto}" method="post">
             <!-- Username Field -->
             <div class="form-group row mb-3">
