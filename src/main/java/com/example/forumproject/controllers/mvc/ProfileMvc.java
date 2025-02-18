@@ -43,8 +43,8 @@ public class ProfileMvc {
 
     @GetMapping("/{id}")
     public String showUserProfile(@PathVariable Long id, Model model) {
-        User user = userService.getAuthenticatedUser();
-        if(!user.isAdmin()) {
+        User user = userService.getById(id);
+        if (!user.isAdmin()) {
             throw new UnauthorizedAccessException("Only Admins can see user profiles!");
         }
         Object Dto = userMapper.mapUserToUserFullProfileOutDto(user);
