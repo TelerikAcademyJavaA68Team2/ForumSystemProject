@@ -37,7 +37,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             @Nonnull HttpServletResponse response,
             @Nonnull FilterChain filterChain) throws ServletException, IOException {
 
-        if (!isRestRequest(request)) {
+        if (!isRestRequest(request) || isPublicRestRequest(request)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -87,6 +87,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isPublicRestRequest(HttpServletRequest request) {
+        String requestUri = request.getRequestURI();
+        return requestUri.startsWith("api/home") || requestUri.startsWith("/api/auth");
     }
 
     private boolean isRestRequest(HttpServletRequest request) {
