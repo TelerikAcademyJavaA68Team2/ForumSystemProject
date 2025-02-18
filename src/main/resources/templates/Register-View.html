@@ -2,65 +2,111 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="~{fragments/PageLayout :: head('Register')}">Register</head>
 <header th:insert="~{fragments/PageLayout :: header}"></header>
+<header class="py-2 bg-light border-bottom mb-4">
+    <div class="container">
+        <div class="text-center my-3">
+            <h1 class="fw-bolder" th:text="#{navigation.register}">Page info</h1>
+        </div>
+    </div>
+</header>
 <body>
-<div class="form-container margin12">
-    <form action="#" th:action="@{/mvc/auth/register}" th:object="${registerRequest}" method="POST">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Registration Form -->
+                    <form action="#" th:action="@{/mvc/auth/register}" th:object="${registerRequest}" method="POST">
+                        <!-- First Name -->
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.firstName}">First Name</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" th:field="*{firstName}"
+                                       placeholder="First Name"/>
+                                <small class="text-danger"
+                                       th:if="${#fields.hasErrors('firstName')}"
+                                       th:text="${#fields.errors('firstName')[0]}">First Name error placeholder!</small>
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            <label class="form-label" th:text="#{user.label.firstName}">First Name</label>
-            <input class="form-input" type="text" th:field="*{firstName}" placeholder="First Name"/>
-            <label class="form-error" th:if="${#fields.hasErrors('firstName')}"
-                   th:text="${#fields.errors('firstName')[0]}">First Name error placeholder! </label>
+                        <!-- Last Name -->
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.lastName}">Last Name</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" th:field="*{lastName}" placeholder="Last Name"/>
+                                <small class="text-danger"
+                                       th:if="${#fields.hasErrors('lastName')}"
+                                       th:text="${#fields.errors('lastName')[0]}">Last Name error placeholder!</small>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.email}">Email</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="email" th:field="*{email}" placeholder="Enter Email"/>
+                                <small class="text-danger"
+                                       th:if="${#fields.hasErrors('email')}"
+                                       th:text="${#fields.errors('email')[0]}">Email error placeholder!</small>
+                            </div>
+                        </div>
+
+                        <!-- Username -->
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.username}">Username</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" th:field="*{username}"
+                                       placeholder="Enter Username"/>
+                                <small class="text-danger"
+                                       th:if="${#fields.hasErrors('username')}"
+                                       th:text="${#fields.errors('username')[0]}">Username error placeholder!</small>
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.password}">Password</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="password" th:field="*{password}"
+                                       placeholder="Enter Password"/>
+                                <small class="text-danger"
+                                       th:if="${#fields.hasErrors('password')}"
+                                       th:text="${#fields.errors('password')[0]}">Password error placeholder!</small>
+                            </div>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.passwordConfirm}">Confirm
+                                Password</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="password" th:field="*{passwordConfirm}"
+                                       placeholder="Confirm Password"/>
+                                <small class="text-danger"
+                                       th:if="${#fields.hasErrors('passwordConfirm')}"
+                                       th:text="${#fields.errors('passwordConfirm')[0]}">Password Confirmation error
+                                    placeholder!</small>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-            <label class="form-label" th:text="#{user.label.lastName}">Last Name</label>
-            <input class="form-input" type="text" th:field="*{lastName}" placeholder="Last Name"/>
-            <label class="form-error" th:if="${#fields.hasErrors('lastName')}"
-                   th:text="${#fields.errors('lastName')[0]}">Last Name error placeholder! </label>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label" th:text="#{user.label.email}">Email</label>
-            <input class="form-input" type="text" th:field="*{email}" placeholder="Enter Email"/>
-            <label class="form-error" th:if="${#fields.hasErrors('email')}"
-                   th:text="${#fields.errors('email')[0]}">Email error placeholder! </label>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label" th:text="#{user.label.username}">Username</label>
-            <input class="form-input" type="text" th:field="*{username}" placeholder="Enter Username"/>
-            <label class="form-error" th:if="${#fields.hasErrors('username')}"
-                   th:text="${#fields.errors('username')[0]}">Username error placeholder! </label>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label" th:text="#{user.label.password}">Password</label>
-            <input class="form-input" type="password" th:field="*{password}" placeholder="Enter Password"/>
-            <label class="form-error" th:if="${#fields.hasErrors('password')}"
-                   th:text="${#fields.errors('password')[0]}">Username error placeholder! </label>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label" th:text="#{user.label.passwordConfirm}">Confirm Password</label>
-            <input class="form-input" type="password" th:field="*{passwordConfirm}" placeholder="Confirm Password"/>
-            <label class="form-error" th:if="${#fields.hasErrors('passwordConfirm')}"
-                   th:text="${#fields.errors('passwordConfirm')[0]}">Password Confirmation error placeholder! </label>
-        </div>
-
-        <div class="form-group">
-            <input type="submit" class="btn-primary form-button" value="Register"/>
-        </div>
-    </form>
-
+    </div>
 </div>
 
-<h3 class="center-h3">
-    <p>Already have an account?</p>
-    <a class="btn-primary" href="/mvc/auth/login">Login</a>
-</h3>
-
-
-</body>
+<!-- Login Link -->
+<div class="text-center mt-4">
+    <p>
+        Already have an account?
+        <a href="/mvc/auth/login" class="small-link">login</a>
+    </p>
+</div>
 <footer th:insert="~{fragments/PageLayout :: footer}"></footer>
+</body>
 </html>
