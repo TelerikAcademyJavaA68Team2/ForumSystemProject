@@ -18,6 +18,16 @@ public class ReactionServiceImpl implements ReactionService {
     }
 
     @Override
+    public boolean checkIfLikeExists(Long post_id, Long user_id) {
+        return reactionRepository.checkIfLikeExists(post_id, user_id);
+    }
+
+    @Override
+    public boolean checkIfDislikeExists(Long post_id, Long user_id) {
+        return reactionRepository.checkIfDislikeExists(post_id, user_id);
+    }
+
+    @Override
     public Long getLikesByPostId(Long post_id) {
         return reactionRepository.getLikesByPostId(post_id);
     }
