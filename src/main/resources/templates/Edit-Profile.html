@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{fragments/PageLayout :: head('Profile')}">Profile</head>
+<header th:insert="~{fragments/PageLayout :: header}"></header>
+<!-- Page content-->
+<header class="py-2 bg-light border-bottom mb-4">
+    <div class="container">
+        <div class="text-center my-3">
+            <h1 class="fw-bolder" th:text="#{profile.update.info}">Page info</h1>
+            <p class="lead mb-0" th:text="#{profile.update.description}">Description</p>
+        </div>
+    </div>
+</header>
+<body>
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3
+                            class="card-title"
+                            th:text="#{profile.edit.title}">Edit Profile</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Form for editing profile -->
+                    <form th:action="@{/mvc/profile/update}" th:object="${updateRequest}" method="POST">
+
+                        <!-- Full Name (First Name & Last Name) -->
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.fullName}">Full Name</label>
+                            <div class="col-sm-9">
+                                <!-- Nested row to divide the space into two equal columns -->
+                                <div class="row g-2">
+                                    <div class="col">
+                                        <input type="text" class="form-control" th:field="*{firstName}"
+                                               placeholder="First Name"/>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" th:field="*{lastName}"
+                                               placeholder="Last Name"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.email}">Email</label>
+                            <div class="col-sm-9">
+
+                                <input class="form-control" type="email" th:field="*{email}"/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email
+                                    error placeholder! </small>
+
+                            </div>
+                        </div>
+
+                        <!-- Phone Number (Optional for Admins) -->
+                        <div class="form-group row mb-3" th:if="${isAdmin}">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.phoneNumber}">Phone
+                                Number</label>
+
+                            <div class="col-sm-9">
+                                <input class="form-control" type="tel" th:field="*{phoneNumber}"/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}"
+                                       th:errors="*{phoneNumber}">Phone Number error
+                                    placeholder! </small>
+                            </div>
+                        </div>
+
+                        <!-- Profile Picture -->
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.profilePictureURL}">Profile
+                                Picture URL</label>
+                            <div class="col-sm-9">
+                                <input type="url" class="form-control" th:field="*{profilePhoto}"
+                                       placeholder="https://example.com/image.jpg"/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('profilePhoto')}"
+                                       th:errors="*{profilePhoto}">Photo error placeholder!</small>
+                            </div>
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary" th:text="#{profile.update.button}">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:insert="~{fragments/PageLayout :: footer}"></footer>
+</body>
+</html>
