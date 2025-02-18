@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
             if (user == null) {
                 throw new EntityNotFoundException(USER_NOT_FOUND);
             }
-            return user;
+            return loadUserByUsername(user.getUsername());
         } catch (Exception e) {
             throw new UnauthorizedAccessException(LOGIN_FIRST);
         }
