@@ -7,30 +7,29 @@ import jakarta.validation.constraints.Size;
 
 public class UserRegistrationDto {
 
-    @NotBlank(message = "First name can't be blank")
+    @NotBlank(message = "First name should be between 4 and 32 symbols!")
     @Size(min = 4, max = 32, message = "First name should be between 4 and 32 symbols!")
     private String firstName;
 
-    @NotBlank(message = "Last name can't be blank")
+    @NotBlank(message = "Last name should be between 4 and 32 symbols!")
     @Size(min = 4, max = 32, message = "Last name should be between 4 and 32 symbols!")
     private String lastName;
 
-    @NotBlank(message = "Email can't be blank")
+    @NotBlank(message = "Email address is invalid!")
     @Email(message = "Email address is invalid!")
     @Size(min = 5, max = 200, message = "Email should be between 5 and 250 symbols!")
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Email address is invalid!")
     private String email;
 
-    @NotBlank(message = "Username can't be blank")
-    @Size(min = 2, max = 20, message = "username should be between 2 and 20 symbols!")
+    @NotBlank(message = "Username should be between 2 and 20 symbols!")
+    @Size(min = 2, max = 20, message = "Username should be between 2 and 20 symbols!")
     private String username;
 
-    @NotBlank(message = "Password can't be blank")
-    @Size(min = 2, max = 20, message = "password should be between 2 and 20 symbols!")
+    @NotBlank(message = "Password should be between 2 and 20 symbols!")
+    @Size(min = 2, max = 20, message = "Password should be between 2 and 20 symbols!")
     private String password;
 
-    @NotBlank(message = "Password can't be blank")
-    @Size(min = 2, max = 20, message = "password should be between 2 and 20 symbols!")
+    @NotBlank(message = "Password should be between 2 and 20 symbols!")
+    @Size(min = 2, max = 20, message = "Password should be between 2 and 20 symbols!")
     private String passwordConfirm;
 
     public UserRegistrationDto() {

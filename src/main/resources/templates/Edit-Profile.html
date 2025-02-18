@@ -25,11 +25,31 @@
                     <!-- Form for editing profile -->
                     <form th:action="@{/mvc/profile/update}" th:object="${updateRequest}" method="POST">
 
-                        <!-- Full Name (First Name & Last Name) -->
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.fullName}">Full Name</label>
+                            <div class="col-sm-9 d-flex gap-2">
+                                <!-- First Name -->
+                                <div class="flex-fill">
+                                    <input type="text" class="form-control" th:field="*{firstName}" placeholder="First Name"/>
+                                    <small class="text-danger d-block"
+                                           th:if="${#fields.hasErrors('firstName')}"
+                                           th:text="${#fields.errors('firstName')[0]}">First Name error placeholder!</small>
+                                </div>
+                                <!-- Last Name -->
+                                <div class="flex-fill">
+                                    <input type="text" class="form-control" th:field="*{lastName}" placeholder="Last Name"/>
+                                    <small class="text-danger d-block"
+                                           th:if="${#fields.hasErrors('lastName')}"
+                                           th:text="${#fields.errors('lastName')[0]}">Last Name error placeholder!</small>
+                                </div>
+                            </div>
+                        </div>
+
+  <!--                      &lt;!&ndash; Full Name (First Name & Last Name) &ndash;&gt;
                         <div class="form-group row mb-3">
                             <label class="col-sm-3 col-form-label" th:text="#{user.label.fullName}">Full Name</label>
                             <div class="col-sm-9">
-                                <!-- Nested row to divide the space into two equal columns -->
+                                &lt;!&ndash; Nested row to divide the space into two equal columns &ndash;&gt;
                                 <div class="row g-2">
                                     <div class="col">
                                         <input type="text" class="form-control" th:field="*{firstName}"
@@ -42,7 +62,7 @@
                                 </div>
                             </div>
                         </div>
-
+-->
                         <!-- Email -->
                         <div class="form-group row mb-3">
                             <label class="col-sm-3 col-form-label" th:text="#{user.label.email}">Email</label>
