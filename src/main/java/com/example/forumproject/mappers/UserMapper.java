@@ -36,7 +36,6 @@ public class UserMapper {
     public Object mapUserToUserFullProfileOutDto(User user) {
         String accountType = user.isAdmin() ? "ADMIN" : "USER";
         String accountStatus = user.isBlocked() ? "BLOCKED ACCOUNT" : "ACTIVE ACCOUNT";
-        String profilePhoto = user.getPhoto() == null ? "No profile photo" : user.getPhoto();
 
         if (user.isAdmin()) {
             FullProfileAdminDto userDto = new FullProfileAdminDto(
@@ -47,7 +46,7 @@ public class UserMapper {
                     user.getEmail(),
                     accountType,
                     accountStatus,
-                    profilePhoto,
+                    user.getPhoto(),
                     user.getPhoneNumber() == null ? "No phone number provided" : user.getPhoneNumber());
             PostFilterOptions filterOptions = new PostFilterOptions
                     (null, null, null,
@@ -65,7 +64,7 @@ public class UserMapper {
                     user.getEmail(),
                     accountType,
                     accountStatus,
-                    profilePhoto);
+                    user.getPhoto());
 
             PostFilterOptions filterOptions = new PostFilterOptions
                     (null, null, null,
