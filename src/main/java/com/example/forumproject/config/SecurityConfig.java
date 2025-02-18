@@ -36,7 +36,7 @@ public class SecurityConfig {
     private static final String[] PUBLIC_MVC_URL_LIST = {"/mvc/home/**", "/mvc/auth/login**",
             "/mvc/auth/register", "/mvc/posts/**","/mvc/about/**", "/error", "/", "/css/**", "/js/**", "/images/**"};
     private static final String[] RESTRICTED_URL_LIST = {"/api/admin/**", "/api/users/**"};
-    private static final String[] RESTRICTED_MVC_URL_LIST = {"/mvc/admin/**", "/mvc/users/**"};
+    private static final String[] RESTRICTED_MVC_URL_LIST = {"/mvc/admin/**", "/mvc/profile/{id}**"};
 
     private final UserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
