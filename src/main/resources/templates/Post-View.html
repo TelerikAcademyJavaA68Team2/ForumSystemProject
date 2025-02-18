@@ -1,136 +1,182 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:insert="~{fragments/PageLayout :: head('Post')}">Post</head>
+<head th:insert="~{fragments/PageLayout :: head('Post')}"></head>
 <header th:insert="~{fragments/PageLayout :: header}"></header>
-    <body>
-        <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#!">Start Bootstrap</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>
-                    </ul>
+<body>
+<!-- Page content-->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Post content-->
+            <article>
+                <!-- Post header-->
+                <header class="mb-4">
+                    <!-- Post title-->
+                    <h1 class="fw-bolder mb-1" th:text="${post.title}">Post Title</h1>
+                    <!-- Post meta content-->
+                    <div class="d-flex align-items-center">
+                        <img th:src="${post.profilePicture}" alt="Profile Picture"
+                             class="rounded-circle me-2" style="width: 50px; height: 50px;">
+                        <p class="m-0">
+                            <span th:text="#{post.label}"></span>
+                            <a href="#" sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/mvc/admin/users{id}(id=${post.getAuthorId()})}"
+                               th:text="${post.author}" class="fw-bold text-primary">Author Name</a>
+                            <a sec:authorize="!hasAnyAuthority('ADMIN')"
+                               th:text="${post.author}">Author Name</a>
+                        </p>
+                    </div>
+                </header>
+
+                <!-- Post content-->
+                <section class="mb-5">
+                    <p class="fs-5 mb-4" th:text="${post.content}">Post Content</p>
+                </section>
+
+                <!-- Tags -->
+                <div class="mb-3" th:if="${not #lists.isEmpty(post.tags)}">
+                    <span class="fw-bold">Tags:</span>
+                    <span th:each="tagName : ${post.tags}">
+                        <a class="badge bg-primary text-white text-decoration-none me-1"
+                           th:text="${tagName}"
+                           th:href="@{/mvc/posts?tag={tagText}(tagText=${tagName})}">Tag</a>
+                    </span>
                 </div>
-            </div>
-        </nav>
-        <!-- Page content-->
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-lg-8">
-                    <!-- Post content-->
-                    <article>
-                        <!-- Post header-->
-                        <header class="mb-4">
-                            <!-- Post title-->
-                            <h1 class="fw-bolder mb-1">Welcome to Blog Post!</h1>
-                            <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2">Posted on January 1, 2023 by Start Bootstrap</div>
-                            <!-- Post categories-->
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
-                        </header>
-                        <!-- Preview image figure-->
-                        <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
-                        <!-- Post content-->
-                        <section class="mb-5">
-                            <p class="fs-5 mb-4">Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe.</p>
-                            <p class="fs-5 mb-4">The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of not the life became intelligent is a different question, and we'll see if we find that.</p>
-                            <p class="fs-5 mb-4">If you get asteroids about a kilometer in size, those are large enough and carry enough energy into our system to disrupt transportation, communication, the food chains, and that can be a really bad day on Earth.</p>
-                            <h2 class="fw-bolder mb-4 mt-5">I have odd cosmic thoughts every day</h2>
-                            <p class="fs-5 mb-4">For me, the most fascinating interface is Twitter. I have odd cosmic thoughts every day and I realized I could hold them to myself or share them with people who might be interested.</p>
-                            <p class="fs-5 mb-4">Venus has a runaway greenhouse effect. I kind of want to know what happened there because we're twirling knobs here on Earth without knowing the consequences of it. Mars once had running water. It's bone dry today. Something bad happened there as well.</p>
-                        </section>
-                    </article>
-                    <!-- Comments section-->
-                    <section class="mb-5">
-                        <div class="card bg-light">
-                            <div class="card-body">
-                                <!-- Comment form-->
-                                <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
-                                <!-- Comment with nested comments-->
-                                <div class="d-flex mb-4">
-                                    <!-- Parent comment-->
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">Commenter Name</div>
-                                        If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
-                                        <!-- Child comment 1-->
-                                        <div class="d-flex mt-4">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                            <div class="ms-3">
-                                                <div class="fw-bold">Commenter Name</div>
-                                                And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
-                                            </div>
-                                        </div>
-                                        <!-- Child comment 2-->
-                                        <div class="d-flex mt-4">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                            <div class="ms-3">
-                                                <div class="fw-bold">Commenter Name</div>
-                                                When you put money directly to a problem, it makes a good headline.
-                                            </div>
-                                        </div>
-                                    </div>
+
+                <!-- Like / Dislike buttons -->
+                <div class="d-flex align-items-center">
+                    <!-- Like Button (only for authenticated users) -->
+                    <form th:action="@{/mvc/posts/{id}/like(id=${post.post_id})}" method="post" sec:authorize="isAuthenticated()">
+                        <button type="submit"
+                                th:class="${hasLiked} ? 'btn btn-success me-2' : 'btn btn-outline-success me-2'">
+                            👍 Like <span th:text="${post.likes}">0</span>
+                        </button>
+                    </form>
+
+                    <!-- Disabled Like Button (for unauthenticated users) -->
+                    <button type="button" class="btn btn-outline-success me-2" sec:authorize="!isAuthenticated()" disabled>
+                        👍 Like <span th:text="${post.likes}">0</span>
+                    </button>
+
+                    <!-- Dislike Button (only for authenticated users) -->
+                    <form th:action="@{/mvc/posts/{id}/dislike(id=${post.post_id})}" method="post" sec:authorize="isAuthenticated()">
+                        <button type="submit"
+                                th:class="${hasDisliked} ? 'btn btn-danger' : 'btn btn-outline-danger'">
+                            👎 Dislike <span th:text="${post.dislikes}">0</span>
+                        </button>
+                    </form>
+
+                    <!-- Disabled Dislike Button (for unauthenticated users) -->
+                    <button type="button" class="btn btn-outline-danger" sec:authorize="!isAuthenticated()" disabled>
+                        👎 Dislike <span th:text="${post.dislikes}">0</span>
+                    </button>
+                </div>
+
+                <!-- Show edit/delete buttons only for author or admin -->
+                <div class="mt-3" sec:authorize="isAuthenticated()">
+                    <div th:if="${currentUser != null and (currentUser.username == post.author or currentUser.isAdmin())}">
+                        <a th:href="@{/mvc/posts/{id}/edit(id=${post.post_id})}" class="btn btn-warning">✏️ Edit</a>
+
+                        <form th:action="@{/mvc/posts/{id}/delete(id=${post.post_id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger">🗑️ Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Comments section -->
+            <section class="mb-5">
+                <h2 class="fw-bolder mb-4">Comments</h2>
+                <div class="card bg-light">
+                    <form sec:authorize="isAuthenticated()"
+                          th:action="@{/mvc/posts/{id}/comments/new(id=${post.post_id})}" method="post">
+                    <textarea class="form-control mb-3" name="content" rows="3"
+                              placeholder="Write a comment..." required></textarea>
+                        <button class="btn btn-primary" type="submit">💬 Add Comment</button>
+                    </form>
+                    <div class="card-body">
+                        <!-- Only show if comments exist -->
+                        <div th:if="${not #lists.isEmpty(post.comments)}">
+                            <div th:each="comment : ${post.comments}" class="d-flex mt-4">
+                                <!-- Divider -->
+                                <hr class="full-width-divider"/>
+                                <div class="flex-shrink-0">
+                                    <img class="rounded-circle"
+                                         src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
+                                         alt="Profile Picture"/>
                                 </div>
-                                <!-- Single comment-->
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">Commenter Name</div>
-                                        When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
-                                    </div>
+                                <div class="ms-3">
+                                    <div class="fw-bold" th:text="${comment.author}">Commenter Name</div>
+                                    <p th:text="${comment.content}">Comment content here...</p>
+
                                 </div>
                             </div>
                         </div>
-                    </section>
-                </div>
-                <!-- Side widgets-->
-                <div class="col-lg-4">
-                    <!-- Search widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Search</div>
-                        <div class="card-body">
-                            <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                                <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+
+                        <!-- Show message if no comments exist -->
+                        <div th:if="${#lists.isEmpty(post.comments)}" class="text-muted">
+                            <p>There are no comments for this post.</p>
+                        </div>
+
+                        <!-- Comment form (only for authenticated users) -->
+                        <div sec:authorize="isAuthenticated()">
+                            <!-- Error Message for Comments -->
+                            <div th:if="${commentError}" class="alert alert-danger">
+                                <span th:text="${commentError}"></span>
                             </div>
+
+                            <!-- Success Message for Comments -->
+                            <div th:if="${commentSuccess}" class="alert alert-success">
+                                <span th:text="${commentSuccess}"></span>
+                            </div>
+
                         </div>
                     </div>
-                    <!-- Categories widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Categories</div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">Web Design</a></li>
-                                        <li><a href="#!">HTML</a></li>
-                                        <li><a href="#!">Freebies</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">JavaScript</a></li>
-                                        <li><a href="#!">CSS</a></li>
-                                        <li><a href="#!">Tutorials</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Side widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Side Widget</div>
-                        <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
-                    </div>
                 </div>
-            </div>
+            </section>
         </div>
-        <footer th:insert="~{fragments/PageLayout :: footer}"></footer>
-    </body>
+
+        <!-- Sidebar Widgets -->
+        <div class="col-lg-4">
+            <!-- Search widget-->
+            <div class="card mb-4">
+                <div class="card-header">Search</div>
+                <div class="card-body">
+                    <form th:action="@{/mvc/posts}" method="get">
+                        <input class="form-control mb-2" type="text" name="title" placeholder="Search by title..."/>
+                        <input class="form-control mb-2" type="text" name="author" placeholder="Search by author..."/>
+                        <button class="btn btn-primary w-100" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tags widget -->
+            <div class="card mb-4">
+                <div class="card-header">Tags</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul class="list-unstyled mb-0">
+                                <li th:each="tag, iterStat : ${tags}" th:if="${iterStat.index % 2 == 0}">
+                                    <a href="#" th:href="@{/mvc/posts?tag={tagText}(tagText=${tag.tagName})}"
+                                       th:text="${tag.tagName}">Tag</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <ul class="list-unstyled mb-0">
+                                <li th:each="tag, iterStat : ${tags}" th:if="${iterStat.index % 2 == 1}">
+                                    <a href="#" th:href="@{/mvc/posts?tag={tagText}(tagText=${tag.tagName})}"
+                                       th:text="${tag.tagName}">Tag</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<footer th:insert="~{fragments/PageLayout :: footer}"></footer>
+</body>
 </html>
