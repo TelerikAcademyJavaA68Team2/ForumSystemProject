@@ -73,7 +73,8 @@
 
                 <!-- Show edit/delete buttons only for author or admin -->
                 <div class="mt-3" sec:authorize="isAuthenticated()">
-                    <div th:if="${currentUser != null and (currentUser.username == post.author or currentUser.isAdmin())}">
+                    <div th:if="${(#authentication.principal.username == post.author)
+                 or #authorization.expression('hasAuthority(''ADMIN'')')}">
                         <a th:href="@{/mvc/posts/{id}/edit(id=${post.post_id})}" class="btn btn-warning">✏️ Edit</a>
 
                         <form th:action="@{/mvc/posts/{id}/delete(id=${post.post_id})}" method="post" class="d-inline">

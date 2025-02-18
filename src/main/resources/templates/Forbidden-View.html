@@ -3,7 +3,19 @@
 <head th:insert="~{fragments/PageLayout :: head('Forbidden')}">Forbidden</head>
 <header th:insert="~{fragments/PageLayout :: header}"></header>
 <body>
-
+<div class="body-content">
+    <div class="py-5 bg-light border-bottom mb-4">
+        <div class="container">
+            <div class="text-center my-5">
+                <h1 class="fw-bolder" th:text="${status}">Status</h1>
+                <h1 class="fw-bolder" th:text="${error}">Oops! The page you're looking for doesn't exist.</h1>
+                <h2 class="lead mb-0" th:utext="#{error.message}">Error Message</h2>
+                <br>
+                <a class="btn btn-primary" href="/mvc/home">Go Back Home</a>
+            </div>
+        </div>
+    </div>
+</div>
 <footer th:insert="~{fragments/PageLayout :: footer}"></footer>
 </body>
 </html>

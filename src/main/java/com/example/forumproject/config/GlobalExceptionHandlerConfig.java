@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 //Implemented for MVC for easy exception handling
 //Todo make one error page on /error
@@ -40,7 +41,7 @@ public class GlobalExceptionHandlerConfig {
         return "Method-Not-Allowed";
     }
 
-    // Handle 401 errors (Unauthorized)
+  //   Handle 401 errors (Unauthorized)
     @ExceptionHandler(UnauthorizedAccessException.class)
     public String handleUnauthorizedAccessException(UnauthorizedAccessException ex, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("error", "This action is not allowed!");
@@ -54,6 +55,14 @@ public class GlobalExceptionHandlerConfig {
         redirectAttributes.addFlashAttribute("error", "You must be logged in to perform this action!");
         redirectAttributes.addFlashAttribute("status", HttpStatus.FORBIDDEN);
         return "redirect:/mvc/auth/login";
+    }
+
+    // Handle 403 errors (Access Denied by Spring Security)
+    @ExceptionHandler(NoResourceFoundException.class)
+    public String handleNoResourceFoundException(NoResourceFoundException ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("error", "This action is not allowed!");
+        redirectAttributes.addFlashAttribute("status", HttpStatus.FORBIDDEN);
+        return "Forbidden-View";
     }
 
 //ToDo - uncomment when done with project!

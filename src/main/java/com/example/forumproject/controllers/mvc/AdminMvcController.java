@@ -22,22 +22,22 @@ public class AdminMvcController {
 
     @GetMapping
     public String showAdminPortalView2(HttpSession session, Model model) {
-        String redirectUrl = redirectIfNecessary(session);
-        if (redirectUrl != null) return redirectUrl;
+//        String redirectUrl = redirectIfNecessary(session);
+//        if (redirectUrl != null) return redirectUrl;
 
-        User user = userService.loadUserByUsername((String) session.getAttribute("currentUser"));
+        User user = userService.getAuthenticatedUser();
 
         model.addAttribute("user", user);
         return "Admin-View";
     }
 
-    private static String redirectIfNecessary(HttpSession session) {
-        if (!(boolean) session.getAttribute("hasActiveUser")) {
-            return "redirect:/mvc/auth/login";
-        }
-        if (!(boolean) session.getAttribute("isUserAdmin")) {
-            return "Forbidden-View";
-        }
-        return null;
-    }
+//    private static String redirectIfNecessary(HttpSession session) {
+//        if (!(boolean) session.getAttribute("hasActiveUser")) {
+//            return "redirect:/mvc/auth/login";
+//        }
+//        if (!(boolean) session.getAttribute("isUserAdmin")) {
+//            return "Forbidden-View";
+//        }
+//        return null;
+//    }
 }
