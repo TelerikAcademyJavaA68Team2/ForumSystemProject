@@ -22,7 +22,7 @@
                 <div class="card mb-3 shadow-sm">
                     <div class="card-body">
                         <!-- Post Title -->
-                        <a href="#" th:href="@{/posts/{id}(id=${post.getPost_id()})}">
+                        <a href="#" th:href="@{/mvc/posts/{id}(id=${post.getPost_id()})}">
                             <h2 class="card-title h4" th:text="${post.title}">Post Title</h2>
                         </a>
                         <!-- Author Info -->
@@ -30,9 +30,11 @@
                             <img th:src="${post.profilePicture}" alt="Profile Picture"
                                  class="profile-pic rounded-circle me-2" style="width: 40px; height: 40px;">
                             <p class="m-0">
-                                <span th:text="'Posted by '"></span>
-                                <a href="#" th:href="@{/users/{id}(id=${post.getAuthorId()})}"
+                                <span th:text="#{post.label}"></span>
+                                <a href="#" sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/mvc/profile/{id}(id=${post.getAuthorId()})}"
                                    th:text="${post.author}" class="fw-bold text-primary">Author Name</a>
+                                <a sec:authorize="!hasAnyAuthority('ADMIN')"
+                                   th:text="${post.author}">Author Name</a>
                             </p>
                         </div>
                         <!-- Tags -->
@@ -41,26 +43,30 @@
                             <span th:each="tagName : ${post.tags}">
                                 <a class="badge bg-primary text-white text-decoration-none me-1"
                                    th:text="${tagName}" href="#"
-                                   th:href="@{/posts/filter/tag/{tagText}(tagText=${tagName})}">Tag</a>
+                                   th:href="@{/mvc/posts?tag={tagText}(tagText=${tagName})}">Tag</a>
                             </span>
                         </div>
                         <!-- Reactions -->
                         <ul class="list-inline">
-                            <li class="list-inline-item">
-                                <i class="far fa-comment"></i>
-                                <span th:text="|${post.comments.size()} Comments|">25</span>
-                            </li>
-                            <li class="list-inline-item">
-                                <i class="far fa-thumbs-up"></i>
-                                <span th:text="|${post.likes} Likes|">25</span>
-                            </li>
-                            <li class="list-inline-item">
-                                <i class="far fa-thumbs-down"></i>
-                                <span th:text="|${post.dislikes} Dislikes|">25</span>
-                            </li>
+                            <!-- Likes Button -->
+                            <button class="btn btn-outline-success" disabled>
+                                <i class="fas fa-thumbs-up"></i>
+                                <span th:text="|👍 ${post.likes} Likes|">25 Likes</span>
+                            </button>
+
+                            <!-- Dislikes Button -->
+                            <button class="btn btn-outline-danger" disabled>
+                                <i class="fas fa-thumbs-down"></i>
+                                <span th:text="|👎 ${post.dislikes} Dislikes|">25 Dislikes</span>
+                            </button>
                         </ul>
+                        <!-- Comments -->
+                        <button class="btn btn-outline-primary" disabled>
+                            <i class="fas fa-comment"></i>
+                            <span th:text="|💬 ${post.comments.size()} Comments|">25 Comments</span>
+                        </button>
                         <!-- Read More Button -->
-                        <a class="btn btn-primary" th:href="@{/posts/{id}(id=${post.getPost_id()})}">Read more →</a>
+                        <a class="btn btn-primary" th:href="@{/mvc/posts/{id}(id=${post.getPost_id()})}">Read more →</a>
                     </div>
                 </div>
                 <!-- Divider -->
