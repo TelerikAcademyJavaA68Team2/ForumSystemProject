@@ -241,6 +241,8 @@ public class UserServiceTests {
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         Mockito.when(authentication.getPrincipal()).thenReturn(user);
+        Mockito.when(mockRepository.getByUsername(Mockito.any())).thenReturn(user);
+
         Mockito.when(mockRepository.getById(Mockito.anyLong()))
                 .thenThrow(EntityNotFoundException.class);
 
@@ -256,6 +258,7 @@ public class UserServiceTests {
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         Mockito.when(authentication.getPrincipal()).thenReturn(admin);
+        Mockito.when(mockRepository.getByUsername(Mockito.any())).thenReturn(admin);
 
         User user = Helpers.createMockUser();
         user.setBlocked(true);
@@ -273,6 +276,8 @@ public class UserServiceTests {
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         Mockito.when(authentication.getPrincipal()).thenReturn(admin);
+        Mockito.when(mockRepository.getByUsername(Mockito.any())).thenReturn(admin);
+
 
         User user = Helpers.createMockUser();
         user.setBlocked(false);
@@ -289,6 +294,8 @@ public class UserServiceTests {
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         Mockito.when(authentication.getPrincipal()).thenReturn(user);
+        Mockito.when(mockRepository.getByUsername(Mockito.any())).thenReturn(user);
+
 
         // Act, Assert
         Assertions.assertThrows(InvalidUserInputException.class, () -> service.blockUser(user.getId()));
@@ -335,6 +342,7 @@ public class UserServiceTests {
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         User user = Helpers.createMockUser();
         Mockito.when(authentication.getPrincipal()).thenReturn(user);
+        Mockito.when(mockRepository.getByUsername(Mockito.any())).thenReturn(user);
 
         // Act
         User result = service.getAuthenticatedUser();

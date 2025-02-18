@@ -1,5 +1,7 @@
 package com.example.forumproject.helpers;
 
+import com.example.forumproject.models.User;
+import com.example.forumproject.services.UserService;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,9 +18,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-public class MvcBlockedUserFilter extends OncePerRequestFilter {
+public class MvcUserValidationFilter extends OncePerRequestFilter {
 
     private final AccountStatusUserDetailsChecker accountStatusChecker = new AccountStatusUserDetailsChecker();
+    private final UserService userService;
+
+    public MvcUserValidationFilter(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     protected void doFilterInternal(
@@ -35,9 +42,16 @@ public class MvcBlockedUserFilter extends OncePerRequestFilter {
 
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
             try {
-                accountStatusChecker.check(userDetails);
+                User user = userService.loadUserByUsername(userDetails.getUsername());
+                accountStatusChecker.check(user);
+
+                if (request.getRequestURI().startsWith("/mvc/admin") && !user.isAdmin()) {
+                    response.sendRedirect("/mvc/error");
+                    return;
+                }
             } catch (DisabledException e) {
                 request.getSession().invalidate();
+                SecurityContextHolder.clearContext();
                 response.sendRedirect("/mvc/auth/logout");
                 return;
             }
@@ -47,14 +61,13 @@ public class MvcBlockedUserFilter extends OncePerRequestFilter {
 
     private boolean isPublicRequest(HttpServletRequest request) {
         String requestUri = request.getRequestURI();
-        return requestUri.startsWith("/mvc/auth/login") ||
-                requestUri.startsWith("/mvc/posts/**") ||
-                requestUri.startsWith("/mvc/auth/register") ||
+        return requestUri.startsWith("/mvc/auth") ||
+                requestUri.startsWith("/mvc/posts") ||
                 requestUri.startsWith("/mvc/home") ||
                 requestUri.startsWith("/css/") ||
                 requestUri.startsWith("/js/") ||
                 requestUri.startsWith("/images/") ||
-                requestUri.startsWith("/static**") ||
+                requestUri.startsWith("/static") ||
                 requestUri.equals("/error");
     }
 }

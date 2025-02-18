@@ -22,4 +22,9 @@ public class PublicMvc {
     public String showAboutPage() {
         return "About-View";
     }
+
+    @GetMapping("/mvc/error")
+    public String showErrorPage() {
+        return "Not-Found-View";
+    }
 }
