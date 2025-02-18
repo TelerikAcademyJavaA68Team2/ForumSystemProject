@@ -2,33 +2,58 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:insert="~{fragments/PageLayout :: head('Login')}">Login</head>
 <header th:insert="~{fragments/PageLayout :: header}"></header>
+<header class="py-2 bg-light border-bottom mb-4">
+  <div class="container">
+    <div class="text-center my-3">
+      <h1 class="fw-bolder" th:text="#{navigation.login}">Page info</h1>
+    </div>
+  </div>
+</header>
+
 <body>
-<div class="form-container margin12">
-  <form action="#" th:action="@{/mvc/auth/login}" th:object="${loginDto}" method="post">
-    <div class="form-group">
-      <label class="form-label" th:text="#{user.label.username}">Username</label>
-      <input class="form-input" type="text" th:field="*{username}" placeholder="Enter Username"/>
-      <label class="form-error" th:if="${errorMessage}" th:text="${errorMessage}">Username error placeholder! </label>
-    </div>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <!-- Login Form -->
+          <form action="#" th:action="@{/mvc/auth/login}" th:object="${loginDto}" method="post">
+            <!-- Username Field -->
+            <div class="form-group row mb-3">
+              <label class="col-sm-3 col-form-label" th:text="#{user.label.username}">Username</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="text" th:field="*{username}" placeholder="Username"/>
+                <small class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}">Username error placeholder!</small>
+              </div>
+            </div>
 
-    <div class="form-group">
-      <label class="form-label" th:text="#{user.label.password}">Password</label>
-      <input class="form-input" type="password" th:field="*{password}" placeholder="Enter Password"/>
-    </div>
+            <!-- Password Field -->
+            <div class="form-group row mb-3">
+              <label class="col-sm-3 col-form-label" th:text="#{user.label.password}">Password</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="password" th:field="*{password}" placeholder="Password"/>
+              </div>
+            </div>
 
-    <div class="form-group">
-      <input type="submit" class="btn-primary form-button" value="Login"/>
+            <!-- Submit Button -->
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-  </form>
-
+  </div>
 </div>
 
-<h3 class="center-h3">
-  <p>Not a user yet?</p>
-  <a class="btn-primary" href="/mvc/auth/register">Register</a>
-</h3>
 
-
-</body>
+<!-- Register Link -->
+<div class="text-center mt-4">
+  <p>
+    Not a user yet?
+    <a href="/mvc/auth/register" class="small-link">register</a>
+  </p>
+</div>
 <footer th:insert="~{fragments/PageLayout :: footer}"></footer>
+</body>
 </html>
