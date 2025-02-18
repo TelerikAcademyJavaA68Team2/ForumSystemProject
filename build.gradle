@@ -18,6 +18,9 @@ repositories {
 }
 
 dependencies {
+    // Spring Info
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
     // Tests
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
