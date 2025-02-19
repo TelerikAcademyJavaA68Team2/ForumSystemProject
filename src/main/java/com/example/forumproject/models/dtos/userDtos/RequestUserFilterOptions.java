@@ -1,40 +1,21 @@
 package com.example.forumproject.models.dtos.userDtos;
 
-public class UserResponseDto {
+import jakarta.validation.constraints.Positive;
 
-    private Long user_id;
+public class RequestUserFilterOptions {
     private String first_name;
     private String username;
     private String email;
-    private String proto;
-    private Long numberOfPosts;
+    @Positive
+    private Long minPosts;
+    @Positive
+    private Long maxPosts;
     private String account_type;
     private String account_status;
+    private String orderBy;
+    private String orderType;
 
-    public UserResponseDto(Long user_id, String first_name, String username, String email,String proto, String account_type, String account_status) {
-        this.user_id = user_id;
-        this.first_name = first_name;
-        this.username = username;
-        this.email = email;
-        this.proto=proto;
-        this.account_type = account_type;
-        this.account_status = account_status;
-    }
-
-    public String getProto() {
-        return proto;
-    }
-
-    public void setProto(String proto) {
-        this.proto = proto;
-    }
-
-    public Long getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public RequestUserFilterOptions() {
     }
 
     public String getFirst_name() {
@@ -61,12 +42,20 @@ public class UserResponseDto {
         this.email = email;
     }
 
-    public Long getNumberOfPosts() {
-        return numberOfPosts;
+    public Long getMinPosts() {
+        return minPosts;
     }
 
-    public void setNumberOfPosts(Long numberOfPosts) {
-        this.numberOfPosts = numberOfPosts;
+    public void setMinPosts(Long minPosts) {
+        this.minPosts = minPosts;
+    }
+
+    public Long getMaxPosts() {
+        return maxPosts;
+    }
+
+    public void setMaxPosts(Long maxPosts) {
+        this.maxPosts = maxPosts;
     }
 
     public String getAccount_type() {
@@ -83,5 +72,21 @@ public class UserResponseDto {
 
     public void setAccount_status(String account_status) {
         this.account_status = account_status;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public String getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
     }
 }

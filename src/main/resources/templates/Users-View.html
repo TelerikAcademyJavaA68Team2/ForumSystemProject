@@ -1,10 +1,475 @@
+<!-- Page content -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{fragments/PageLayout :: head('Users')}">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
-<body>
+<header th:insert="~{fragments/PageLayout :: header}"></header>
 
+<header class="py-2 bg-light border-bottom mb-4">
+    <div class="container">
+        <div class="text-center my-3">
+            <h1 class="fw-bolder" th:text="#{navigation.admin.users}">Users List</h1>
+            <p class="lead mb-0" th:text="#{nav.users.description}">Description</p>
+        </div>
+    </div>
+</header>
+
+<body>
+<div class="container mt-5">
+    <!-- User List -->
+    <div class="row gx-2">
+        <!-- Full Width Column for User List -->
+        <div class="col-lg-12">
+            <!-- Table for All Users -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title" th:text="#{admin.browse.users}">All Users</h3>
+                </div>
+                <div class="card-body table-responsive">
+                    <form th:action="@{/mvc/admin/users}" th:object="${filterOptions}" method="get">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <!-- Filter Row  -->
+                            <!-- Filter Row  -->
+                            <!-- Filter Row  -->
+                            <tr class="table-filter-row align-middle">
+                                <th class="text-end">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" th:field="*{first_name}"
+                                           placeholder="First Name"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" th:field="*{username}"
+                                           placeholder="Username"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" th:field="*{email}" placeholder="Email"/>
+                                </th>
+                                <!-- Post Range Filter -->
+                                <th class="text-center">
+                                    <div class="input-group">
+                                        <!-- Min Posts Input -->
+                                        <input type="number" class="form-control text-center posts-range-input"
+                                               th:field="*{minPosts}" placeholder="Min"
+                                               th:classappend="${#fields.hasErrors('minPosts')} ? 'is-invalid' : ''"/>
+
+                                        <span class="input-group-text">-</span>
+
+                                        <!-- Max Posts Input -->
+                                        <input type="number" class="form-control text-center posts-range-input"
+                                               th:field="*{maxPosts}" placeholder="Max"
+                                               th:classappend="${#fields.hasErrors('maxPosts')} ? 'is-invalid' : ''"/>
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <select class="form-select" th:field="*{account_status}">
+                                        <option value="">All</option>
+                                        <option value="ACTIVE">Active</option>
+                                        <option value="BLOCKED">Blocked</option>
+                                    </select>
+                                </th>
+                                <th class="text-center">
+                                    <select class="form-select" th:field="*{account_type}">
+                                        <option value="">All</option>
+                                        <option value="ADMIN">Admin</option>
+                                        <option value="USER">User</option>
+                                    </select>
+                                </th>
+                            </tr>
+
+
+                            <!-- Sorting Buttons Row -->
+                            <!-- Sorting Buttons Row -->
+                            <!-- Sorting Buttons Row -->
+                            <tr class="table-sort-row align-middle">
+                                <th class="text-center">
+                                    <a href="#"
+                                       th:href="@{/mvc/admin/users(
+               first_name=${filterOptions.first_name},
+               username=${filterOptions.username},
+               email=${filterOptions.email},
+               minPosts=${filterOptions.minPosts},
+               maxPosts=${filterOptions.maxPosts},
+               account_status=${filterOptions.account_status},
+               account_type=${filterOptions.account_type},
+               orderBy='user_id',
+               orderType=${(filterOptions.orderBy == 'user_id' && filterOptions.orderType == 'asc') ? 'desc' : 'asc'})}"
+                                       class="btn btn-sm btn-secondary"
+                                       th:classappend="${filterOptions.orderBy == 'user_id' ? 'active' : ''}">
+                                        <span th:if="${filterOptions.orderBy == 'user_id' && filterOptions.orderType == 'desc'}">Newest</span>
+                                        <span th:if="${filterOptions.orderBy == 'user_id' && filterOptions.orderType == 'asc'}">Oldest</span>
+                                        <span th:unless="${filterOptions.orderBy == 'user_id'}">ID</span>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="#"
+                                       th:href="@{/mvc/admin/users(
+               first_name=${filterOptions.first_name},
+               username=${filterOptions.username},
+               email=${filterOptions.email},
+               minPosts=${filterOptions.minPosts},
+               maxPosts=${filterOptions.maxPosts},
+                              account_status=${filterOptions.account_status},
+               account_type=${filterOptions.account_type},
+               orderBy='first_name',
+               orderType=${(filterOptions.orderBy == 'first_name' && filterOptions.orderType == 'asc') ? 'desc' : 'asc'})}"
+                                       class="btn btn-sm btn-secondary"
+                                       th:classappend="${filterOptions.orderBy == 'first_name' ? 'active' : ''}">
+                                        <span th:if="${filterOptions.orderBy == 'first_name' && filterOptions.orderType == 'asc'}">A → Z</span>
+                                        <span th:if="${filterOptions.orderBy == 'first_name' && filterOptions.orderType == 'desc'}">Z → A</span>
+                                        <span th:unless="${filterOptions.orderBy == 'first_name'}">First Name</span>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="#"
+                                       th:href="@{/mvc/admin/users(
+               first_name=${filterOptions.first_name},
+               username=${filterOptions.username},
+               email=${filterOptions.email},
+               minPosts=${filterOptions.minPosts},
+               maxPosts=${filterOptions.maxPosts},
+               account_status=${filterOptions.account_status},
+               account_type=${filterOptions.account_type},
+               orderBy='username',
+               orderType=${(filterOptions.orderBy == 'username' && filterOptions.orderType == 'asc') ? 'desc' : 'asc'})}"
+                                       class="btn btn-sm btn-secondary"
+                                       th:classappend="${filterOptions.orderBy == 'username' ? 'active' : ''}">
+                                        <span th:if="${filterOptions.orderBy == 'username' && filterOptions.orderType == 'asc'}">A → Z</span>
+                                        <span th:if="${filterOptions.orderBy == 'username' && filterOptions.orderType == 'desc'}">Z → A</span>
+                                        <span th:unless="${filterOptions.orderBy == 'username'}">Username</span>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="#"
+                                       th:href="@{/mvc/admin/users(
+               first_name=${filterOptions.first_name},
+               username=${filterOptions.username},
+               email=${filterOptions.email},
+               minPosts=${filterOptions.minPosts},
+               maxPosts=${filterOptions.maxPosts},
+               account_status=${filterOptions.account_status},
+               account_type=${filterOptions.account_type},
+               orderBy='email',
+               orderType=${(filterOptions.orderBy == 'email' && filterOptions.orderType == 'asc') ? 'desc' : 'asc'})}"
+                                       class="btn btn-sm btn-secondary"
+                                       th:classappend="${filterOptions.orderBy == 'email' ? 'active' : ''}">
+                                        <span th:if="${filterOptions.orderBy == 'email' && filterOptions.orderType == 'asc'}">A → Z</span>
+                                        <span th:if="${filterOptions.orderBy == 'email' && filterOptions.orderType == 'desc'}">Z → A</span>
+                                        <span th:unless="${filterOptions.orderBy == 'email'}">Email</span>
+                                    </a>
+                                </th>
+                                <th class="text-center">
+                                    <a href="#"
+                                       th:href="@{/mvc/admin/users(
+               first_name=${filterOptions.first_name},
+               username=${filterOptions.username},
+               email=${filterOptions.email},
+               minPosts=${filterOptions.minPosts},
+               maxPosts=${filterOptions.maxPosts},
+               account_status=${filterOptions.account_status},
+               account_type=${filterOptions.account_type},
+               orderBy='posts',
+               orderType=${(filterOptions.orderBy == 'posts' && filterOptions.orderType == 'asc') ? 'desc' : 'asc'})}"
+                                       class="btn btn-sm btn-secondary"
+                                       th:classappend="${filterOptions.orderBy == 'posts' ? 'active' : ''}">
+                                        <span th:if="${filterOptions.orderBy == 'posts' && filterOptions.orderType == 'desc'}">9 → 1</span>
+                                        <span th:if="${filterOptions.orderBy == 'posts' && filterOptions.orderType == 'asc'}">1 → 9</span>
+                                        <span th:unless="${filterOptions.orderBy == 'posts'}"># Posts</span>
+                                    </a>
+                                </th>
+                                <th class="text-center">
+                                    <a href="#"
+                                       th:href="@{/mvc/admin/users(
+               first_name=${filterOptions.first_name},
+               username=${filterOptions.username},
+               email=${filterOptions.email},
+               minPosts=${filterOptions.minPosts},
+               maxPosts=${filterOptions.maxPosts},
+               account_status=${filterOptions.account_status},
+               account_type=${filterOptions.account_type},
+               orderBy='account_status',
+               orderType=${(filterOptions.orderBy == 'account_status' && filterOptions.orderType == 'asc') ? 'desc' : 'asc'})}"
+                                       class="btn btn-sm btn-secondary"
+                                       th:classappend="${filterOptions.orderBy == 'account_status' ? 'active' : ''}">
+                                        <span th:if="${filterOptions.orderBy == 'account_status' && filterOptions.orderType == 'desc'}"
+                                              th:text="'Blocked'">Blocked</span>
+                                        <span th:if="${filterOptions.orderBy == 'account_status' && filterOptions.orderType == 'asc'}"
+                                              th:text="'Active'">Active</span>
+                                        <span th:unless="${filterOptions.orderBy == 'account_status'}">Account Status</span>
+                                    </a>
+                                </th>
+                                <th class="text-center">
+                                    <a href="#"
+                                       th:href="@{/mvc/admin/users(
+               first_name=${filterOptions.first_name},
+               username=${filterOptions.username},
+               email=${filterOptions.email},
+               minPosts=${filterOptions.minPosts},
+               maxPosts=${filterOptions.maxPosts},
+                              account_status=${filterOptions.account_status},
+               account_type=${filterOptions.account_type},
+               orderBy='account_type',
+               orderType=${(filterOptions.orderBy == 'account_type' && filterOptions.orderType == 'desc') ? 'asc' : 'desc'})}"
+                                       class="btn btn-sm btn-secondary"
+                                       th:classappend="${filterOptions.orderBy == 'account_type' ? 'active' : ''}">
+                                        <span th:if="${filterOptions.orderBy == 'account_type' && filterOptions.orderType == 'desc'}">Admin First</span>
+                                        <span th:if="${filterOptions.orderBy == 'account_type' && filterOptions.orderType == 'asc'}">User First</span>
+                                        <span th:unless="${filterOptions.orderBy == 'account_type'}">Account Type</span>
+                                    </a>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+
+                            <!-- Make the Entire Row Clickable -->
+                            <tr th:each="user : ${users}" class="table-row-link" th:attr="data-user-id=${user.user_id}">
+                                <!-- Profile Picture -->
+                                <td class="text-center align-middle p-1">
+                                    <img th:src="${user.proto}" alt="Profile Picture"
+                                         class="rounded-circle mx-auto d-block" style="width: 40px; height: 40px;">
+                                </td>
+                                <!-- First Name -->
+                                <td class="align-middle" th:text="${user.first_name}">First Name</td>
+                                <!-- Username -->
+                                <td class="align-middle">
+                                    <span th:text="${user.username}" class="fw-bold text-primary">Username</span>
+                                </td>
+                                <!-- Email -->
+                                <td class="align-middle" th:text="${user.email}">Email</td>
+                                <!-- Number of Posts -->
+                                <td class="text-center align-middle" th:text="${user.numberOfPosts}">Number of Posts
+                                </td>
+                                <!-- Account Status Icon -->
+                                <td class="text-center align-middle p-1">
+                                    <img th:if="${user.account_status == 'ACTIVE ACCOUNT'}"
+                                         th:src="@{/images/activeUserIcon.png}"
+                                         alt="Active User" style="width: 24px; height: 24px;"/>
+                                    <img th:if="${user.account_status != 'ACTIVE ACCOUNT'}"
+                                         th:src="@{/images/blockedUserIcon.png}"
+                                         alt="Blocked User" style="width: 24px; height: 24px;"/>
+                                </td>
+                                <!-- Account Type Icon -->
+                                <td class="text-center align-middle p-1">
+                                    <img th:if="${user.account_type == 'ADMIN'}"
+                                         th:src="@{/images/adminIcon.png}"
+                                         alt="Admin" style="width: 24px; height: 24px;"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:insert="~{fragments/PageLayout :: footer}"></footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Add click event listeners to all rows with the 'table-row-link' class
+        const clickableRows = document.querySelectorAll('tr.table-row-link');
+
+        clickableRows.forEach(row => {
+            row.addEventListener('click', () => {
+                // Get the user ID from the data attribute
+                const userId = row.getAttribute('data-user-id');
+                if (userId) {
+                    // Redirect to the user's profile page
+                    window.location.href = `/mvc/admin/users/${userId}`;
+                }
+            });
+        });
+        // Handle form submission on Enter key press
+        const filterInputs = document.querySelectorAll('.table-filter-row input, .table-filter-row select');
+        filterInputs.forEach(input => {
+            input.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Prevent default behavior
+                    document.querySelector('.table-filter-row').closest('form').submit(); // Submit the form
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
+
+<!--
+ Page content
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{fragments/PageLayout :: head('Users')}">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<header th:insert="~{fragments/PageLayout :: header}"></header>
+<header class="py-2 bg-light border-bottom mb-4">
+    <div class="container">
+        <div class="text-center my-3">
+            <h1 class="fw-bolder" th:text="#{navigation.admin.users}">Users List</h1>
+            <p class="lead mb-0" th:text="#{nav.users.description}">Description</p>
+        </div>
+    </div>
+</header>
+<body>
+<div class="container mt-5">
+    &lt;!&ndash; User List &ndash;&gt;
+    <div class="row gx-2">
+        &lt;!&ndash; Full Width Column for User List &ndash;&gt;
+        <div class="col-lg-12">
+            &lt;!&ndash; Card for All Users &ndash;&gt;
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title" th:text="#{admin.browse.users}">All Users</h3>
+                </div>
+
+                &lt;!&ndash; Table with Filters Inside &ndash;&gt;
+                <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            &lt;!&ndash; Filter Row &ndash;&gt;
+
+                            <tr class="table-filter-row align-middle">
+                                <form th:action="@{/mvc/admin/users}" th:object="${filterOptions}" method="get">
+
+                                <th></th> &lt;!&ndash; Empty for Profile Picture &ndash;&gt;
+                                <th>
+                                    <input type="text" class="form-control" th:field="*{first_name}" placeholder="Search by First Name"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" th:field="*{username}" placeholder="Search by Username"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" th:field="*{email}" placeholder="Search by Email"/>
+                                </th>
+                                <th class="text-center">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control text-center" th:field="*{minPosts}" placeholder="Min"/>
+                                        <span class="input-group-text">-</span>
+                                        <input type="number" class="form-control text-center" th:field="*{maxPosts}" placeholder="Max"/>
+                                    </div>
+                                </th>
+                                <th>
+                                    <select class="form-select" th:field="*{account_status}">
+                                        <option value="">All</option>
+                                        <option value="ACTIVE ACCOUNT">Active</option>
+                                        <option value="BLOCKED ACCOUNT">Blocked</option>
+                                    </select>
+                                </th>
+                                <th>
+                                    <select class="form-select" th:field="*{account_type}">
+                                        <option value="">All</option>
+                                        <option value="ADMIN">Admin</option>
+                                        <option value="USER">User</option>
+                                    </select>
+                                </th>
+                                <th class="text-end">
+                                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                                </th>
+                                    </form>
+                            </tr>
+
+                            &lt;!&ndash; Header Row &ndash;&gt;
+                            <tr class="table-header align-middle">
+                                <th></th> &lt;!&ndash; Empty for Profile Picture &ndash;&gt;
+                                <th th:text="#{user.label.firstName}">Name</th>
+                                <th th:text="#{user.label.username}">Username</th>
+                                <th th:text="#{user.label.email}">Email</th>
+                                <th class="text-center" th:text="#{user.label.posts.count}"># Posts</th>
+                                <th class="text-center" th:text="#{user.label.email}">Account Status</th>
+                                <th class="text-center" th:text="#{user.label.email}">Account Type</th>
+                                <th></th> &lt;!&ndash; Empty for Actions &ndash;&gt;
+                            </tr>
+                            </thead>
+                            <tbody>
+                            &lt;!&ndash; Make the Entire Row Clickable &ndash;&gt;
+                            <tr th:each="user : ${users}"
+                                class="table-row-link"
+                                th:attr="data-user-id=${user.user_id}">
+                                &lt;!&ndash; Profile Picture &ndash;&gt;
+                                <td class="text-center align-middle p-1">
+                                    <img th:src="${user.proto}" alt="Profile Picture"
+                                         class="rounded-circle mx-auto d-block" style="width: 40px; height: 40px;">
+                                </td>
+
+                                &lt;!&ndash; First Name &ndash;&gt;
+                                <td class="align-middle" th:text="${user.first_name + ' ' + user.last_name}">
+                                    First Name Last Name
+                                </td>
+
+                                &lt;!&ndash; Username &ndash;&gt;
+                                <td class="align-middle">
+                                    <span th:text="${user.username}" class="fw-bold text-primary">Username</span>
+                                </td>
+
+                                &lt;!&ndash; Email &ndash;&gt;
+                                <td class="align-middle" th:text="${user.email}">
+                                    Email
+                                </td>
+
+                                &lt;!&ndash; Number of Posts &ndash;&gt;
+                                <td class="text-center align-middle" th:text="${user.numberOfPosts}">
+                                    Number of Posts
+                                </td>
+
+                                &lt;!&ndash; Account Status Icon &ndash;&gt;
+                                <td class="text-center align-middle p-1">
+                                    <img th:if="${user.account_status == 'ACTIVE ACCOUNT'}"
+                                         th:src="@{/images/activeUserIcon.png}"
+                                         alt="Active User" style="width: 24px; height: 24px;" />
+                                    <img th:if="${user.account_status != 'ACTIVE ACCOUNT'}"
+                                         th:src="@{/images/blockedUserIcon.png}"
+                                         alt="Blocked User" style="width: 24px; height: 24px;" />
+                                </td>
+
+                                &lt;!&ndash; Account Type Icon &ndash;&gt;
+                                <td class="text-center align-middle p-1">
+                                    <img th:if="${user.account_type == 'ADMIN'}"
+                                         th:src="@{/images/adminIcon.png}"
+                                         alt="Admin" style="width: 24px; height: 24px;" />
+                                    <span th:unless="${user.account_type == 'ADMIN'}"
+                                          th:text="'User'" class="d-block mx-auto">User</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:insert="~{fragments/PageLayout :: footer}"></footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Add click event listeners to all rows with the 'table-row-link' class
+        const clickableRows = document.querySelectorAll('tr.table-row-link');
+        clickableRows.forEach(row => {
+            row.addEventListener('click', () => {
+                // Get the user ID from the data attribute
+                const userId = row.getAttribute('data-user-id');
+                if (userId) {
+                    // Redirect to the user's profile page
+                    window.location.href = `/mvc/admin/users/${userId}`;
+                }
+            });
+        });
+
+        // Handle form submission on Enter key press
+        const filterInputs = document.querySelectorAll('.table-filter-row input, .table-filter-row select');
+        filterInputs.forEach(input => {
+            input.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Prevent default behavior
+                    document.querySelector('.table-filter-row').closest('form').submit(); // Submit the form
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>-->

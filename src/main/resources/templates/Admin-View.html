@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:insert="~{fragments/PageLayout :: head('Admin Panel')}">Admin Panel</head>
+<head th:insert="~{fragments/PageLayout :: head('Admin')}">Admin</head>
 <header th:insert="~{fragments/PageLayout :: header}"></header>
+<header class="py-2 bg-light border-bottom mb-4">
+    <div class="container">
+        <div class="text-center my-3">
+            <h1 class="fw-bolder" th:text="#{navigation.admin}">Page info</h1>
+        </div>
+    </div>
+</header>
 <body>
-
+    <div class="text-center mb-5">
+        <h1>
+            <a th:href="@{/mvc/admin/users}" th:text="'Go to Users'"></a>
+        </h1>
+    </div>
 <footer th:insert="~{fragments/PageLayout :: footer}"></footer>
 </body>
 </html>

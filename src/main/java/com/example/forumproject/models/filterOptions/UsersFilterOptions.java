@@ -14,20 +14,24 @@ public class UsersFilterOptions {
     private Optional<String> orderBy;
     private Optional<String> orderType;
 
-    public UsersFilterOptions( String first_name,
+    public UsersFilterOptions(String first_name,
                               String username, String email,
                               Long min_number_of_posts, Long max_number_of_posts,
                               String account_type, String account_status,
                               String orderBy, String orderType) {
-        this.first_name = Optional.ofNullable(first_name);
-        this.username = Optional.ofNullable(username);
-        this.email = Optional.ofNullable(email);
+        this.first_name = sanitizeOptional(first_name);
+        this.username = sanitizeOptional(username);
+        this.email = sanitizeOptional(email);
         this.minPosts = Optional.ofNullable(min_number_of_posts);
         this.maxPosts = Optional.ofNullable(max_number_of_posts);
-        this.account_type = Optional.ofNullable(account_type);
-        this.account_status = Optional.ofNullable(account_status);
-        this.orderBy = Optional.ofNullable(orderBy);
-        this.orderType = Optional.ofNullable(orderType);
+        this.account_type = sanitizeOptional(account_type);
+        this.account_status = sanitizeOptional(account_status);
+        this.orderBy = sanitizeOptional(orderBy);
+        this.orderType = sanitizeOptional(orderType);
+    }
+
+    private Optional<String> sanitizeOptional(String value) {
+        return (value == null || value.trim().isEmpty()) ? Optional.empty() : Optional.of(value);
     }
 
     public Optional<String> getFirst_name() {

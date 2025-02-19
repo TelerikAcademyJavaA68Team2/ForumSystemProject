@@ -1,19 +1,25 @@
 package com.example.forumproject.controllers.mvc;
 
 import com.example.forumproject.exceptions.InvalidUserInputException;
-import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileAdminDto;
 import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileUserDto;
+import com.example.forumproject.models.dtos.userDtos.RequestUserFilterOptions;
+import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
+import com.example.forumproject.models.filterOptions.UsersFilterOptions;
 import com.example.forumproject.services.UserService;
-import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/mvc/admin")
@@ -29,26 +35,37 @@ public class AdminMvcController {
     }
 
     @GetMapping
-    public String showAdminPortalView2(HttpSession session, Model model) {
-//        String redirectUrl = redirectIfNecessary(session);
-//        if (redirectUrl != null) return redirectUrl;
-
+    public String showAdminPortalView2(Model model) {
         User user = userService.getAuthenticatedUser();
 
         model.addAttribute("user", user);
         return "Admin-View";
     }
 
-//    private static String redirectIfNecessary(HttpSession session) {
-//        if (!(boolean) session.getAttribute("hasActiveUser")) {
-//            return "redirect:/mvc/auth/login";
-//        }
-//        if (!(boolean) session.getAttribute("isUserAdmin")) {
-//            return "Forbidden-View";
-//        }
-//        return null;
-//    }
+    @GetMapping("/users")
+    public String showAllPosts(@Valid @ModelAttribute("filterOptions") RequestUserFilterOptions filterOptionsRequest, BindingResult errors, Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute("hasErrors", true);
+        }
 
+        UsersFilterOptions filterOptions = new UsersFilterOptions(
+                filterOptionsRequest.getFirst_name(),
+                filterOptionsRequest.getUsername(),
+                filterOptionsRequest.getEmail(),
+                filterOptionsRequest.getMinPosts(),
+                filterOptionsRequest.getMaxPosts(),
+                filterOptionsRequest.getAccount_type(),
+                filterOptionsRequest.getAccount_status(),
+                filterOptionsRequest.getOrderBy(),
+                filterOptionsRequest.getOrderType());
+
+        List<User> users = userService.getAllUsers(filterOptions);
+        List<UserResponseDto> usersDto = users.stream().map(userMapper::mapUserToDtoOut).toList();
+
+        model.addAttribute("filterOptions", filterOptionsRequest);
+        model.addAttribute("users", usersDto);
+        return "Users-View";
+    }
 
     @GetMapping("/users/{id}")
     public String getUserProfile(@PathVariable Long id, Model model) {

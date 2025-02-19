@@ -89,16 +89,24 @@ public class UserRepositoryImpl implements UserRepository {
                 sb.setLength(sb.length() - 4);
             }
 
-            // id / posts count / username
-
+            // all fields
             if (filterOptions.getOrderBy().isPresent()) {
                 String orderBy = filterOptions.getOrderBy().get();
-                if ("id".equalsIgnoreCase(orderBy)) {
-                    sb.append("ORDER BY u.id ");
+
+                if ("first_name".equalsIgnoreCase(orderBy)) {
+                    sb.append("ORDER BY u.firstName ");
+                } else if ("email".equalsIgnoreCase(orderBy)) {
+                    sb.append("ORDER BY u.email ");
+                } else if ("account_status".equalsIgnoreCase(orderBy)) {
+                    sb.append("ORDER BY u.isBlocked ");
+                } else if ("account_type".equalsIgnoreCase(orderBy)) {
+                    sb.append("ORDER BY u.isAdmin ");
                 } else if ("posts".equalsIgnoreCase(orderBy)) {
                     sb.append("ORDER BY (SELECT COUNT(p) FROM Post p WHERE p.author.id = u.id) ");
+                } else if ("user_id".equalsIgnoreCase(orderBy)) {
+                    sb.append("ORDER BY u.id ");
                 } else if ("username".equalsIgnoreCase(orderBy)) {
-                    sb.append("ORDER BY u.username");
+                    sb.append("ORDER BY u.username ");
                 }
             }
 
