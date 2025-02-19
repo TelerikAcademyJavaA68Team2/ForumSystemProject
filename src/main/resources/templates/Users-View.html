@@ -23,8 +23,15 @@
         <div class="col-lg-12">
             <!-- Table for All Users -->
             <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title" th:text="#{admin.browse.users}">All Users</h3>
+                <div class="card-header bg-primary text-white text-center">
+                    <!-- Dynamic Title or Clear Filters Link -->
+                    <h3 class="card-title m-0" th:if="${filterOptions.isEmpty()}">Browse Users</h3>
+                    <a href="#"
+                       th:href="@{/mvc/admin/users}"
+                       th:unless="${filterOptions.isEmpty()}"
+                       class="card-title text-white text-decoration-none fw-bold">
+                        <h3 class="card-title m-0"> Clear Filters </h3>
+                    </a>
                 </div>
                 <div class="card-body table-responsive">
                     <form th:action="@{/mvc/admin/users}" th:object="${filterOptions}" method="get">
@@ -34,8 +41,8 @@
                             <!-- Filter Row  -->
                             <!-- Filter Row  -->
                             <tr class="table-filter-row align-middle">
-                                <th class="text-end">
-                                    <button type="submit" class="btn btn-primary">Search</button>
+                                <th>
+                                    <button type="submit" class="btn btn-primary ">Search</button>
                                 </th>
                                 <th>
                                     <input type="text" class="form-control" th:field="*{first_name}"
