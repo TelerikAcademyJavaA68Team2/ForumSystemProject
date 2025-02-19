@@ -250,11 +250,9 @@ public class PostMvcController {
 
     @PostMapping("/{postId}/comments/{commentId}/delete")
     public String deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
-        User user = postService.getById(postId).getAuthor();
-        Comment comment = commentService.getById(postId, commentId);
-        if (user.isAdmin() || comment.getAuthor().equals(user) || comment.getPost().getAuthor().equals(user)) {
-            commentService.delete(postId, commentId);
-        }
+
+        commentService.delete(postId, commentId);
+
         return "redirect:/mvc/posts/" + postId;
     }
 
