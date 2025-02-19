@@ -1,6 +1,5 @@
 package com.example.forumproject.controllers.mvc;
 
-import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.CommentMapper;
 import com.example.forumproject.mappers.PostMapper;
@@ -11,16 +10,17 @@ import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.commentDtos.CommentInDto;
 import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.example.forumproject.models.dtos.postDtos.PostFilterDto;
+import com.example.forumproject.models.dtos.postDtos.PostInDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
+import com.example.forumproject.models.dtos.postDtos.PostUpdateDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.PostService;
 import com.example.forumproject.services.UserService;
 import com.example.forumproject.services.commentService.CommentService;
 import com.example.forumproject.services.reactionService.ReactionService;
 import com.example.forumproject.services.tagService.TagService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,18 +56,14 @@ public class PostMvcController {
         this.commentService = commentService;
     }
 
+    @ModelAttribute("requestURI")
+    public String requestURI(final HttpServletRequest request) {
+        return request.getRequestURI();
+    }
+
     @ModelAttribute("tags")
     public List<Tag> populateTags() {
         return tagService.getAllTags();
-    }
-
-    @ModelAttribute("currentUser")
-    public User getCurrentUser() {
-        try {
-            return userService.getAuthenticatedUser();
-        } catch (UnauthorizedAccessException e) {
-            return null;
-        }
     }
 
     @GetMapping
@@ -97,45 +93,71 @@ public class PostMvcController {
     @GetMapping("/{id}")
     public String showSinglePost(@PathVariable Long id, Model model) {
 
-            Post currentPost = postService.getById(id);
-            PostOutDto post = postMapper.postToPostOutDto(currentPost);
-            model.addAttribute("post", post);
-            model.addAttribute("comments", post.getComments());
-            model.addAttribute("commentDto", new CommentOutDto());
-            User currentUser;
+        Post currentPost = postService.getById(id);
+        PostOutDto post = postMapper.postToPostOutDto(currentPost);
+        model.addAttribute("post", post);
+        model.addAttribute("comments", post.getComments());
+        model.addAttribute("commentDto", new CommentOutDto());
+        User currentUser;
 
-            try {
-                currentUser = userService.getAuthenticatedUser();
-            } catch (UnauthorizedAccessException e) {
-                currentUser = null;
-            }
+        try {
+            currentUser = userService.getAuthenticatedUser();
+        } catch (UnauthorizedAccessException e) {
+            currentUser = null;
+        }
 
-            if (currentUser != null) {
-                boolean hasLiked = reactionService.checkIfLikeExists(id, currentPost.getId());
-                boolean hasDisliked = reactionService.checkIfDislikeExists(id, currentPost.getId());
+        if (currentUser != null) {
+            boolean hasLiked = reactionService.checkIfLikeExists(id, currentPost.getId());
+            boolean hasDisliked = reactionService.checkIfDislikeExists(id, currentPost.getId());
 
-                model.addAttribute("hasLiked", hasLiked);
-                model.addAttribute("hasDisliked", hasDisliked);
-            } else {
-                model.addAttribute("hasLiked", false);
-                model.addAttribute("hasDisliked", false);
-            }
-            return "Post-View";
+            model.addAttribute("hasLiked", hasLiked);
+            model.addAttribute("hasDisliked", hasDisliked);
+        } else {
+            model.addAttribute("hasLiked", false);
+            model.addAttribute("hasDisliked", false);
+        }
+        return "Post-View";
     }
 
     @GetMapping("/{id}/delete")
-    public String deletePost(@PathVariable Long id) {
+    @GetMapping("/new")
+    public String showCreatePostPage(Model model) {
         User user = userService.getAuthenticatedUser();
-        postService.delete(id, user);
 
-
-//        try {
-//            postService.delete(id, user);
-//        }catch (UnauthorizedOperationException u){
-//            model.addAttribute("error", u.getMessage());
+        //ToDo what happends when a user is blocked
+//        if(user.isBlocked()){
+//            model.addAttribute("error", "Blocked users can't create posts.");
 //            return "unauthorized";
 //        }
 
+        model.addAttribute("author", user.getUsername());
+        model.addAttribute("action", "create");
+        model.addAttribute("post", new PostInDto());
+        return "Post-New-View";
+    }
+
+    @PostMapping("/new")
+    public String createPost(@Valid @ModelAttribute("post") PostInDto createPostDTO,
+                             BindingResult errors, Model model) {
+        User user = userService.getAuthenticatedUser();
+
+        model.addAttribute("author", user.getUsername());
+        model.addAttribute("action", "create");
+
+        if (errors.hasErrors()) {
+            return "Post-New-View";
+        }
+
+        Post post = postMapper.createPostFromDto(createPostDTO, user);
+        postService.create(post, user);
+        return format(REDIRECT, post.getId());
+
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deletePost(@PathVariable Long id) {
+        User user = userService.getAuthenticatedUser();
+        postService.delete(id, user);
         return "redirect:/mvc/posts";
     }
 

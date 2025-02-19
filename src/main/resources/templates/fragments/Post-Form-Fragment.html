@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Post Form Fragment</title>
+</head>
+<body>
+<form th:fragment="post-form"
+      th:action="@{__${requestURI}__}"
+      th:object="${post}"
+      method="post">
+
+  <h2 th:text="${action == 'update' ? 'Edit Post' : 'Create Post'}">Create Post</h2>
+
+  <!-- Post Title -->
+  <<div class="card mb-4">
+  <div class="card-body">
+    <!-- Post Title -->
+    <h2 class="card-title">
+      <input type="text" class="form-control" th:field="*{title}" placeholder="Enter Post Title"
+             th:readonly="${action == 'update' and #authentication.principal.username != author}">
+    </h2>
+    <small class="text-danger" th:errors="*{title}"></small>
+
+    <!-- Post Content -->
+    <p class="card-text">
+            <textarea class="form-control" rows="4" th:field="*{content}" placeholder="Write your post content..."
+                      th:readonly="${action == 'update' and #authentication.principal.username != author}"></textarea>
+    </p>
+    <small class="text-danger" th:errors="*{content}"></small>
+
+    <!-- Tags (Only visible during update) -->
+    <div th:if="${action == 'update'}">
+      <label for="tags">Tags:</label>
+      <input type="text" class="form-control" th:field="*{tagNames}" id="tags" placeholder="Add tags">
+      <small class="text-danger" th:errors="*{tagNames}"></small>
+    </div>
+
+    <!-- Form Buttons -->
+    <div class="mt-3">
+      <button type="submit" class="btn btn-primary">
+        <span th:text="${action == 'update' ? 'Update Post' : 'Create Post'}"></span>
+      </button>
+      <button type="button" class="btn btn-secondary" onclick="history.back()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+</form>
+</body>
+</html>
