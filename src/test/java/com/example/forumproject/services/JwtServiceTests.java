@@ -25,7 +25,9 @@ public class JwtServiceTests {
     @Test
     void generateToken_ShouldGenerateValidToken_Always() {
         // Arrange
-        User mockUser = new User("TestUser", "password");
+        User mockUser = new User();
+        mockUser.setUsername("TestUser");
+        mockUser.setPassword("password");
 
         // Act
         String token = service.generateToken(mockUser);
@@ -39,7 +41,10 @@ public class JwtServiceTests {
     void extractUsername_ShouldReturnCorrectUsername_FromToken() {
         // Arrange
         String mockUsername = "testUser";
-        String token = service.generateToken(new User(mockUsername, "password"));
+        User mockUser = new User();
+        mockUser.setUsername(mockUsername);
+        mockUser.setPassword("password");
+        String token = service.generateToken(mockUser);
 
         // Act
         String extractedUsername = service.extractUsername(token);
@@ -52,7 +57,10 @@ public class JwtServiceTests {
     void isValid_ShouldReturnTrue_When_TokenIsValid() {
         // Arrange
         String mockUsername = "testUser";
-        String token = service.generateToken(new User(mockUsername, "password"));
+        User mockUser = new User();
+        mockUser.setUsername(mockUsername);
+        mockUser.setPassword("password");
+        String token = service.generateToken(mockUser);
 
         Mockito.when(mockUserDetails.getUsername()).thenReturn(mockUsername);
 
@@ -67,7 +75,11 @@ public class JwtServiceTests {
     void isValid_ShouldThrowException_When_TokenIsInvalid() {
         // Arrange
         String invalidUsername = "invalidUser";
-        String token = service.generateToken(new User("testUser", "password"));
+        User mockUser = new User();
+        mockUser.setUsername("User");
+        mockUser.setPassword("password");
+
+        String token = service.generateToken(mockUser);
 
         Mockito.when(mockUserDetails.getUsername()).thenReturn(invalidUsername);
 
@@ -83,7 +95,10 @@ public class JwtServiceTests {
     void extractClaim_ShouldReturnCorrectClaim_WhenTokenIsValid() {
         // Arrange
         String mockUsername = "testUser";
-        String token = service.generateToken(new User(mockUsername, "password"));
+        User mockUser = new User();
+        mockUser.setUsername(mockUsername);
+        mockUser.setPassword("password");
+        String token = service.generateToken(mockUser);
 
         // Act
         String extractedSubject = service.extractClaim(token, Claims::getSubject);
