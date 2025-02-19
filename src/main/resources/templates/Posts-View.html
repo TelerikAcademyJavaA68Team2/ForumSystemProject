@@ -113,8 +113,9 @@
             <div class="card mb-3">
                 <div class="card-header fw-bold">Quick Actions</div>
                 <div class="card-body text-center">
-                    <p class="mb-3">Want to share your thoughts? Click below to create a new post!</p>
-                    <a th:href="@{/mvc/posts/new}" class="btn btn-primary w-100">➕ Create Post</a>
+                    <p class="mb-3" th:text="#{post.label.create}">Want to share your thoughts? Click below to create a new post!</p>
+                    <a sec:authorize="!isAuthenticated()" th:href="@{/mvc/auth/login}" class="btn btn-primary w-100">➕ Create Post</a>
+                    <a sec:authorize="isAuthenticated()" th:href="@{/mvc/posts/new}" class="btn btn-primary w-100">➕ Create Post</a>
                 </div>
             </div>
             <!-- Search-->
