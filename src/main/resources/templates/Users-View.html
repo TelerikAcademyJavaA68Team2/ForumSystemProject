@@ -48,13 +48,20 @@
                                 <th>
                                     <input type="text" class="form-control" th:field="*{email}" placeholder="Email"/>
                                 </th>
+                                <!-- Post Range Filter -->
                                 <th class="text-center">
                                     <div class="input-group">
+                                        <!-- Min Posts Input -->
                                         <input type="number" class="form-control text-center posts-range-input"
-                                               th:field="*{minPosts}" placeholder="Min"/>
+                                               th:field="*{minPosts}" placeholder="Min"
+                                               th:classappend="${#fields.hasErrors('minPosts')} ? 'is-invalid' : ''"/>
+
                                         <span class="input-group-text">-</span>
+
+                                        <!-- Max Posts Input -->
                                         <input type="number" class="form-control text-center posts-range-input"
-                                               th:field="*{maxPosts}" placeholder="Max"/>
+                                               th:field="*{maxPosts}" placeholder="Max"
+                                               th:classappend="${#fields.hasErrors('maxPosts')} ? 'is-invalid' : ''"/>
                                     </div>
                                 </th>
                                 <th class="text-center">
@@ -216,7 +223,6 @@
                             </tr>
                             </thead>
                             <tbody>
-
 
 
                             <!-- Make the Entire Row Clickable -->
