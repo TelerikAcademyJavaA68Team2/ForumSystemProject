@@ -194,9 +194,14 @@ public class PostMvcController {
     }
 
     @PostMapping("/{id}/delete")
-    public String deletePost(@PathVariable Long id) {
+    public String deletePost(@PathVariable Long id,
+                             @RequestHeader(value = "referer", required = false) String referer) {
         User user = userService.getAuthenticatedUser();
         postService.delete(id, user);
+
+        if (referer != null && referer.contains("/profile")) {
+            return "redirect:/mvc/profile";
+        }
         return "redirect:/mvc/posts";
     }
 
