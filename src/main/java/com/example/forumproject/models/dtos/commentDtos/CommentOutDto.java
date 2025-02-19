@@ -7,13 +7,8 @@ import jakarta.validation.constraints.Size;
 public class CommentOutDto {
 
     private String author;
-
-    @NotNull(message = "Content can't be empty")
-    @Size(min = 1, max = 2048, message = "Content should be between 1 and 2048 symbols")
     private String content;
-
     private Long commentId;
-
     private String authorProfilePicture;
 
     public CommentOutDto() {

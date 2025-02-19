@@ -1,15 +1,15 @@
 package com.example.forumproject.models.dtos.userDtos;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class LoginDto {
 
-    @NotEmpty(message = "Username can't be empty")
+    @NotBlank(message = "Username can't be empty")
     @Size(min = 2, max = 20, message = "Username should be between 2 and 20 symbols!")
     private String username;
 
-    @NotEmpty(message = "Password can't be empty")
+    @NotBlank(message = "Password can't be empty")
     @Size(min = 2, max = 20, message = "Password should be between 2 and 20 symbols!")
     private String password;
 

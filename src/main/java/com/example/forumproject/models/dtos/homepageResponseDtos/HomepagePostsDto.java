@@ -14,6 +14,7 @@ public class HomepagePostsDto {
         this.pageContent = pageContent;
     }
 
+
     public String getPageContent() {
         return pageContent;
     }

@@ -1,5 +1,6 @@
 package com.example.forumproject.models.dtos.postDtos;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -11,11 +12,11 @@ public class PostUpdateDto {
     @Positive(message = "Id should be positive")
     private Long id;
 
-    @NotNull(message = "Title can't be empty")
+    @NotBlank(message = "Title can't be empty")
     @Size(min = 16, max = 64, message = "Title should be between 16 and 64 symbols")
     private String title;
 
-    @NotNull(message = "Content can't be empty")
+    @NotBlank(message = "Content can't be empty")
     @Size(min = 32, max = 8192, message = "Content should be between 32 and 8192 symbols")
     private String content;
 
