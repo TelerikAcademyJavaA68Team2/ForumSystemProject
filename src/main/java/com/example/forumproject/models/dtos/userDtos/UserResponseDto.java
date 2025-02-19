@@ -6,17 +6,27 @@ public class UserResponseDto {
     private String first_name;
     private String username;
     private String email;
+    private String proto;
     private Long numberOfPosts;
     private String account_type;
     private String account_status;
 
-    public UserResponseDto(Long user_id, String first_name, String username, String email, String account_type, String account_status) {
+    public UserResponseDto(Long user_id, String first_name, String username, String email,String proto, String account_type, String account_status) {
         this.user_id = user_id;
         this.first_name = first_name;
         this.username = username;
         this.email = email;
+        this.proto=proto;
         this.account_type = account_type;
         this.account_status = account_status;
+    }
+
+    public String getProto() {
+        return proto;
+    }
+
+    public void setProto(String proto) {
+        this.proto = proto;
     }
 
     public Long getUser_id() {
