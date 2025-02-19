@@ -12694,3 +12694,14 @@ textarea.form-control-lg {
     border-color: inherit; /* Use custom styles instead of browser defaults */
     box-shadow: none;
 }
+
+.edit-button, .delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px; /* Set a fixed width */
+    height: 40px; /* Set a fixed height */
+    font-size: 14px; /* Keep text size uniform */
+    white-space: nowrap; /* Prevent text wrapping */
+    text-align: center;
+}
