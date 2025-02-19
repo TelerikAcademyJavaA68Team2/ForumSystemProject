@@ -2,137 +2,167 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:insert="~{fragments/Page-Layout :: head('Home')}">Home</head>
 <header th:insert="~{fragments/Page-Layout :: navigation}"></header>
-    <body>
-    <!-- Responsive navbar-->
-        <!-- Page header with logo and tagline-->
+<!--INFO BANNER-->
+<header class="py-2 bg-light border-bottom mb-4">
+    <div class="container">
+        <div class="text-center my-3">
+            <h1 class="fw-bolder" th:text="#{home.welcome}">Welcome Message</h1>
+            <p class="lead mb-0" th:text="#{home.description}">Description</p>
+        </div>
+    </div>
+</header>
 
-        <!-- Page content-->
-        <header class="py-5 bg-light border-bottom mb-4">
-            <div class="container">
-                <div class="text-center my-5">
-                    <h1 class="fw-bolder" th:text="#{home.welcome}">Welcome Message</h1>
-                    <p class="lead mb-0" th:text="#{home.description}">Home message</p>
-                </div>
+<body>
+<div class="container">
+    <div class="row gx-2">
+
+        <!-- Left Column for Posts -->
+        <div class="col-lg-8">
+
+            <!--HEADER + POSTS TYPE--> <!--HEADER + POSTS TYPE-->
+            <!--HEADER + POSTS TYPE--> <!--HEADER + POSTS TYPE-->
+            <div class="card-header card mb-3 shadow-sm">
+                <h2 class="card-title m-0">
+                    Here is a list of our 10 most
+                    <a href="#"
+                       th:href="${currentListType == 'recent' ? '/mvc/home?listType=viral' : '/mvc/home?listType=recent'}"
+                       th:text="${currentListType == 'viral' ? 'Viral' : 'Recent'}" >
+                        Viral
+                    </a>
+                    Posts
+                </h2>
             </div>
-        </header>
-        <div class="container">
-            <div class="row">
-                <!-- Blog entries-->
-                <div class="col-lg-8">
-                    <!-- Featured blog post-->
-                    <div class="card mb-4">
 
-                        <div class="card-body">
-                            <div class="small text-muted">January 1, 2023</div>
-                            <h2 class="card-title">Featured Post Title</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
-                            <a class="btn btn-primary" href="#!">Read more →</a>
+
+
+            <!--POSTS -- POSTS -- POSTS -- POSTS-->
+            <!--POSTS -- POSTS -- POSTS -- POSTS-->
+            <div th:each="post : ${posts}">
+                <!-- Post -->
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <!-- Post Title -->
+                        <a href="#" th:href="@{/mvc/posts/{id}(id=${post.getPost_id()})}">
+                            <h2 class="card-title h4" th:text="${post.title}">Post Title</h2>
+                        </a>
+                        <!-- Author Info -->
+                        <div class="d-flex align-items-center mb-2">
+                            <img th:src="${post.profilePicture}" alt="Profile Picture"
+                                 class="profile-pic rounded-circle me-2" style="width: 40px; height: 40px;">
+
+                            <p class="m-0">
+                                <span th:text="#{post.label}"></span>
+
+                                <!-- If the user is an admin, link to the admin user profile -->
+                                <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"
+                                   th:href="@{/mvc/admin/users/{id}(id=${post.getAuthorId()})}"
+                                   class="fw-bold text-primary"
+                                   th:text="${post.author}">Author Name</a>
+
+                                <!-- If the user is the author (but not an admin), link to their profile -->
+                                <a th:if="${#authentication.name == post.author and !#authorization.expression('hasAuthority(''ADMIN'')')}"
+                                   th:href="@{/mvc/profile}"
+                                   class="fw-bold text-primary"
+                                   th:text="${post.author}">Author Name</a>
+
+                                <!-- If the user is neither Admin nor the author, display the name without a link -->
+                                <span th:if="${#authentication.name != post.author and !#authorization.expression('hasAuthority(''ADMIN'')')}"
+                                      class="fw-bold"
+                                      th:text="${post.author}">Author Name</span>
+                            </p>
                         </div>
-                    </div>
-                    <!-- Nested row for non-featured blog posts-->
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <!-- Blog post-->
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2023</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                            <!-- Blog post-->
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2023</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <!-- Blog post-->
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2023</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                            <!-- Blog post-->
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2023</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
+
+                        <!-- Tags -->
+                        <div class="mb-3" th:if="${not #lists.isEmpty(post.tags)}">
+                            <span class="fw-bold fs-5" th:text="#{post.tags}">Tags:</span>
+                            <div class="d-flex flex-wrap gap-2 mt-2">
+                                <span th:each="tagName : ${post.tags}">
+                                    <a class="badge bg-primary text-white text-decoration-none px-3 py-2 fs-6"
+                                       style="border-radius: 8px; display: inline-block;"
+                                       th:text="${tagName}" href="#"
+                                       th:href="@{/mvc/posts?tag={tagText}(tagText=${tagName})}">Tag</a></span>
                             </div>
                         </div>
-                    </div>
-                    <!-- Pagination-->
-                    <nav aria-label="Pagination">
-                        <hr class="my-0" />
-                        <ul class="pagination justify-content-center my-4">
-                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
-                            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                            <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">15</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+                        <!-- Reactions -->
+                        <ul class="list-inline">
+                            <!-- Likes Button -->
+                            <button class="btn btn-outline-success" disabled>
+                                <i class="fas fa-thumbs-up"></i>
+                                <span class="fw-bold" th:text="|👍 ${post.likes} Likes|">25 Likes</span>
+                            </button>
+
+                            <!-- Dislikes Button -->
+                            <button class="btn btn-outline-danger" disabled>
+                                <i class="fas fa-thumbs-down"></i>
+                                <span class="fw-bold" th:text="|👎 ${post.dislikes} Dislikes|">25 Dislikes</span>
+                            </button>
                         </ul>
-                    </nav>
+                        <!-- Comments -->
+                        <button class="btn btn-outline-primary" disabled>
+                            <i class="fas fa-comment"></i>
+                            <span class="fw-bold" th:text="|💬 ${post.comments.size()} Comments|">25 Comments</span>
+                        </button>
+                        <!-- Read More Button -->
+                        <a class="btn btn-primary" th:href="@{/mvc/posts/{id}(id=${post.getPost_id()})}">Read more →</a>
+                    </div>
                 </div>
-                <!-- Side widgets-->
-                <div class="col-lg-4">
-                    <!-- Search widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Search</div>
-                        <div class="card-body">
-                            <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                                <button class="btn btn-primary" id="button-search" type="button">Go!</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Categories widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Categories</div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">Web Design</a></li>
-                                        <li><a href="#!">HTML</a></li>
-                                        <li><a href="#!">Freebies</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">JavaScript</a></li>
-                                        <li><a href="#!">CSS</a></li>
-                                        <li><a href="#!">Tutorials</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Side widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Side Widget</div>
-                        <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
-                    </div>
+                <!-- Divider -->
+                <hr class="my-4"/>
+            </div>
+        </div>
+
+        <!-- Side widget-->
+        <!-- Right Column -->
+        <!-- Right Column -->
+        <!-- Right Column -->
+        <div class="col-lg-4">
+            <!-- Create Post -->
+            <div class="card mb-3">
+                <div class="card-header fw-bold">
+                    <h5 class="card-title">Community Stats</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong th:text="#{home.stats.users}">Total Users:</strong>
+                            <span class="float-end" th:text="${totalUsers}">1,234</span>
+                        </li>
+                        <li class="list-group-item">
+                            <strong th:text="#{home.stats.posts}">Total Posts:</strong>
+                            <span class="float-end" th:text="${totalPosts}">5,678</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-header fw-bold">
+                    <h5 class="card-title">Quick Actions</h5>
+
+                </div>
+                <div class="card-body text-center">
+                    <p class="mb-3" th:text="#{post.label.create}">Want to share your thoughts? Click below to create a
+                        new post!</p>
+                    <a sec:authorize="!isAuthenticated()" th:href="@{/mvc/auth/login}" class="btn btn-primary w-100">➕
+                        Create Post</a>
+                    <a sec:authorize="isAuthenticated()" th:href="@{/mvc/posts/new}" class="btn btn-primary w-100">➕
+                        Create Post</a>
+                </div>
+                <div class="card-body text-center">
+                    <p class="mb-3" th:text="#{post.label.profile}">Want to customize your profile?</p>
+                    <a sec:authorize="!isAuthenticated()" th:href="@{/mvc/auth/login}" class="btn btn-primary w-100">➕
+                        Customize profile</a>
+                    <a sec:authorize="isAuthenticated()" th:href="@{/mvc/profile}" class="btn btn-primary w-100">➕
+                        Customize profile</a>
+                </div>
+                <div sec:authorize="isAuthenticated() and hasAnyAuthority('ADMIN')" class="card-body text-center">
+                    <p class="mb-3" th:text="#{admin.moderate.label}">Moderate Message</p>
+
+                    <a th:href="@{/mvc/admin}" class="btn btn-primary w-100">➕
+                        Moderate Forum!</a>
                 </div>
             </div>
         </div>
-        <!-- Footer-->
-    <footer th:insert="~{fragments/Page-Layout :: footer}"></footer>
-    </body>
+    </div>
+</div>
+<footer th:insert="~{fragments/Page-Layout :: footer}"></footer>
+</body>
 </html>
