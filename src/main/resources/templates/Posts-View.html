@@ -5,9 +5,9 @@
 </head>
 <header th:insert="~{fragments/Page-Layout :: header}"></header>
 <!-- Page content-->
-<header class="py-5 bg-light border-bottom mb-4">
+<header class="py-2 bg-light border-bottom mb-4">
     <div class="container">
-        <div class="text-center my-5">
+        <div class="text-center my-3">
             <h1 class="fw-bolder" th:text="#{posts.browse}">Browse posts</h1>
             <p class="lead mb-0" th:text="#{posts.description}">Description</p>
         </div>
@@ -67,19 +67,19 @@
                             <!-- Likes Button -->
                             <button class="btn btn-outline-success" disabled>
                                 <i class="fas fa-thumbs-up"></i>
-                                <span th:text="|👍 ${post.likes} Likes|">25 Likes</span>
+                                <span class="fw-bold" th:text="|👍 ${post.likes} Likes|">25 Likes</span>
                             </button>
 
                             <!-- Dislikes Button -->
                             <button class="btn btn-outline-danger" disabled>
                                 <i class="fas fa-thumbs-down"></i>
-                                <span th:text="|👎 ${post.dislikes} Dislikes|">25 Dislikes</span>
+                                <span class="fw-bold" th:text="|👎 ${post.dislikes} Dislikes|">25 Dislikes</span>
                             </button>
                         </ul>
                         <!-- Comments -->
                         <button class="btn btn-outline-primary" disabled>
                             <i class="fas fa-comment"></i>
-                            <span th:text="|💬 ${post.comments.size()} Comments|">25 Comments</span>
+                            <span class="fw-bold" th:text="|💬 ${post.comments.size()} Comments|">25 Comments</span>
                         </button>
                         <!-- Read More Button -->
                         <a class="btn btn-primary" th:href="@{/mvc/posts/{id}(id=${post.getPost_id()})}">Read more →</a>
@@ -103,10 +103,20 @@
                 </ul>
             </nav>
         </div>
-        <!-- Right Column for Search Widget -->
+        <!-- Side widget-->
+        <!-- Right Column -->
         <div class="col-lg-4">
+            <!-- Create Post -->
+            <div class="card mb-3">
+                <div class="card-header fw-bold">Quick Actions</div>
+                <div class="card-body text-center">
+                    <p class="mb-3">Want to share your thoughts? Click below to create a new post!</p>
+                    <a th:href="@{/mvc/posts/new}" class="btn btn-primary w-100">➕ Create Post</a>
+                </div>
+            </div>
+            <!-- Search-->
             <div class="card mb-3"> <!-- Reduced margin-bottom -->
-                <div class="card-header">Search</div>
+                <div class="card-header fw-bold">Search</div>
                 <div class="card-body">
                     <form th:action="@{/mvc/posts}" method="get">
                         <div class="mb-2">
@@ -153,7 +163,7 @@
             </div>
             <!-- Tags Widget -->
             <div class="card mb-4">
-                <div class="card-header">Tags</div>
+                <div class="card-header fw-bold" th:text="#{post.allTags}">All Tags</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6">
