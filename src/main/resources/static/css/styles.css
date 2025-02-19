@@ -12682,3 +12682,15 @@ textarea.form-control-lg {
     border-top-right-radius: 0; /* Remove top-right radius for the first field */
     border-bottom-right-radius: 0; /* Remove bottom-right radius for the first field */
 }
+
+/* Style invalid inputs */
+.is-invalid {
+    border-color: #dc3545 !important; /* Red border */
+    background-color: #ffe6e6 !important; /* Light red background */
+}
+
+/* Remove default browser validation styles */
+.posts-range-input:invalid {
+    border-color: inherit; /* Use custom styles instead of browser defaults */
+    box-shadow: none;
+}
