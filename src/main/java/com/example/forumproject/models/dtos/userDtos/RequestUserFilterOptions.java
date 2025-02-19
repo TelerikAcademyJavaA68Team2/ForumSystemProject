@@ -1,10 +1,14 @@
 package com.example.forumproject.models.dtos.userDtos;
 
+import jakarta.validation.constraints.Positive;
+
 public class RequestUserFilterOptions {
     private String first_name;
     private String username;
     private String email;
+    @Positive
     private Long minPosts;
+    @Positive
     private Long maxPosts;
     private String account_type;
     private String account_status;
