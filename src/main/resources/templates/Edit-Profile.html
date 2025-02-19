@@ -45,24 +45,6 @@
                             </div>
                         </div>
 
-  <!--                      &lt;!&ndash; Full Name (First Name & Last Name) &ndash;&gt;
-                        <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label" th:text="#{user.label.fullName}">Full Name</label>
-                            <div class="col-sm-9">
-                                &lt;!&ndash; Nested row to divide the space into two equal columns &ndash;&gt;
-                                <div class="row g-2">
-                                    <div class="col">
-                                        <input type="text" class="form-control" th:field="*{firstName}"
-                                               placeholder="First Name"/>
-                                    </div>
-                                    <div class="col">
-                                        <input type="text" class="form-control" th:field="*{lastName}"
-                                               placeholder="Last Name"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
--->
                         <!-- Email -->
                         <div class="form-group row mb-3">
                             <label class="col-sm-3 col-form-label" th:text="#{user.label.email}">Email</label>
@@ -99,6 +81,40 @@
                                        th:errors="*{profilePhoto}">Photo error placeholder!</small>
                             </div>
                         </div>
+
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.password}">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" th:field="*{currentPassword}"
+                                       placeholder="Password *" required/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('currentPassword')}"
+                                       th:errors="*{currentPassword}">Password error placeholder!</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.newPassword}">New Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" th:field="*{newPassword}"
+                                       placeholder="New Password"/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('newPassword')}"
+                                       th:errors="*{newPassword}">Password error placeholder!</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.newPasswordConfirm}">Confirm</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" th:field="*{newPasswordRepeat}"
+                                       placeholder="Confirm New Password"/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('newPasswordRepeat')}"
+                                       th:errors="*{newPasswordRepeat}">Password error placeholder!</small>
+                            </div>
+                        </div>
+
+
+
+
                         <!-- Submit Button -->
                         <div class="d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary" th:text="#{profile.update.button}">
