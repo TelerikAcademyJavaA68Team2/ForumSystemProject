@@ -18,6 +18,18 @@ public class RequestUserFilterOptions {
     public RequestUserFilterOptions() {
     }
 
+    public boolean isEmpty() {
+        return (first_name == null || first_name.isEmpty()) &&
+                (username == null || username.isEmpty()) &&
+                (email == null || email.isEmpty()) &&
+                (minPosts == null) &&
+                (maxPosts == null) &&
+                (account_status == null || account_status.isEmpty()) &&
+                (account_type == null || account_type.isEmpty()) &&
+                (orderBy == null || orderBy.isEmpty()) &&
+                (orderType == null || orderType.isEmpty());
+    }
+
     public String getFirst_name() {
         return first_name;
     }
