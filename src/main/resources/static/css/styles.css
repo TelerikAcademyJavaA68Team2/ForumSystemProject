@@ -12558,3 +12558,58 @@ textarea.form-control-lg {
     color: #0056b3; /* Darker blue on hover */
     text-decoration: underline; /* Add underline on hover */
 }
+
+/* Style for clickable rows */
+.table-row-link {
+    cursor: pointer; /* Indicate interactivity */
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit default text color */
+}
+
+.table-row-link:hover {
+    background-color: #f1f3f5; /* Subtle hover effect */
+    text-decoration: none; /* No underline on hover */
+}
+
+/* Ensure vertical alignment */
+.table > tbody > tr > td {
+    vertical-align: middle !important;
+}
+
+/* Reduce padding around icons */
+.table td.p-1 {
+    padding: 0.25rem !important; /* Reduce padding */
+}
+
+
+
+/* Style sorting buttons */
+.table-sort-row {
+    padding: 0.5rem 0; /* Reduce vertical padding */
+}
+
+.table-sort-row .btn-secondary {
+    font-size: 0.875rem; /* Smaller font size */
+    padding: 0.25rem 0.5rem; /* Reduced padding */
+    border-radius: 4px; /* Rounded corners */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Highlight active sorting button */
+.table-sort-row .btn-secondary.active {
+    background-color: #007bff; /* Blue background */
+    color: #fff; /* White text */
+    border-color: #007bff; /* Blue border */
+}
+
+/* Style the single post range input */
+.posts-range-input {
+    width: 50%; /* Full width */
+}
+
+/* Highlight active sorting button */
+.table-sort-row .btn-secondary.active {
+    background-color: #007bff; /* Blue background */
+    color: #fff; /* White text */
+    border-color: #007bff; /* Blue border */
+}
