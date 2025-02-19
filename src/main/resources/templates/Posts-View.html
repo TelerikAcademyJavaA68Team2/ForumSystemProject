@@ -35,17 +35,20 @@
                             <p class="m-0">
                                 <span th:text="#{post.label}"></span>
 
-                                <!-- If the user is an admin or the author, make the name a link -->
-                                <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')
-                  or (#authentication.name != null and #authentication.name == post.author)}"
+                                <!-- If the user is an admin, link to the admin user profile -->
+                                <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"
                                    th:href="@{/mvc/admin/users/{id}(id=${post.getAuthorId()})}"
                                    class="fw-bold text-primary"
                                    th:text="${post.author}">Author Name</a>
 
+                                <!-- If the user is the author (but not an admin), link to their profile -->
+                                <a th:if="${#authentication.name == post.author and !#authorization.expression('hasAuthority(''ADMIN'')')}"
+                                   th:href="@{/mvc/profile}"
+                                   class="fw-bold text-primary"
+                                   th:text="${post.author}">Author Name</a>
+
                                 <!-- If the user is neither Admin nor the author, display the name without a link -->
-                                <span th:if="${#authentication.getPrincipal() == null
-                     or #authentication.name != post.author
-                     and not #authorization.expression('hasAuthority(''ADMIN'')')}"
+                                <span th:if="${#authentication.name != post.author and !#authorization.expression('hasAuthority(''ADMIN'')')}"
                                       class="fw-bold"
                                       th:text="${post.author}">Author Name</span>
                             </p>
