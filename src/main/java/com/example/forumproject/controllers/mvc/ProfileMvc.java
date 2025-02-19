@@ -7,6 +7,8 @@ import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileUserDto
 import com.example.forumproject.models.dtos.userDtos.RequestUserProfileDto;
 import com.example.forumproject.services.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,10 +23,13 @@ public class ProfileMvc {
 
     private final UserMapper userMapper;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public ProfileMvc(UserMapper userMapper, UserService userService) {
+    @Autowired
+    public ProfileMvc(UserMapper userMapper, UserService userService, PasswordEncoder passwordEncoder) {
         this.userMapper = userMapper;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -42,24 +47,6 @@ public class ProfileMvc {
         return "Profile-View";
     }
 
-
-  /*  @GetMapping("/{id}")
-    public String showUserProfile(@PathVariable Long id, Model model) {
-        User user = userService.getById(id);
-        if (!user.isAdmin()) {
-            throw new UnauthorizedAccessException("Only Admins can see user profiles!");
-        }
-        Object Dto = userMapper.mapUserToUserFullProfileOutDto(user);
-        if (user.isAdmin()) {
-            FullProfileAdminDto profileDto = (FullProfileAdminDto) Dto;
-            model.addAttribute("user", profileDto);
-        } else {
-            FullProfileUserDto profileDto = (FullProfileUserDto) Dto;
-            model.addAttribute("user", profileDto);
-        }
-
-        return "Profile-View";
-    }*/
 
     @GetMapping("/update")
     public String showEditProfileForm(Model model) {
@@ -80,27 +67,45 @@ public class ProfileMvc {
 
     @PostMapping("/update")
     public String updateProfile(
-            @Valid @ModelAttribute("updateRequest") RequestUserProfileDto userProfileDto, BindingResult errors, Model model) {
+            @Valid @ModelAttribute("updateRequest") RequestUserProfileDto updateProfileRequest, BindingResult errors) {
         if (errors.hasErrors()) {
             return "Edit-Profile";
         }
         User user = userService.getAuthenticatedUser();
-        if (!user.getEmail().equals(userProfileDto.getEmail())) {
+        if (!passwordEncoder.matches(updateProfileRequest.getCurrentPassword(), user.getPassword())) {
+            errors.rejectValue("currentPassword", "password.mismatch", "Wrong password");
+            return "Edit-Profile";
+        }
+
+        if (!user.getEmail().equals(updateProfileRequest.getEmail())) {
             try {
-                userService.getByEmail(userProfileDto.getEmail());
+                userService.getByEmail(updateProfileRequest.getEmail());
                 errors.rejectValue("email", "email.mismatch", "Email is already in use");
                 return "Edit-Profile";
             } catch (Exception ignored) {
             }
         }
-        user.setFirstName(userProfileDto.getFirstName());
-        user.setLastName(userProfileDto.getLastName());
-        user.setEmail(userProfileDto.getEmail());
-        if (!userProfileDto.getProfilePhoto().isEmpty()) {
-            user.setPhoto(userProfileDto.getProfilePhoto());
+
+        if ((!updateProfileRequest.getNewPassword().isBlank() || !updateProfileRequest.getNewPasswordRepeat().isBlank()) &&
+                !updateProfileRequest.getNewPassword().equals(updateProfileRequest.getNewPasswordRepeat())) {
+            errors.rejectValue("newPassword", "password.mismatch", "Password repeat failed");
+            return "Edit-Profile";
         }
-        if (user.isAdmin() && userProfileDto.getPhoneNumber() != null && !userProfileDto.getPhoneNumber().equals("No phone number provided")) {
-            user.setPhoneNumber(userProfileDto.getPhoneNumber());
+        if (!updateProfileRequest.getNewPassword().isBlank()) {
+            if (updateProfileRequest.getNewPassword().length() < 2) {
+                errors.rejectValue("newPassword", "password.mismatch", "Password repeat failed");
+                return "Edit-Profile";
+            }
+            user.setPassword(passwordEncoder.encode(updateProfileRequest.getNewPassword()));
+        }
+        user.setFirstName(updateProfileRequest.getFirstName());
+        user.setLastName(updateProfileRequest.getLastName());
+        user.setEmail(updateProfileRequest.getEmail());
+        if (!updateProfileRequest.getProfilePhoto().isEmpty()) {
+            user.setPhoto(updateProfileRequest.getProfilePhoto());
+        }
+        if (user.isAdmin() && updateProfileRequest.getPhoneNumber() != null && !updateProfileRequest.getPhoneNumber().equals("No phone number provided")) {
+            user.setPhoneNumber(updateProfileRequest.getPhoneNumber());
         }
         userService.update(user);
         return "redirect:/mvc/profile";
