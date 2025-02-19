@@ -1,49 +1,70 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:insert="~{fragments/PageLayout :: head('Post')}"></head>
-<header th:insert="~{fragments/PageLayout :: header}"></header>
+<head th:insert="~{fragments/Page-Layout :: head('Post')}"></head>
+<header th:insert="~{fragments/Page-Layout :: header}"></header>
 <body>
-<!-- Page content-->
-<div class="container mt-5">
-    <div class="row">
+<header class="py-2 bg-light border-bottom mb-3">
+    <div class="container">
+        <div class="my-2">
+            <h1 class="fw-bolder mb-2" th:text="${post.title}">Post Title</h1>
+            <div class="d-flex align-items-center">
+                <img th:src="${post.profilePicture}" alt="Profile Picture"
+                     class="rounded-circle me-2" style="width: 50px; height: 50px;">
+                <p class="m-0 fw-bold fs-5">
+                    <span class="text-secondary">Posted by </span>
+
+                    <!-- If the user is an admin or the author, link to the profile -->
+                    <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')
+              or (#authentication.name == post.author)}"
+                       th:href="@{/mvc/admin/users/{id}(id=${post.getAuthorId()})}"
+                       class="fw-bold text-primary"
+                       th:text="${post.author}">Author Name</a>
+
+                    <!-- If the user is neither admin nor the author, display without a link -->
+                    <span th:if="${#authentication.name != post.author
+                 and not #authorization.expression('hasAuthority(''ADMIN'')')}"
+                          th:text="${post.author}"
+                          class="fw-bold">Author Name</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container mt-4">
+    <div class="row gx-2">
         <div class="col-lg-8">
             <!-- Post content-->
             <article>
                 <!-- Post header-->
-                <header class="mb-4">
-                    <!-- Post title-->
-                    <h1 class="fw-bolder mb-1" th:text="${post.title}">Post Title</h1>
-                    <!-- Post meta content-->
-                    <div class="d-flex align-items-center">
-                        <img th:src="${post.profilePicture}" alt="Profile Picture"
-                             class="rounded-circle me-2" style="width: 50px; height: 50px;">
-                        <p class="m-0">
-                            <span th:text="#{post.label}"></span>
-                            <a href="#" sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/mvc/admin/users{id}(id=${post.getAuthorId()})}"
-                               th:text="${post.author}" class="fw-bold text-primary">Author Name</a>
-                            <a sec:authorize="!hasAnyAuthority('ADMIN')"
-                               th:text="${post.author}">Author Name</a>
-                        </p>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <!-- Content inside a bordered, shadowed box for visibility -->
+                        <div class="border p-3 rounded bg-light shadow-sm">
+                            <p class="fs-5 mb-0 text-break" th:text="${post.content}">Post Content</p>
+                        </div>
                     </div>
-                </header>
-
-                <!-- Post content-->
-                <section class="mb-5">
-                    <p class="fs-5 mb-4" th:text="${post.content}">Post Content</p>
-                </section>
+                </div>
 
                 <!-- Tags -->
                 <div class="mb-3" th:if="${not #lists.isEmpty(post.tags)}">
-                    <span class="fw-bold">Tags:</span>
-                    <span th:each="tagName : ${post.tags}">
-                        <a class="badge bg-primary text-white text-decoration-none me-1"
-                           th:text="${tagName}"
-                           th:href="@{/mvc/posts?tag={tagText}(tagText=${tagName})}">Tag</a>
-                    </span>
+                    <span class="fw-bold fs-5" th:text="#{post.tags}">Tags:</span>
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                <span th:each="tagName : ${post.tags}">
+                                    <a class="badge bg-primary text-white text-decoration-none px-3 py-2 fs-6"
+                                       style="border-radius: 8px; display: inline-block;"
+                                       th:text="${tagName}" href="#"
+                                       th:href="@{/mvc/posts?tag={tagText}(tagText=${tagName})}">Tag</a></span>
+                    </div>
                 </div>
 
                 <!-- Like / Dislike buttons -->
                 <div class="d-flex align-items-center">
+                    <!-- Comment Count Button (disabled but styled to look interactive) -->
+                    <button class="btn btn-outline-primary me-2" disabled>
+                        <i class="fas fa-comment"></i>
+                        <span th:text="|💬 ${post.comments.size()} Comments|">25 Comments</span>
+                    </button>
+
                     <!-- Like Button (only for authenticated users) -->
                     <form th:action="@{/mvc/posts/{id}/like(id=${post.post_id})}" method="post" sec:authorize="isAuthenticated()">
                         <button type="submit"
@@ -60,7 +81,7 @@
                     <!-- Dislike Button (only for authenticated users) -->
                     <form th:action="@{/mvc/posts/{id}/dislike(id=${post.post_id})}" method="post" sec:authorize="isAuthenticated()">
                         <button type="submit"
-                                th:class="${hasDisliked} ? 'btn btn-danger' : 'btn btn-outline-danger'">
+                                th:class="${hasDisliked} ? 'btn btn-danger me-2' : 'btn btn-outline-danger me-2'">
                             👎 Dislike <span th:text="${post.dislikes}">0</span>
                         </button>
                     </form>
@@ -77,59 +98,61 @@
                  or #authorization.expression('hasAuthority(''ADMIN'')')}">
                         <a th:href="@{/mvc/posts/{id}/edit(id=${post.post_id})}" class="btn btn-warning">✏️ Edit</a>
 
-                        <form th:action="@{/mvc/posts/{id}/delete(id=${post.post_id})}" method="post" class="d-inline">
+                        <form th:action="@{/mvc/posts/{id}/delete(id=${post.post_id})}" method="post" class="d-inline"
+                              onsubmit="return confirmDelete()">
                             <button type="submit" class="btn btn-danger">🗑️ Delete</button>
                         </form>
                     </div>
                 </div>
             </article>
-
-            <!-- Comments section -->
+            <br>
+            <!-- Comments Section -->
             <section class="mb-5">
-                <h2 class="fw-bolder mb-4">Comments</h2>
-                <div class="card bg-light">
-                    <form sec:authorize="isAuthenticated()"
-                          th:action="@{/mvc/posts/{id}/comments/new(id=${post.post_id})}" method="post">
-                    <textarea class="form-control mb-3" name="content" rows="3"
-                              placeholder="Write a comment..." required></textarea>
-                        <button class="btn btn-primary" type="submit">💬 Add Comment</button>
-                    </form>
+                <div class="card mb-4">
                     <div class="card-body">
-                        <!-- Only show if comments exist -->
+                        <!-- Comments Header -->
+                        <h2 class="fw-bolder mb-4">Comments</h2>
+
+                        <!-- Comment Form (Authenticated Users Only) -->
+                        <form sec:authorize="isAuthenticated()"
+                              th:action="@{/mvc/posts/{id}/comments/new(id=${post.post_id})}" method="post">
+                <textarea class="form-control mb-3" name="content" rows="3"
+                          placeholder="Write a comment..." required></textarea>
+                            <button class="btn btn-primary" type="submit">💬 Add Comment</button>
+                        </form>
+
+                        <!-- Comments List -->
                         <div th:if="${not #lists.isEmpty(post.comments)}">
-                            <div th:each="comment : ${post.comments}" class="d-flex mt-4">
-                                <!-- Divider -->
-                                <hr class="full-width-divider"/>
-                                <div class="flex-shrink-0">
+                            <div th:each="comment : ${post.comments}" class="border-bottom border-top p-3 d-flex align-items-start">
+                                <!-- Profile Picture -->
+                                <div class="flex-shrink-0 me-2">
                                     <img class="rounded-circle"
                                          src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
-                                         alt="Profile Picture"/>
+                                         alt="Profile Picture"
+                                         style="width: 50px; height: 50px; object-fit: cover;">
                                 </div>
-                                <div class="ms-3">
-                                    <div class="fw-bold" th:text="${comment.author}">Commenter Name</div>
-                                    <p th:text="${comment.content}">Comment content here...</p>
 
+                                <!-- Comment Content -->
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold" th:text="${comment.author}">Commenter Name</div>
+                                    <p class="text-break m-0" th:text="${comment.content}">Comment content here...</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Show message if no comments exist -->
+                        <!-- No Comments Message -->
                         <div th:if="${#lists.isEmpty(post.comments)}" class="text-muted">
                             <p>There are no comments for this post.</p>
                         </div>
 
-                        <!-- Comment form (only for authenticated users) -->
+                        <!-- Comment Form Validation Messages -->
                         <div sec:authorize="isAuthenticated()">
-                            <!-- Error Message for Comments -->
                             <div th:if="${commentError}" class="alert alert-danger">
                                 <span th:text="${commentError}"></span>
                             </div>
-
-                            <!-- Success Message for Comments -->
                             <div th:if="${commentSuccess}" class="alert alert-success">
                                 <span th:text="${commentSuccess}"></span>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -152,7 +175,7 @@
 
             <!-- Tags widget -->
             <div class="card mb-4">
-                <div class="card-header">Tags</div>
+                <div class="card-header" th:text="#{post.allTags}">All Tags</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6">
@@ -178,6 +201,11 @@
         </div>
     </div>
 </div>
-<footer th:insert="~{fragments/PageLayout :: footer}"></footer>
+<footer th:insert="~{fragments/Page-Layout :: footer}"></footer>
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this post?");
+    }
+</script>
 </body>
 </html>

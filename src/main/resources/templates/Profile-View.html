@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:insert="~{fragments/PageLayout :: head('Profile')}">Profile</head>
-<header th:insert="~{fragments/PageLayout :: header}"></header>
+<head th:insert="~{fragments/Page-Layout :: head('Profile')}">Profile</head>
+<header th:insert="~{fragments/Page-Layout :: header}"></header>
 <!-- Page content-->
 <header class="py-2 bg-light border-bottom mb-4">
     <div class="container">
@@ -18,7 +18,7 @@
         <!-- Left Column for Posts -->
         <div class="col-lg-8">
             <div th:each="post : ${user.user_posts}">
-                <!-- Post Card -->
+                <!-- Post -->
                 <div class="card mb-3 shadow-sm">
                     <div class="card-body">
                         <!-- Post Title -->
@@ -29,22 +29,36 @@
                         <div class="d-flex align-items-center mb-2">
                             <img th:src="${post.profilePicture}" alt="Profile Picture"
                                  class="profile-pic rounded-circle me-2" style="width: 40px; height: 40px;">
+
                             <p class="m-0">
                                 <span th:text="#{post.label}"></span>
-                                <a href="#" sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/mvc/admin/users/{id}(id=${post.getAuthorId()})}"
-                                   th:text="${post.author}" class="fw-bold text-primary">Author Name</a>
-                                <a sec:authorize="!hasAnyAuthority('ADMIN')"
+
+                                <!-- If the user is an admin or the author, make the name a link -->
+                                <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')
+                  or (#authentication.name != null and #authentication.name == post.author)}"
+                                   th:href="@{/mvc/admin/users/{id}(id=${post.getAuthorId()})}"
+                                   class="fw-bold text-primary"
                                    th:text="${post.author}">Author Name</a>
+
+                                <!-- If the user is neither Admin nor the author, display the name without a link -->
+                                <span th:if="${#authentication.getPrincipal() == null
+                     or #authentication.name != post.author
+                     and not #authorization.expression('hasAuthority(''ADMIN'')')}"
+                                      class="fw-bold"
+                                      th:text="${post.author}">Author Name</span>
                             </p>
                         </div>
+
                         <!-- Tags -->
-                        <div class="mb-2" th:unless="${post.tags.isEmpty()}">
-                            <span class="fw-bold" th:text="#{post.tags}">Tags:</span>
-                            <span th:each="tagName : ${post.tags}">
-                                <a class="badge bg-primary text-white text-decoration-none me-1"
-                                   th:text="${tagName}" href="#"
-                                   th:href="@{/mvc/posts?tag={tagText}(tagText=${tagName})}">Tag</a>
-                            </span>
+                        <div class="mb-3" th:if="${not #lists.isEmpty(post.tags)}">
+                            <span class="fw-bold fs-5" th:text="#{post.tags}">Tags:</span>
+                            <div class="d-flex flex-wrap gap-2 mt-2">
+                                <span th:each="tagName : ${post.tags}">
+                                    <a class="badge bg-primary text-white text-decoration-none px-3 py-2 fs-6"
+                                       style="border-radius: 8px; display: inline-block;"
+                                       th:text="${tagName}" href="#"
+                                       th:href="@{/mvc/posts?tag={tagText}(tagText=${tagName})}">Tag</a></span>
+                            </div>
                         </div>
                         <!-- Reactions -->
                         <ul class="list-inline">
@@ -132,6 +146,6 @@
         </div>
     </div>
 </div>
-<footer th:insert="~{fragments/PageLayout :: footer}"></footer>
+<footer th:insert="~{fragments/Page-Layout :: footer}"></footer>
 </body>
 </html>
