@@ -1,6 +1,7 @@
 package com.example.forumproject.models.dtos.userDtos;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.URL;
 
@@ -21,6 +22,46 @@ public class RequestUserProfileDto {
     @Size(max = 20, message = "Phone number must not exceed 20 characters")
     private String phoneNumber;
 
+    @NotBlank (message ="This field is required!")
+    private String currentPassword;
+
+    @Size(max = 20, message = "Password should be between 2 and 20 symbols!")
+    private String newPassword;
+
+    @Size(max = 20, message = "Password should be between 2 and 20 symbols!")
+    private String newPasswordRepeat;
+
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public void setNewPasswordRepeat(String newPasswordRepeat) {
+        this.newPasswordRepeat = newPasswordRepeat;
+    }
+
+    public RequestUserProfileDto() {
+    }
+
+    public String getCurrentPassword() {
+        return currentPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public String getNewPasswordRepeat() {
+        return newPasswordRepeat;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -48,10 +89,6 @@ public class RequestUserProfileDto {
 
     public String getProfilePhoto() {
         return profilePhoto;
-    }
-
-    public void setProfilePhoto(String profilePhoto) {
-        this.profilePhoto = profilePhoto;
     }
 
     public String getPhoneNumber() {
