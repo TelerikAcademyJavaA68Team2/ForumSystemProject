@@ -153,6 +153,49 @@ public class PostMvcController {
 
     }
 
+    @GetMapping("/{id}/edit")
+    public String showUpdatePostView(@PathVariable Long id, Model model) {
+
+        User user = userService.getAuthenticatedUser();
+        Post post = postService.getById(id);
+
+        if(!user.isAdmin() && !post.getAuthor().equals(user)) {
+           return format(REDIRECT, post.getId());
+        }
+
+        PostUpdateDto updatePostDTO = postMapper.postToPostUpdateDto(id);
+        model.addAttribute("post", updatePostDTO);
+        model.addAttribute("action", "update");
+        model.addAttribute("author", user.getUsername());
+        return "Post-Update-View";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String updatePost(@PathVariable int id,
+                             @Valid @ModelAttribute("post") PostUpdateDto updatePostDTO,
+                             BindingResult errors,
+                             Model model){
+
+        User user = userService.getAuthenticatedUser();
+
+        User author = postService.getById(updatePostDTO.getId()).getAuthor();
+
+        model.addAttribute("action","update");
+        model.addAttribute("author", postService.getById(updatePostDTO.getId()).getAuthor().getUsername());
+        if (errors.hasErrors()){
+            return "Post-Update-View";
+        }
+
+        try {
+            Post post = postMapper.dtoToObject(updatePostDTO);
+            postService.update(post, author);
+            return format(REDIRECT, id);
+        }catch (IllegalArgumentException i){
+            errors.rejectValue("tagNames", "tags-invalid", i.getMessage());
+            return "Post-Update-View";
+        }
+    }
+
     @PostMapping("/{id}/delete")
     public String deletePost(@PathVariable Long id) {
         User user = userService.getAuthenticatedUser();
