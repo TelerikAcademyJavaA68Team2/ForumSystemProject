@@ -27,6 +27,7 @@ public class UserMapper {
                 user.getFirstName(),
                 user.getUsername(),
                 user.getEmail(),
+                user.getPhoto(),
                 user.isAdmin() ? "ADMIN" : "USER",
                 user.isBlocked() ? "BLOCKED ACCOUNT" : "ACTIVE ACCOUNT");
         userOut.setNumberOfPosts(postService.getNumberOfPostsByUser(user.getId()));
