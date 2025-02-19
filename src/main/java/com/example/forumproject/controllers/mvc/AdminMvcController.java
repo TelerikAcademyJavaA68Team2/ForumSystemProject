@@ -9,9 +9,11 @@ import com.example.forumproject.models.dtos.userDtos.RequestUserFilterOptions;
 import com.example.forumproject.models.dtos.userDtos.UserResponseDto;
 import com.example.forumproject.models.filterOptions.UsersFilterOptions;
 import com.example.forumproject.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +43,11 @@ public class AdminMvcController {
     }
 
     @GetMapping("/users")
-    public String showAllPosts(@ModelAttribute("filterOptions") RequestUserFilterOptions filterOptionsRequest, Model model) {
+    public String showAllPosts(@Valid @ModelAttribute("filterOptions") RequestUserFilterOptions filterOptionsRequest, BindingResult errors, Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute("hasErrors", true);
+        }
+
         UsersFilterOptions filterOptions = new UsersFilterOptions(
                 filterOptionsRequest.getFirst_name(),
                 filterOptionsRequest.getUsername(),
@@ -56,10 +62,8 @@ public class AdminMvcController {
         List<User> users = userService.getAllUsers(filterOptions);
         List<UserResponseDto> usersDto = users.stream().map(userMapper::mapUserToDtoOut).toList();
 
-
         model.addAttribute("filterOptions", filterOptionsRequest);
         model.addAttribute("users", usersDto);
-
         return "Users-View";
     }
 
