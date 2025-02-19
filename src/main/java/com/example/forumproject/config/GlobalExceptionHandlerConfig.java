@@ -44,7 +44,7 @@ public class GlobalExceptionHandlerConfig {
   //   Handle 401 errors (Unauthorized)
     @ExceptionHandler(UnauthorizedAccessException.class)
     public String handleUnauthorizedAccessException(UnauthorizedAccessException ex, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("error", "This action is not allowed!");
+        redirectAttributes.addFlashAttribute("error", ex.getMessage());
         redirectAttributes.addFlashAttribute("status", HttpStatus.UNAUTHORIZED);
         return "redirect:/mvc/auth/login";
     }
