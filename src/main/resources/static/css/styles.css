@@ -12603,8 +12603,33 @@ textarea.form-control-lg {
 }
 
 /* Style the single post range input */
-.posts-range-input {
-    width: 50%; /* Full width */
+
+/* Highlight active sorting button */
+.table-sort-row .btn-secondary.active {
+    background-color: #007bff; /* Blue background */
+    color: #fff; /* White text */
+    border-color: #007bff; /* Blue border */
+}
+
+/* Style sorting buttons */
+.table-sort-row {
+    padding: 0.5rem 0; /* Reduce vertical padding */
+}
+
+.table-sort-row th {
+    vertical-align: middle; /* Vertically center buttons */
+    text-align: center; /* Horizontally center buttons */
+}
+
+.table-sort-row .btn-secondary {
+    font-size: 0.875rem; /* Smaller font size */
+    padding: 0.25rem 0.75rem; /* Adjust padding for better proportions */
+    border-radius: 4px; /* Rounded corners */
+    white-space: nowrap; /* Prevent text wrapping */
+    width: 100%; /* Make buttons span the full width of their column */
+    height: auto; /* Allow buttons to adjust height based on content */
+    box-shadow: none; /* Remove default button shadow for cleaner design */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth hover effects */
 }
 
 /* Highlight active sorting button */
@@ -12612,4 +12637,48 @@ textarea.form-control-lg {
     background-color: #007bff; /* Blue background */
     color: #fff; /* White text */
     border-color: #007bff; /* Blue border */
+    font-weight: bold; /* Add emphasis to the active button */
+}
+
+/* Hover effect for sorting buttons */
+.table-sort-row .btn-secondary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    color: #fff; /* White text on hover */
+    border-color: #0056b3; /* Darker blue border on hover */
+}
+
+/* Remove pointer cursor for minPosts and maxPosts inputs */
+.posts-range-input {
+    width: calc(30% - 0.75rem); /* Keep the same horizontal width */
+    max-width: 3lh;
+    padding: 0.375rem 0.5rem; /* Standard padding */
+    text-align: center; /* Center-align text */
+    cursor: none; /* Remove the pointer cursor */
+}
+
+/* Ensure the separator remains visually aligned */
+.table-filter-row .input-group-text {
+    background-color: #fff; /* White background */
+    border: 1px solid #ced4da; /* Match border color */
+    padding: 0.375rem 0.5rem; /* Standard padding */
+    width: 1.5rem; /* Fixed width for the separator */
+    text-align: center; /* Center the dash symbol */
+    line-height: 1.25; /* Align text vertically */
+    cursor: default; /* Ensure the separator also has a default cursor */
+}
+
+.posts-range-input::-webkit-inner-spin-button,
+.posts-range-input::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Hide spinners in WebKit-based browsers (Chrome, Safari) */
+    margin: 0; /* Remove extra spacing caused by spinners */
+}
+
+.posts-range-input[type="number"] {
+    -moz-appearance: textfield; /* Hide spinners in Firefox */
+}
+
+/* Adjust spacing between minPosts and maxPosts fields */
+.table-filter-row .input-group > .posts-range-input:first-child {
+    border-top-right-radius: 0; /* Remove top-right radius for the first field */
+    border-bottom-right-radius: 0; /* Remove bottom-right radius for the first field */
 }
