@@ -54,27 +54,6 @@ public class User implements UserDetails {
         this.isBlocked = false;
     }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-        this.isAdmin = false;
-        this.isBlocked = false;
-    }
-
-    public User(
-            String firstName,
-            String lastName,
-            String email,
-            String username,
-            String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.isAdmin = false;
-        this.isBlocked = false;
-    }
 
     public Long getId() {
         return id;
