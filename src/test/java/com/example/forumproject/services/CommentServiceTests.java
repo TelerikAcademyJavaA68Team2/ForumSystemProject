@@ -22,6 +22,7 @@ import java.util.List;
 
 import static com.example.forumproject.Helpers.*;
 import static com.example.forumproject.helpers.ValidationHelpers.UNAUTHORIZED_MESSAGE_COMMENT;
+import static com.example.forumproject.helpers.ValidationHelpers.UNAUTHORIZED_MESSAGE_COMMENT_DELETE;
 import static com.example.forumproject.services.PostServiceTests.POST_NOT_FOUND;
 import static com.example.forumproject.services.commentService.CommentServiceImpl.DUPLICATE_COMMENT_MESSAGE;
 import static org.junit.jupiter.api.Assertions.*;
@@ -381,7 +382,7 @@ public class CommentServiceTests {
         UnauthorizedAccessException thrown = assertThrows(UnauthorizedAccessException.class,
                 () -> commentService.delete(1L, 1L));
 
-        assertEquals(UNAUTHORIZED_MESSAGE_COMMENT, thrown.getMessage());
+        assertEquals(UNAUTHORIZED_MESSAGE_COMMENT_DELETE, thrown.getMessage());
         verify(commentMockRepository, never()).delete(anyLong(), anyLong());
     }
 }

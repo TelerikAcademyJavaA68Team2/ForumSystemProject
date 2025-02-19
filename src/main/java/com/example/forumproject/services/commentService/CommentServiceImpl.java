@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.forumproject.helpers.ValidationHelpers.isDuplicateComment;
-import static com.example.forumproject.helpers.ValidationHelpers.validateUserIsAdminOrCommentAuthor;
+import static com.example.forumproject.helpers.ValidationHelpers.*;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -77,8 +76,8 @@ public class CommentServiceImpl implements CommentService {
     public void delete(Long postId, Long id) {
         User user = userService.getAuthenticatedUser();
         Comment commentToDelete = getById(postId, id);
-        validateUserIsAdminOrCommentAuthor(commentToDelete, user);
-
+        Post postToCheckAuthor = postService.getById(postId);
+        validateUserIsAdminOrCommentAuthorOrPostAuthor(commentToDelete,postToCheckAuthor, user);
         commentRepository.delete(postId, id);
     }
 }

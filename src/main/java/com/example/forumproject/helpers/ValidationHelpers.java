@@ -18,6 +18,8 @@ public class ValidationHelpers {
             "post's creator can modify posts!";
     public static final String UNAUTHORIZED_MESSAGE_COMMENT = "Only admins or the " +
             "comment's creator can modify comments!";
+    public static final String UNAUTHORIZED_MESSAGE_COMMENT_DELETE = "Only admins, the post creator or the " +
+            "comment's creator can delete comments!";
 
     public static String ValidateUpdate(RequestUserProfileDto userUpdateDto, User user, UserService service) {
 
@@ -124,6 +126,12 @@ public class ValidationHelpers {
     public static void validateUserIsAdminOrCommentAuthor(Comment comment, User user) {
         if (!(user.isAdmin() || comment.getAuthor().equals(user))) {
             throw new UnauthorizedAccessException(UNAUTHORIZED_MESSAGE_COMMENT);
+        }
+    }
+
+    public static void validateUserIsAdminOrCommentAuthorOrPostAuthor(Comment comment, Post post, User user) {
+        if (!(user.isAdmin() || comment.getAuthor().equals(user) || post.getAuthor().equals(user))) {
+            throw new UnauthorizedAccessException(UNAUTHORIZED_MESSAGE_COMMENT_DELETE);
         }
     }
 
