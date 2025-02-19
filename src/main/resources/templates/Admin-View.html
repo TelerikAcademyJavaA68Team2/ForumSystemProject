@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:insert="~{fragments/PageLayout :: head('Admin')}">Admin</head>
-<header th:insert="~{fragments/PageLayout :: header}"></header>
+<head th:insert="~{fragments/Page-Layout :: head('Admin')}">Admin</head>
+<header th:insert="~{fragments/Page-Layout :: header}"></header>
 <header class="py-2 bg-light border-bottom mb-4">
     <div class="container">
         <div class="text-center my-3">
@@ -15,6 +15,6 @@
             <a th:href="@{/mvc/admin/users}" th:text="'Go to Users'"></a>
         </h1>
     </div>
-<footer th:insert="~{fragments/PageLayout :: footer}"></footer>
+<footer th:insert="~{fragments/Page-Layout :: footer}"></footer>
 </body>
 </html>
