@@ -119,7 +119,6 @@ public class PostMvcController {
         return "Post-View";
     }
 
-    @GetMapping("/{id}/delete")
     @GetMapping("/new")
     public String showCreatePostPage(Model model) {
         User user = userService.getAuthenticatedUser();
