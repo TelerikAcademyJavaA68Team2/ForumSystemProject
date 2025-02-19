@@ -168,8 +168,8 @@
                orderType=${(filterOptions.orderBy == 'posts' && filterOptions.orderType == 'asc') ? 'desc' : 'asc'})}"
                                        class="btn btn-sm btn-secondary"
                                        th:classappend="${filterOptions.orderBy == 'posts' ? 'active' : ''}">
-                                        <span th:if="${filterOptions.orderBy == 'posts' && filterOptions.orderType == 'desc'}">Most Posts</span>
-                                        <span th:if="${filterOptions.orderBy == 'posts' && filterOptions.orderType == 'asc'}">Least Posts</span>
+                                        <span th:if="${filterOptions.orderBy == 'posts' && filterOptions.orderType == 'desc'}">9 → 1</span>
+                                        <span th:if="${filterOptions.orderBy == 'posts' && filterOptions.orderType == 'asc'}">1 → 9</span>
                                         <span th:unless="${filterOptions.orderBy == 'posts'}"># Posts</span>
                                     </a>
                                 </th>
@@ -205,7 +205,7 @@
                               account_status=${filterOptions.account_status},
                account_type=${filterOptions.account_type},
                orderBy='account_type',
-               orderType=${(filterOptions.orderBy == 'account_type' && filterOptions.orderType == 'asc') ? 'desc' : 'asc'})}"
+               orderType=${(filterOptions.orderBy == 'account_type' && filterOptions.orderType == 'desc') ? 'asc' : 'desc'})}"
                                        class="btn btn-sm btn-secondary"
                                        th:classappend="${filterOptions.orderBy == 'account_type' ? 'active' : ''}">
                                         <span th:if="${filterOptions.orderBy == 'account_type' && filterOptions.orderType == 'desc'}">Admin First</span>
