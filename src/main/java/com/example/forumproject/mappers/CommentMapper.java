@@ -27,6 +27,12 @@ public class CommentMapper {
         return comment;
     }
 
+    public Comment commentOutDtoToObject(CommentOutDto commentDto) {
+        Comment comment = new Comment();
+        comment.setContent(commentDto.getContent());
+        return comment;
+    }
+
     public Comment updateDtoToObject(CommentInDto commentDTO, Long postId, Long commentId) {
         Comment comment = commentService.getById(postId, commentId);
         comment.setContent(commentDTO.getContent());
@@ -36,8 +42,10 @@ public class CommentMapper {
 
     public CommentOutDto commentToCommentOutDto(Comment comment) {
         CommentOutDto commentOutDto = new CommentOutDto();
+        commentOutDto.setCommentId(comment.getId());
         commentOutDto.setAuthor(comment.getAuthor().getUsername());
         commentOutDto.setContent(comment.getContent());
+        commentOutDto.setAuthorProfilePicture(comment.getAuthor().getPhoto());
         return commentOutDto;
     }
 

@@ -1,5 +1,6 @@
 package com.example.forumproject.controllers.mvc;
 
+import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.CommentMapper;
 import com.example.forumproject.mappers.PostMapper;
@@ -7,7 +8,6 @@ import com.example.forumproject.models.Comment;
 import com.example.forumproject.models.Post;
 import com.example.forumproject.models.Tag;
 import com.example.forumproject.models.User;
-import com.example.forumproject.models.dtos.commentDtos.CommentInDto;
 import com.example.forumproject.models.dtos.commentDtos.CommentOutDto;
 import com.example.forumproject.models.dtos.postDtos.PostFilterDto;
 import com.example.forumproject.models.dtos.postDtos.PostInDto;
@@ -25,7 +25,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -150,7 +149,6 @@ public class PostMvcController {
         Post post = postMapper.createPostFromDto(createPostDTO, user);
         postService.create(post, user);
         return format(REDIRECT, post.getId());
-
     }
 
     @GetMapping("/{id}/edit")
@@ -175,9 +173,6 @@ public class PostMvcController {
                              @Valid @ModelAttribute("post") PostUpdateDto updatePostDTO,
                              BindingResult errors,
                              Model model){
-
-        User user = userService.getAuthenticatedUser();
-
         User author = postService.getById(updatePostDTO.getId()).getAuthor();
 
         model.addAttribute("action","update");
@@ -190,7 +185,9 @@ public class PostMvcController {
             Post post = postMapper.dtoToObject(updatePostDTO);
             postService.update(post, author);
             return format(REDIRECT, id);
-        }catch (IllegalArgumentException i){
+        } catch (DuplicateEntityException e) {
+            return format(REDIRECT, id);
+        } catch (IllegalArgumentException i){
             errors.rejectValue("tagNames", "tags-invalid", i.getMessage());
             return "Post-Update-View";
         }
@@ -204,18 +201,61 @@ public class PostMvcController {
     }
 
     @PostMapping("/{id}/comments/new")
-    public String createComment(@PathVariable Long id, @Valid @ModelAttribute("commentDto") CommentInDto newComment,
-                                BindingResult errors, RedirectAttributes redirectAttributes) {
+    public String addComment(@PathVariable Long id,
+                             @Valid @ModelAttribute("comment") CommentOutDto commentDto,
+                             BindingResult errors,
+                             Model model) {
+
+        User user = userService.getAuthenticatedUser();
+        model.addAttribute("author", user.getUsername());
 
         if (errors.hasErrors()) {
-            redirectAttributes.addFlashAttribute("commentError", "Comment cannot be empty!");
-            return format(REDIRECT, id);
+            return "Post-View";
         }
 
-        Comment comment = commentMapper.commentInDtoToObject(newComment);
-        commentService.create(id, comment);
-        redirectAttributes.addFlashAttribute("commentSuccess", "Comment added successfully!");
+        Comment newComment = commentMapper.commentOutDtoToObject(commentDto);
+        commentService.create(id, newComment);
+
         return format(REDIRECT, id);
+    }
+
+    @PostMapping("/{id}/comments/{commentId}/edit")
+    public String editComment(@PathVariable Long id,
+                              @PathVariable Long commentId,
+                              @Valid @ModelAttribute("comment") CommentOutDto commentDto,
+                              BindingResult errors,
+                              Model model) {
+
+        User user = userService.getAuthenticatedUser();
+        model.addAttribute("author", user.getUsername());
+
+        if (errors.hasErrors()) {
+            return "Post-View";
+        }
+
+        Comment comment = commentService.getById(id, commentId);
+
+        if (!comment.getAuthor().equals(user)) {
+            return "redirect:/mvc/posts/" + id;
+        }
+
+        comment.setContent(commentDto.getContent());
+        try {
+            commentService.update(id, comment);
+        } catch (DuplicateEntityException e) {
+            return format(REDIRECT, id);
+        }
+        return "redirect:/mvc/posts/" + id;
+    }
+
+    @PostMapping("/{postId}/comments/{commentId}/delete")
+    public String deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
+        User user = postService.getById(postId).getAuthor();
+        Comment comment = commentService.getById(postId, commentId);
+        if (user.isAdmin() || comment.getAuthor().equals(user) || comment.getPost().getAuthor().equals(user)) {
+            commentService.delete(postId, commentId);
+        }
+        return "redirect:/mvc/posts/" + postId;
     }
 
     @PostMapping("/{id}/like")
@@ -233,6 +273,4 @@ public class PostMvcController {
         reactionService.save(post, user, false);
         return format(REDIRECT, id);
     }
-
-
 }

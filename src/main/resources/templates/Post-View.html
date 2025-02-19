@@ -59,14 +59,10 @@
 
                 <!-- Like / Dislike buttons -->
                 <div class="d-flex align-items-center">
-                    <!-- Comment Count Button (disabled but styled to look interactive) -->
-                    <button class="btn btn-outline-primary me-2" disabled>
-                        <i class="fas fa-comment"></i>
-                        <span th:text="|💬 ${post.comments.size()} Comments|">25 Comments</span>
-                    </button>
 
                     <!-- Like Button (only for authenticated users) -->
-                    <form th:action="@{/mvc/posts/{id}/like(id=${post.post_id})}" method="post" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/mvc/posts/{id}/like(id=${post.post_id})}" method="post"
+                          sec:authorize="isAuthenticated()">
                         <button type="submit"
                                 th:class="${hasLiked} ? 'btn btn-success me-2' : 'btn btn-outline-success me-2'">
                             👍 Like <span th:text="${post.likes}">0</span>
@@ -74,12 +70,14 @@
                     </form>
 
                     <!-- Disabled Like Button (for unauthenticated users) -->
-                    <button type="button" class="btn btn-outline-success me-2" sec:authorize="!isAuthenticated()" disabled>
+                    <button type="button" class="btn btn-outline-success me-2" sec:authorize="!isAuthenticated()"
+                            disabled>
                         👍 Like <span th:text="${post.likes}">0</span>
                     </button>
 
                     <!-- Dislike Button (only for authenticated users) -->
-                    <form th:action="@{/mvc/posts/{id}/dislike(id=${post.post_id})}" method="post" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/mvc/posts/{id}/dislike(id=${post.post_id})}" method="post"
+                          sec:authorize="isAuthenticated()">
                         <button type="submit"
                                 th:class="${hasDisliked} ? 'btn btn-danger me-2' : 'btn btn-outline-danger me-2'">
                             👎 Dislike <span th:text="${post.dislikes}">0</span>
@@ -89,6 +87,12 @@
                     <!-- Disabled Dislike Button (for unauthenticated users) -->
                     <button type="button" class="btn btn-outline-danger" sec:authorize="!isAuthenticated()" disabled>
                         👎 Dislike <span th:text="${post.dislikes}">0</span>
+                    </button>
+
+                    <!-- Comment Count Button (disabled but styled to look interactive) -->
+                    <button class="btn btn-outline-primary me-2" disabled>
+                        <i class="fas fa-comment"></i>
+                        <span th:text="|💬 ${post.comments.size()} Comments|">25 Comments</span>
                     </button>
                 </div>
 
@@ -115,19 +119,25 @@
 
                         <!-- Comment Form (Authenticated Users Only) -->
                         <form sec:authorize="isAuthenticated()"
-                              th:action="@{/mvc/posts/{id}/comments/new(id=${post.post_id})}" method="post">
-                <textarea class="form-control mb-3" name="content" rows="3"
-                          placeholder="Write a comment..." required></textarea>
-                            <button class="btn btn-primary" type="submit">💬 Add Comment</button>
+                              th:action="@{/mvc/posts/{id}/comments/new(id=${post.post_id})}"
+                              method="post"
+                              id="comment-form">
+                            <input type="hidden" name="commentId" id="commentId" value=""/>
+                            <textarea class="form-control mb-3" name="content" id="commentContent" rows="3"
+                                      placeholder="Write a comment..." required></textarea>
+                            <button class="btn btn-primary" type="submit" id="submitButton">💬 Add Comment</button>
+                            <button class="btn btn-secondary d-none" type="button" id="cancelEditButton">Cancel</button>
                         </form>
 
                         <!-- Comments List -->
                         <div th:if="${not #lists.isEmpty(post.comments)}">
-                            <div th:each="comment : ${post.comments}" class="border-bottom border-top p-3 d-flex align-items-start">
+                            <div th:each="comment : ${post.comments}"
+                                 class="border-bottom border-top p-3 d-flex align-items-start position-relative">
+
                                 <!-- Profile Picture -->
                                 <div class="flex-shrink-0 me-2">
                                     <img class="rounded-circle"
-                                         src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
+                                         th:src="${comment.authorProfilePicture}"
                                          alt="Profile Picture"
                                          style="width: 50px; height: 50px; object-fit: cover;">
                                 </div>
@@ -135,7 +145,32 @@
                                 <!-- Comment Content -->
                                 <div class="flex-grow-1">
                                     <div class="fw-bold" th:text="${comment.author}">Commenter Name</div>
-                                    <p class="text-break m-0" th:text="${comment.content}">Comment content here...</p>
+                                    <p class="text-break m-0 comment-content" th:text="${comment.content}"
+                                       th:id="'comment-text-' + ${comment.commentId}">Comment content here...</p>
+                                </div>
+
+                                <!-- Edit/Delete Options -->
+                                <div class="ms-auto d-flex flex-column align-items-end">
+                                    <!-- Edit Button (ONLY for Comment Author, NOT Admin) -->
+                                    <button th:if="${#authentication.name == comment.author}"
+                                            class="btn btn-warning edit-button btn-sm w-100"
+                                            th:data-comment-id="${comment.commentId}"
+                                            th:data-comment-content="${comment.content}">
+                                        ✏️ Edit
+                                    </button>
+
+                                    <!-- Delete Button (Only for Admin, Post Author, or Comment Author) -->
+                                    <form th:if="${#authentication.name == comment.author or
+                                    post.author == #authentication.name
+                                    or #authorization.expression('hasAuthority(''ADMIN'')')}"
+                                          th:action="@{/mvc/posts/{postId}/comments/{commentId}/delete(postId=${post.post_id},
+                                           commentId=${comment.commentId})}"
+                                          method="post"
+                                          onsubmit="return confirm('Are you sure you want to delete this comment?')">
+                                        <button type="submit" class="btn btn-danger delete-btn btn-sm w-100 mt-1">
+                                            🗑️ Delete
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -162,16 +197,16 @@
         <!-- Sidebar Widgets -->
         <div class="col-lg-4">
             <!-- Search widget-->
-            <div class="card mb-4">
-                <div class="card-header">Search</div>
-                <div class="card-body">
-                    <form th:action="@{/mvc/posts}" method="get">
-                        <input class="form-control mb-2" type="text" name="title" placeholder="Search by title..."/>
-                        <input class="form-control mb-2" type="text" name="author" placeholder="Search by author..."/>
-                        <button class="btn btn-primary w-100" type="submit">Search</button>
-                    </form>
-                </div>
-            </div>
+            <!--            <div class="card mb-4">-->
+            <!--                <div class="card-header">Search</div>-->
+            <!--                <div class="card-body">-->
+            <!--                    <form th:action="@{/mvc/posts}" method="get">-->
+            <!--                        <input class="form-control mb-2" type="text" name="title" placeholder="Search by title..."/>-->
+            <!--                        <input class="form-control mb-2" type="text" name="author" placeholder="Search by author..."/>-->
+            <!--                        <button class="btn btn-primary w-100" type="submit">Search</button>-->
+            <!--                    </form>-->
+            <!--                </div>-->
+            <!--            </div>-->
 
             <!-- Tags widget -->
             <div class="card mb-4">
@@ -203,9 +238,47 @@
 </div>
 <footer th:insert="~{fragments/Page-Layout :: footer}"></footer>
 <script>
-    function confirmDelete() {
-        return confirm("Are you sure you want to delete this post?");
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+        const editButtons = document.querySelectorAll(".edit-button");
+        const commentForm = document.getElementById("comment-form");
+        const commentIdField = document.getElementById("commentId");
+        const commentContentField = document.getElementById("commentContent");
+        const submitButton = document.getElementById("submitButton");
+        const cancelEditButton = document.getElementById("cancelEditButton");
+
+        editButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const commentId = this.getAttribute("data-comment-id");
+                const commentContent = this.getAttribute("data-comment-content");
+
+                // Fill form fields with comment data
+                commentIdField.value = commentId;
+                commentContentField.value = commentContent;
+
+                // Change form action to edit mode
+                const postId = commentForm.getAttribute("action").match(/\/posts\/(\d+)\//)[1];
+                commentForm.setAttribute("action", `/mvc/posts/${postId}/comments/${commentId}/edit`);
+
+                // Change button text to "Update Comment"
+                submitButton.textContent = "✅ Update Comment";
+
+                // Show cancel button
+                cancelEditButton.classList.remove("d-none");
+            });
+        });
+
+        // Reset form when cancel button is clicked
+        cancelEditButton.addEventListener("click", function () {
+            commentIdField.value = "";
+            commentContentField.value = "";
+            const postId = commentForm.getAttribute("action").match(/\/posts\/(\d+)\//)[1];
+            commentForm.setAttribute("action", `/mvc/posts/${postId}/comments/new`); // Reset action
+            submitButton.textContent = "💬 Add Comment";
+            this.classList.add("d-none");
+        });
+    });
+
+
 </script>
 </body>
 </html>
