@@ -34,7 +34,7 @@ public class PublicMvc {
     }
 
     @GetMapping("/mvc/home")
-    public String homePage(@RequestParam(required = false, defaultValue = "recent") String listType, Model model) {
+    public String homePage(@RequestParam(required = false, defaultValue = "viral") String listType, Model model) {
         long totalUsers = userService.getNumberOfRegisteredUsers();
         long totalPosts = postService.getTotalNumberOfPosts();
 

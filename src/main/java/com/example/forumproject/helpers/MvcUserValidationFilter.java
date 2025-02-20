@@ -46,7 +46,7 @@ public class MvcUserValidationFilter extends OncePerRequestFilter {
                 accountStatusChecker.check(user);
 
                 if (request.getRequestURI().startsWith("/mvc/admin") && !user.isAdmin()) {
-                    response.sendRedirect("/mvc/error");
+                    response.sendRedirect("/mvc/home");
                     return;
                 }
             } catch (DisabledException e) {
@@ -62,7 +62,6 @@ public class MvcUserValidationFilter extends OncePerRequestFilter {
     private boolean isPublicRequest(HttpServletRequest request) {
         String requestUri = request.getRequestURI();
         return requestUri.startsWith("/mvc/auth") ||
-                requestUri.startsWith("/mvc/posts") ||
                 requestUri.startsWith("/mvc/home") ||
                 requestUri.startsWith("/css/") ||
                 requestUri.startsWith("/js/") ||
