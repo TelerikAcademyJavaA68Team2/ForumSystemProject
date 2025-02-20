@@ -26,7 +26,8 @@
               <label class="col-sm-3 col-form-label" th:text="#{user.label.username}">Username</label>
               <div class="col-sm-9">
                 <input class="form-control" type="text" th:field="*{username}" placeholder="Username"/>
-                <small class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}">Username error placeholder!</small>
+                <small class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}">
+                  Username error placeholder!</small>
               </div>
             </div>
 

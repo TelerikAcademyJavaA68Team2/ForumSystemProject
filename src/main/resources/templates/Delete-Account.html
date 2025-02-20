@@ -27,7 +27,8 @@
                             <div class="col-sm-9">
                                 <input class="form-control" type="text" th:field="*{capcha}"
                                        placeholder="Delete my account"/>
-                                <small class="text-danger" th:if="${#fields.hasErrors('capcha')}" th:errors="*{capcha}">Capcha
+                                <small class="text-danger" th:if="${#fields.hasErrors('capcha')}"
+                                       th:errors="*{capcha}">Capcha
                                     error placeholder!</small>
                             </div>
                         </div>

@@ -18,12 +18,15 @@
             <div class="card">
                 <div class="card-body">
                     <!-- Form for editing profile -->
-                    <form th:action="@{/mvc/profile/update}" th:object="${updateRequest}" method="POST" enctype="multipart/form-data">
+                    <form th:action="@{/mvc/profile/update}" th:object="${updateRequest}"
+                          method="POST" enctype="multipart/form-data">
                         <div class="form-group row mb-3">
                             <!-- Profile Picture Upload -->
                             <div class="text-center mb-3">
-                                <img th:src="${profilePhoto != '/images/default-profile-pic.png' ? profilePhoto : '/images/default-profile-pic.png'}"
-                                     alt="Profile Picture" class="rounded-circle img-thumbnail" width="400" height="150">
+                                <img th:src="${profilePhoto != '/images/default-profile-pic.png' ?
+                                profilePhoto : '/images/default-profile-pic.png'}"
+                                     alt="Profile Picture" class="rounded-circle img-thumbnail"
+                                     width="400" height="150">
 
                                 <!-- Upload Profile Picture -->
                                 <input type="file" name="profileImage" class="form-control mt-2">
@@ -34,14 +37,16 @@
                             <div class="col-sm-9 d-flex gap-2">
                                 <!-- First Name -->
                                 <div class="flex-fill">
-                                    <input type="text" class="form-control" th:field="*{firstName}" placeholder="First Name"/>
+                                    <input type="text" class="form-control" th:field="*{firstName}"
+                                           placeholder="First Name"/>
                                     <small class="text-danger d-block"
                                            th:if="${#fields.hasErrors('firstName')}"
                                            th:text="${#fields.errors('firstName')[0]}">First Name error!</small>
                                 </div>
                                 <!-- Last Name -->
                                 <div class="flex-fill">
-                                    <input type="text" class="form-control" th:field="*{lastName}" placeholder="Last Name"/>
+                                    <input type="text" class="form-control" th:field="*{lastName}"
+                                           placeholder="Last Name"/>
                                     <small class="text-danger d-block"
                                            th:if="${#fields.hasErrors('lastName')}"
                                            th:text="${#fields.errors('lastName')[0]}">Last Name error!</small>
@@ -54,13 +59,15 @@
                             <label class="col-sm-3 col-form-label" th:text="#{user.label.email}">Email</label>
                             <div class="col-sm-9">
                                 <input class="form-control" type="email" th:field="*{email}"/>
-                                <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error!</small>
+                                <small class="text-danger" th:if="${#fields.hasErrors('email')}"
+                                       th:errors="*{email}">Email error!</small>
                             </div>
                         </div>
 
                         <!-- Phone Number (Admins Only) -->
                         <div class="form-group row mb-3" th:if="${isAdmin}">
-                            <label class="col-sm-3 col-form-label" th:text="#{user.label.phoneNumber}">Phone Number</label>
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.phoneNumber}">
+                                Phone Number</label>
                             <div class="col-sm-9">
                                 <input class="form-control" type="tel" th:field="*{phoneNumber}"/>
                                 <small class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}"
@@ -70,26 +77,35 @@
 
                         <!-- Password Fields -->
                         <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label" th:text="#{user.label.password}">Current Password</label>
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.password}">
+                                Current Password</label>
                             <div class="col-sm-9">
-                                <input type="password" class="form-control" th:field="*{currentPassword}" placeholder="Current Password *" required/>
-                                <small class="text-danger" th:if="${#fields.hasErrors('currentPassword')}" th:errors="*{currentPassword}">Password error!</small>
+                                <input type="password" class="form-control" th:field="*{currentPassword}"
+                                       placeholder="Current Password *" required/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('currentPassword')}"
+                                       th:errors="*{currentPassword}">Password error!</small>
                             </div>
                         </div>
 
                         <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label" th:text="#{user.label.newPassword}">New Password</label>
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.newPassword}">
+                                New Password</label>
                             <div class="col-sm-9">
-                                <input type="password" class="form-control" th:field="*{newPassword}" placeholder="New Password"/>
-                                <small class="text-danger" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}">New Password error!</small>
+                                <input type="password" class="form-control" th:field="*{newPassword}"
+                                       placeholder="New Password"/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('newPassword')}"
+                                       th:errors="*{newPassword}">New Password error!</small>
                             </div>
                         </div>
 
                         <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label" th:text="#{user.label.newPasswordConfirm}">Confirm Password</label>
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.newPasswordConfirm}">
+                                Confirm Password</label>
                             <div class="col-sm-9">
-                                <input type="password" class="form-control" th:field="*{newPasswordRepeat}" placeholder="Confirm New Password"/>
-                                <small class="text-danger" th:if="${#fields.hasErrors('newPasswordRepeat')}" th:errors="*{newPasswordRepeat}">Confirm Password error!</small>
+                                <input type="password" class="form-control" th:field="*{newPasswordRepeat}"
+                                       placeholder="Confirm New Password"/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('newPasswordRepeat')}"
+                                       th:errors="*{newPasswordRepeat}">Confirm Password error!</small>
                             </div>
                         </div>
 

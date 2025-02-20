@@ -16,7 +16,7 @@
     <div class="row gx-2">
         <!-- Left Column for Posts -->
         <div class="col-lg-8">
-            <!--HEADER + POSTS TYPE--> <!--HEADER + POSTS TYPE-->
+            <!--HEADER + POSTS TYPE-->
             <div class="card-header card mb-3 shadow-sm">
                 <h2 class="card-title m-0">
                     Here is a list of our 10 most
@@ -28,13 +28,13 @@
                     Posts
                 </h2>
             </div>
-            <!--POSTS -- POSTS -- POSTS -- POSTS-->
+            <!--POSTS-->
             <div th:each="post : ${posts}">
                 <!-- Post -->
                 <div class="card mb-3 shadow-sm">
                     <div class="card-body">
 
-                        <!--DELETE FORM-->    <!--DELETE FORM-->
+                        <!--DELETE FORM-->
                         <form sec:authorize="isAuthenticated()" th:if="${(#authentication.principal.username == post.author)
                                                              or #authorization.expression('hasAuthority(''ADMIN'')')}"
                               th:action="@{/mvc/posts/{id}/delete(id=${post.post_id})}" method="post"

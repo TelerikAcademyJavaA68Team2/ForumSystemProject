@@ -138,24 +138,6 @@ public class ProfileMvcController {
         return "redirect:/mvc/profile";
     }
 
-
-    @PostMapping("/upload-photo")
-    public String uploadProfilePhoto(@RequestParam("image") MultipartFile image, RedirectAttributes redirectAttributes) {
-        try {
-
-            User user = userService.getAuthenticatedUser();
-
-            cloudinaryHelper.uploadUserProfilePhoto(image, user);
-
-
-            redirectAttributes.addFlashAttribute("successMessage", "Profile photo updated successfully!");
-        } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error uploading image. Please try again.");
-        }
-
-        return "redirect:/mvc/profile";
-    }
-
     @GetMapping("/delete")
     public String getDeleteAccountPage(Model model) {
         model.addAttribute("request", new DeleteAccountRequest());
