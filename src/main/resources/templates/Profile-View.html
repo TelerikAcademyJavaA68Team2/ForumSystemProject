@@ -14,7 +14,7 @@
 <body>
 <!-- Posts -->
 <div class="container">
-    <div class="row gx-2"> <!-- Reduced the spacing using gx-2 -->
+    <div class="row gx-2">
         <!-- Left Column for Posts -->
         <div class="col-lg-8">
             <div th:each="post : ${user.user_posts}">
@@ -81,7 +81,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!--TAGS-->
                         <div class="mb-0" th:if="${not #lists.isEmpty(post.tags)}">
                             <div class="d-flex flex-wrap gap-1 small-tags-container align-items-center">
@@ -100,7 +99,6 @@
                 <hr class="my-4"/>
             </div>
         </div>
-
         <!-- Right Column for Profile Info -->
         <div class="col-lg-4">
             <!-- Profile Picture -->
@@ -117,7 +115,6 @@
                     <img th:if="${user.account_type} == 'ADMIN'" th:src="@{/images/adminIcon.png}"
                          alt="Admin Icon" class="img-right">
                 </div>
-
 
                 <div class="card-body">
                     <!-- Username -->
@@ -155,7 +152,6 @@
                         <a class="btn btn-primary" href="/mvc/profile/update">Edit Profile</a>
                         <a class="btn btn-danger" href="/mvc/profile/delete">Delete Profile</a>
                     </div>
-
                 </div>
             </div>
         </div>

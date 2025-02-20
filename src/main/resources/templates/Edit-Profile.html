@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="~{fragments/Page-Layout :: head('Profile')}">Profile</head>
 <header th:insert="~{fragments/Page-Layout :: navigation}"></header>
 <!-- Page content-->
@@ -7,25 +7,29 @@
     <div class="container">
         <div class="text-center my-3">
             <h1 class="fw-bolder" th:text="#{profile.update.info}">Page info</h1>
-            <p class="lead mb-0" th:text="#{profile.update.description}">Description</p>
+            <p class="lead mb-0" th:utext="#{profile.update.description}">Description</p>
         </div>
     </div>
 </header>
 <body>
-<div class="container mt-5 mb-5">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">
-                    <h3
-                            class="card-title"
-                            th:text="#{profile.edit.title}">Edit Profile</h3>
-                </div>
                 <div class="card-body">
                     <!-- Form for editing profile -->
-                    <form th:action="@{/mvc/profile/update}" th:object="${updateRequest}" method="POST">
-
+                    <form th:action="@{/mvc/profile/update}" th:object="${updateRequest}" method="POST" enctype="multipart/form-data">
                         <div class="form-group row mb-3">
+                            <!-- Profile Picture Upload -->
+                            <div class="text-center mb-3">
+                                <img th:src="${profilePhoto != '/images/default-profile-pic.png' ? profilePhoto : '/images/default-profile-pic.png'}"
+                                     alt="Profile Picture" class="rounded-circle img-thumbnail" width="400" height="150">
+
+                                <!-- Upload Profile Picture -->
+                                <input type="file" name="profileImage" class="form-control mt-2">
+                            </div>
+
+                            <!-- Full Name -->
                             <label class="col-sm-3 col-form-label" th:text="#{user.label.fullName}">Full Name</label>
                             <div class="col-sm-9 d-flex gap-2">
                                 <!-- First Name -->
@@ -33,14 +37,14 @@
                                     <input type="text" class="form-control" th:field="*{firstName}" placeholder="First Name"/>
                                     <small class="text-danger d-block"
                                            th:if="${#fields.hasErrors('firstName')}"
-                                           th:text="${#fields.errors('firstName')[0]}">First Name error placeholder!</small>
+                                           th:text="${#fields.errors('firstName')[0]}">First Name error!</small>
                                 </div>
                                 <!-- Last Name -->
                                 <div class="flex-fill">
                                     <input type="text" class="form-control" th:field="*{lastName}" placeholder="Last Name"/>
                                     <small class="text-danger d-block"
                                            th:if="${#fields.hasErrors('lastName')}"
-                                           th:text="${#fields.errors('lastName')[0]}">Last Name error placeholder!</small>
+                                           th:text="${#fields.errors('lastName')[0]}">Last Name error!</small>
                                 </div>
                             </div>
                         </div>
@@ -49,79 +53,53 @@
                         <div class="form-group row mb-3">
                             <label class="col-sm-3 col-form-label" th:text="#{user.label.email}">Email</label>
                             <div class="col-sm-9">
-
                                 <input class="form-control" type="email" th:field="*{email}"/>
-                                <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email
-                                    error placeholder! </small>
-
+                                <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error!</small>
                             </div>
                         </div>
 
-                        <!-- Phone Number (Optional for Admins) -->
+                        <!-- Phone Number (Admins Only) -->
                         <div class="form-group row mb-3" th:if="${isAdmin}">
-                            <label class="col-sm-3 col-form-label" th:text="#{user.label.phoneNumber}">Phone
-                                Number</label>
-
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.phoneNumber}">Phone Number</label>
                             <div class="col-sm-9">
                                 <input class="form-control" type="tel" th:field="*{phoneNumber}"/>
                                 <small class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}"
-                                       th:errors="*{phoneNumber}">Phone Number error
-                                    placeholder! </small>
+                                       th:errors="*{phoneNumber}">Phone Number error!</small>
                             </div>
                         </div>
 
-                        <!-- Profile Picture -->
+                        <!-- Password Fields -->
                         <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label" th:text="#{user.label.profilePictureURL}">Profile
-                                Picture URL</label>
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.password}">Current Password</label>
                             <div class="col-sm-9">
-                                <input type="url" class="form-control" th:field="*{profilePhoto}"
-                                       placeholder="https://example.com/image.jpg"/>
-                                <small class="text-danger" th:if="${#fields.hasErrors('profilePhoto')}"
-                                       th:errors="*{profilePhoto}">Photo error placeholder!</small>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label" th:text="#{user.label.password}">Password</label>
-                            <div class="col-sm-9">
-                                <input type="password" class="form-control" th:field="*{currentPassword}"
-                                       placeholder="Password *" required/>
-                                <small class="text-danger" th:if="${#fields.hasErrors('currentPassword')}"
-                                       th:errors="*{currentPassword}">Password error placeholder!</small>
+                                <input type="password" class="form-control" th:field="*{currentPassword}" placeholder="Current Password *" required/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('currentPassword')}" th:errors="*{currentPassword}">Password error!</small>
                             </div>
                         </div>
 
                         <div class="form-group row mb-3">
                             <label class="col-sm-3 col-form-label" th:text="#{user.label.newPassword}">New Password</label>
                             <div class="col-sm-9">
-                                <input type="password" class="form-control" th:field="*{newPassword}"
-                                       placeholder="New Password"/>
-                                <small class="text-danger" th:if="${#fields.hasErrors('newPassword')}"
-                                       th:errors="*{newPassword}">Password error placeholder!</small>
+                                <input type="password" class="form-control" th:field="*{newPassword}" placeholder="New Password"/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}">New Password error!</small>
                             </div>
                         </div>
 
                         <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label" th:text="#{user.label.newPasswordConfirm}">Confirm</label>
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.newPasswordConfirm}">Confirm Password</label>
                             <div class="col-sm-9">
-                                <input type="password" class="form-control" th:field="*{newPasswordRepeat}"
-                                       placeholder="Confirm New Password"/>
-                                <small class="text-danger" th:if="${#fields.hasErrors('newPasswordRepeat')}"
-                                       th:errors="*{newPasswordRepeat}">Password error placeholder!</small>
+                                <input type="password" class="form-control" th:field="*{newPasswordRepeat}" placeholder="Confirm New Password"/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('newPasswordRepeat')}" th:errors="*{newPasswordRepeat}">Confirm Password error!</small>
                             </div>
                         </div>
 
-
-
-
-                        <!-- Submit Button -->
+                        <!-- Save Changes Button -->
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary" th:text="#{profile.update.button}">
-                                Save Changes
-                            </button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary" onclick="history.back()">Cancel</button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
