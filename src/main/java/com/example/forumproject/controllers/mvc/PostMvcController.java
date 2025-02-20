@@ -194,9 +194,14 @@ public class PostMvcController {
     }
 
     @PostMapping("/{id}/delete")
-    public String deletePost(@PathVariable Long id) {
+    public String deletePost(@PathVariable Long id,
+                             @RequestHeader(value = "referer", required = false) String referer) {
         User user = userService.getAuthenticatedUser();
         postService.delete(id, user);
+
+        if (referer != null && referer.contains("/profile")) {
+            return "redirect:/mvc/profile";
+        }
         return "redirect:/mvc/posts";
     }
 
@@ -250,11 +255,9 @@ public class PostMvcController {
 
     @PostMapping("/{postId}/comments/{commentId}/delete")
     public String deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
-        User user = postService.getById(postId).getAuthor();
-        Comment comment = commentService.getById(postId, commentId);
-        if (user.isAdmin() || comment.getAuthor().equals(user) || comment.getPost().getAuthor().equals(user)) {
-            commentService.delete(postId, commentId);
-        }
+
+        commentService.delete(postId, commentId);
+
         return "redirect:/mvc/posts/" + postId;
     }
 

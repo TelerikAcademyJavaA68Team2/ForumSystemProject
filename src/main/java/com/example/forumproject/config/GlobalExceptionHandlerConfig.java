@@ -41,7 +41,7 @@ public class GlobalExceptionHandlerConfig {
         return "Method-Not-Allowed";
     }
 
-  //   Handle 401 errors (Unauthorized)
+   // Handle 401 errors (Unauthorized)
     @ExceptionHandler(UnauthorizedAccessException.class)
     public String handleUnauthorizedAccessException(UnauthorizedAccessException ex, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("error", ex.getMessage());
