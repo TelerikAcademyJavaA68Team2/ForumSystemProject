@@ -23,8 +23,7 @@
                 <!-- Post -->
                 <div class="card mb-3 shadow-sm">
                     <div class="card-body">
-
-                        <!--DELETE FORM-->    <!--DELETE FORM-->
+                        <!--DELETE FORM-->
                         <form sec:authorize="isAuthenticated()" th:if="${(#authentication.principal.username == post.author)
                                                              or #authorization.expression('hasAuthority(''ADMIN'')')}"
                               th:action="@{/mvc/posts/{id}/delete(id=${post.post_id})}" method="post"
@@ -32,7 +31,6 @@
                               onsubmit="return confirm('Are you sure you want to delete this post?')">
                             <button type="submit" class="btn btn-danger">Delete ️</button>
                         </form>
-
                         <!-- Post Main Info -->
                         <div class="d-flex align-items-center mb-2">
                             <!-- Photo!!! -->
@@ -132,7 +130,7 @@
                 </div>
             </div>
             <!-- Search-->
-            <div class="card mb-3"> <!-- Reduced margin-bottom -->
+            <div class="card mb-3">
                 <div class="card-header fw-bold">Search</div>
                 <div class="card-body">
                     <form th:action="@{/mvc/posts}" method="get">

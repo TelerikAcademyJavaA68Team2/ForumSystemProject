@@ -14,7 +14,7 @@
 <body>
 <!-- Posts -->
 <div class="container">
-    <div class="row gx-2"> <!-- Reduced the spacing using gx-2 -->
+    <div class="row gx-2">
         <!-- Left Column for Posts -->
         <div class="col-lg-8">
             <div th:each="post : ${user.user_posts}">
@@ -100,8 +100,6 @@
                 <hr class="my-4"/>
             </div>
         </div>
-
-
         <!-- Right Column for Profile Info -->
         <div class="col-lg-4">
             <!-- Profile Picture -->
@@ -123,37 +121,37 @@
                 <div class="card-body">
                     <!-- Username -->
                     <div class="row mb-2 align-items-center">
-                        <div class="col-sm-6 col-md-5 fw-bold"> <!-- Static Label: 35-40% width -->
+                        <div class="col-sm-6 col-md-5 fw-bold">
                             Username:
                         </div>
-                        <div class="col-sm-6 col-md-7"> <!-- Dynamic Value: Remaining width -->
+                        <div class="col-sm-6 col-md-7">
                             <span th:text="${user.username}">Username</span>
                         </div>
                     </div>
 
                     <!-- Email -->
                     <div class="row mb-2 align-items-center">
-                        <div class="col-sm-6 col-md-5 fw-bold"> <!-- Static Label: 35-40% width -->
+                        <div class="col-sm-6 col-md-5 fw-bold">
                             Email:
                         </div>
-                        <div class="col-sm-6 col-md-7"> <!-- Dynamic Value: Remaining width -->
+                        <div class="col-sm-6 col-md-7">
                             <span th:text="${user.email}">Email</span>
                         </div>
                     </div>
 
                     <!-- Phone Number (Optional for Admins) -->
                     <div class="row mb-2 align-items-center" th:if="${user.account_type} == 'ADMIN'">
-                        <div class="col-sm-6 col-md-5 fw-bold"> <!-- Static Label: 35-40% width -->
+                        <div class="col-sm-6 col-md-5 fw-bold">
                             Phone Number:
                         </div>
-                        <div class="col-sm-6 col-md-7"> <!-- Dynamic Value: Remaining width -->
+                        <div class="col-sm-6 col-md-7">
                             <span th:text="${user.phone_number}">Phone number</span>
                         </div>
                     </div>
 
                     <!-- Buttons Row -->
                     <div class="mt-2 text-end">
-                        <div class="d-flex justify-content-between gap-2"> <!-- Flexbox container -->
+                        <div class="d-flex justify-content-between gap-2">
                             <!-- Block/Unblock Button -->
                             <a class="btn btn-danger" style="width: 48%;"
                                th:if="${user.account_status == 'ACTIVE ACCOUNT'}"
@@ -179,7 +177,6 @@
                             </a>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

@@ -13,14 +13,12 @@
                 <p class="m-0 fw-bold fs-5">
                     <span class="text-secondary">Posted by </span>
 
-                    <!-- If the user is an admin or the author, link to the profile -->
                     <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')
               or (#authentication.name == post.author)}"
                        th:href="@{/mvc/admin/users/{id}(id=${post.getAuthorId()})}"
                        class="fw-bold text-primary"
                        th:text="${post.author}">Author Name</a>
 
-                    <!-- If the user is neither admin nor the author, display without a link -->
                     <span th:if="${#authentication.name != post.author
                  and not #authorization.expression('hasAuthority(''ADMIN'')')}"
                           th:text="${post.author}"
@@ -38,7 +36,6 @@
                 <!-- Post header-->
                 <div class="card mb-3">
                     <div class="card-body">
-                        <!-- Content inside a bordered, shadowed box for visibility -->
                         <div class="border p-3 rounded bg-light shadow-sm">
                             <p class="fs-5 mb-0 text-break" th:text="${post.content}">Post Content</p>
                         </div>
@@ -56,10 +53,8 @@
                                        th:href="@{/mvc/posts?tag={tagText}(tagText=${tagName})}">Tag</a></span>
                     </div>
                 </div>
-
                 <!-- Like / Dislike buttons -->
                 <div class="d-flex align-items-center">
-
                     <!-- Like Button (only for authenticated users) -->
                     <form th:action="@{/mvc/posts/{id}/like(id=${post.post_id})}" method="post"
                           sec:authorize="isAuthenticated()">
@@ -151,7 +146,7 @@
 
                                 <!-- Edit/Delete Options -->
                                 <div class="ms-auto d-flex flex-column align-items-end">
-                                    <!-- Edit Button (ONLY for Comment Author, NOT Admin) -->
+                                    <!-- Edit Button (ONLY for Comment Author) -->
                                     <button th:if="${#authentication.name == comment.author}"
                                             class="btn btn-warning edit-button btn-sm w-100"
                                             th:data-comment-id="${comment.commentId}"
@@ -196,18 +191,6 @@
 
         <!-- Sidebar Widgets -->
         <div class="col-lg-4">
-            <!-- Search widget-->
-            <!--            <div class="card mb-4">-->
-            <!--                <div class="card-header">Search</div>-->
-            <!--                <div class="card-body">-->
-            <!--                    <form th:action="@{/mvc/posts}" method="get">-->
-            <!--                        <input class="form-control mb-2" type="text" name="title" placeholder="Search by title..."/>-->
-            <!--                        <input class="form-control mb-2" type="text" name="author" placeholder="Search by author..."/>-->
-            <!--                        <button class="btn btn-primary w-100" type="submit">Search</button>-->
-            <!--                    </form>-->
-            <!--                </div>-->
-            <!--            </div>-->
-
             <!-- Tags widget -->
             <div class="card mb-4">
                 <div class="card-header" th:text="#{post.allTags}">All Tags</div>
@@ -232,7 +215,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -251,33 +233,27 @@
                 const commentId = this.getAttribute("data-comment-id");
                 const commentContent = this.getAttribute("data-comment-content");
 
-                // Fill form fields with comment data
                 commentIdField.value = commentId;
                 commentContentField.value = commentContent;
 
-                // Change form action to edit mode
                 const postId = commentForm.getAttribute("action").match(/\/posts\/(\d+)\//)[1];
                 commentForm.setAttribute("action", `/mvc/posts/${postId}/comments/${commentId}/edit`);
 
-                // Change button text to "Update Comment"
                 submitButton.textContent = "✅ Update Comment";
 
-                // Show cancel button
                 cancelEditButton.classList.remove("d-none");
             });
         });
 
-        // Reset form when cancel button is clicked
         cancelEditButton.addEventListener("click", function () {
             commentIdField.value = "";
             commentContentField.value = "";
             const postId = commentForm.getAttribute("action").match(/\/posts\/(\d+)\//)[1];
-            commentForm.setAttribute("action", `/mvc/posts/${postId}/comments/new`); // Reset action
+            commentForm.setAttribute("action", `/mvc/posts/${postId}/comments/new`);
             submitButton.textContent = "💬 Add Comment";
             this.classList.add("d-none");
         });
     });
-
 
 </script>
 </body>

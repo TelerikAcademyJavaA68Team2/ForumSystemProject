@@ -11,15 +11,11 @@
         </div>
     </div>
 </header>
-
 <body>
 <div class="container">
     <div class="row gx-2">
-
         <!-- Left Column for Posts -->
         <div class="col-lg-8">
-
-            <!--HEADER + POSTS TYPE--> <!--HEADER + POSTS TYPE-->
             <!--HEADER + POSTS TYPE--> <!--HEADER + POSTS TYPE-->
             <div class="card-header card mb-3 shadow-sm">
                 <h2 class="card-title m-0">
@@ -32,7 +28,6 @@
                     Posts
                 </h2>
             </div>
-
             <!--POSTS -- POSTS -- POSTS -- POSTS-->
             <div th:each="post : ${posts}">
                 <!-- Post -->
@@ -98,7 +93,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!--TAGS-->
                         <div class="mb-0" th:if="${not #lists.isEmpty(post.tags)}">
                             <div class="d-flex flex-wrap gap-1 small-tags-container align-items-center">
@@ -116,7 +110,6 @@
                 <!-- Divider -->
                 <hr class="my-4"/>
             </div>
-
             <!--  MORE POSTS BUTTON-->
             <div class="card mb-3 shadow-sm text-center">
                 <div class="card-body">
@@ -126,10 +119,7 @@
                 </div>
             </div>
         </div>
-
         <!-- Side widget-->
-        <!-- Right Column -->
-        <!-- Right Column -->
         <!-- Right Column -->
         <div class="col-lg-4">
             <!-- Create Post -->
