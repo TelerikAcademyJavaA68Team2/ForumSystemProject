@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{fragments/Page-Layout :: head('Delete')}">Delete Page</head>
+<header th:insert="~{fragments/Page-Layout :: navigation}"></header>
+<header class="py-2 bg-light border-bottom mb-4">
+    <div class="container">
+        <div class="text-center my-3">
+            <h1 class="fw-bolder" th:text="#{navigation.profile}">Page info</h1>
+        </div>
+    </div>
+</header>
+
+<body>
+<div class="container" style="margin-bottom: 5rem; margin-top: 5rem;">
+    <div class="row justify-content-center ">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body ">
+                    <form action="#" th:action="@{/mvc/profile/delete}" th:object="${request}" method="POST"
+                          onsubmit="return confirm('Are you sure you want to delete your account?')">
+
+                        <!-- Username Field -->
+
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label"
+                                   th:text="#{user.label.deleteAccount.capcha}">Capcha</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" th:field="*{capcha}"
+                                       placeholder="Delete my account"/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('capcha')}" th:errors="*{capcha}">Capcha
+                                    error placeholder!</small>
+                            </div>
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="form-group row mb-3">
+                            <label class="col-sm-3 col-form-label" th:text="#{user.label.password}">Password</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="password" th:field="*{password}"
+                                       placeholder="Password"/>
+                                <small class="text-danger" th:if="${#fields.hasErrors('password')}"
+                                       th:errors="*{password}">Capcha error placeholder!</small>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-flex justify-content-center">
+
+                            <button type="submit" class="btn btn-primary">Delete Account</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:insert="~{fragments/Page-Layout :: footer}"></footer>
+</body>
+</html>
