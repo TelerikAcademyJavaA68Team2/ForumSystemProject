@@ -35,11 +35,8 @@ public class AdminMvcController {
     }
 
     @GetMapping
-    public String showAdminPortalView2(Model model) {
-        User user = userService.getAuthenticatedUser();
-
-        model.addAttribute("user", user);
-        return "Admin-View";
+    public String showAdminPortalView2() {
+        return "redirect:/mvc/admin/users";
     }
 
     @GetMapping("/users")
