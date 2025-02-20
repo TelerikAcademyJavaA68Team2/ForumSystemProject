@@ -12705,3 +12705,24 @@ textarea.form-control-lg {
     white-space: nowrap; /* Prevent text wrapping */
     text-align: center;
 }
+/* Style the tags container */
+.small-tags-container {
+    font-size: 0.875rem; /* Smaller font size for the entire container */
+    gap: 0.25rem; /* Tighter spacing between tags */
+}
+
+/* Style individual tag links */
+.small-tags-container a {
+    padding: 0.25rem 0.5rem; /* Reduced padding */
+    border-radius: 4px; /* Smaller border radius */
+    background-color: #0d6efd; /* Default blue background */
+    color: #fff; /* White text */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover effect for tag links */
+.small-tags-container a:hover {
+    background-color: darkblue !important;
+    color: #fff !important;
+}
