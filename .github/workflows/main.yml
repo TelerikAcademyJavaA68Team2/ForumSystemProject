@@ -1,4 +1,4 @@
-name: Run Unit Tests on Commit
+name: Build and Test Application
 
 on:
   push:

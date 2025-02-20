@@ -1,4 +1,4 @@
-name: Qodana
+name: Qodana Code Quality Check
 on:
   workflow_dispatch:
   pull_request:
