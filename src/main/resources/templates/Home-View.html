@@ -33,88 +33,95 @@
                 </h2>
             </div>
 
-
-
-            <!--POSTS -- POSTS -- POSTS -- POSTS-->
             <!--POSTS -- POSTS -- POSTS -- POSTS-->
             <div th:each="post : ${posts}">
                 <!-- Post -->
                 <div class="card mb-3 shadow-sm">
                     <div class="card-body">
-                        <!-- Post Title -->
-                        <a href="#" th:href="@{/mvc/posts/{id}(id=${post.getPost_id()})}">
-                            <h2 class="card-title h4" th:text="${post.title}">Post Title</h2>
-                        </a>
-                        <!-- Author Info -->
+
+                        <!--DELETE FORM-->    <!--DELETE FORM-->
+                        <form sec:authorize="isAuthenticated()" th:if="${(#authentication.principal.username == post.author)
+                                                             or #authorization.expression('hasAuthority(''ADMIN'')')}"
+                              th:action="@{/mvc/posts/{id}/delete(id=${post.post_id})}" method="post"
+                              class="position-absolute top-0 end-0 me-2 mt-2"
+                              onsubmit="return confirm('Are you sure you want to delete this post?')">
+                            <button type="submit" class="btn btn-danger">Delete ️</button>
+                        </form>
+
+                        <!-- Post Main Info -->
                         <div class="d-flex align-items-center mb-2">
+                            <!-- Photo!!! -->
                             <img th:src="${post.profilePicture}" alt="Profile Picture"
-                                 class="profile-pic rounded-circle me-2" style="width: 40px; height: 40px;">
+                                 class="profile-pic rounded-circle me-2" style="width: 65px; height: 65px;"
+                            >
+                            <!--Content right of photo -->
+                            <div style="padding-left: 10px">
+                                <!-- Post Title -->
+                                <a href="#" th:href="@{/mvc/posts/{id}(id=${post.getPost_id()})}">
+                                    <h2 class="card-title h4" th:text="${post.title}">Post Title</h2>
+                                </a>
+                                <!-- Author Name -->
+                                <p class="m-0">
+                                    <span th:text="#{post.label}"></span>
+                                    <!-- If the user is an admin, link to the admin user profile -->
+                                    <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"
+                                       th:href="@{/mvc/admin/users/{id}(id=${post.getAuthorId()})}"
+                                       class="fw-bold text-primary"
+                                       th:text="${post.author}">Author Name</a>
+                                    <!-- If the user is the author (but not an admin), link to their profile -->
+                                    <a th:if="${#authentication.name == post.author and !#authorization.expression('hasAuthority(''ADMIN'')')}"
+                                       th:href="@{/mvc/profile}"
+                                       class="fw-bold text-primary"
+                                       th:text="${post.author}">Author Name</a>
+                                    <!-- If the user is neither Admin nor the author, display the name without a link -->
+                                    <span th:if="${#authentication.name != post.author and !#authorization.expression('hasAuthority(''ADMIN'')')}"
+                                          class="fw-bold"
+                                          th:text="${post.author}">Author Name</span>
+                                </p>
 
-                            <p class="m-0">
-                                <span th:text="#{post.label}"></span>
-
-                                <!-- If the user is an admin, link to the admin user profile -->
-                                <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"
-                                   th:href="@{/mvc/admin/users/{id}(id=${post.getAuthorId()})}"
-                                   class="fw-bold text-primary"
-                                   th:text="${post.author}">Author Name</a>
-
-                                <!-- If the user is the author (but not an admin), link to their profile -->
-                                <a th:if="${#authentication.name == post.author and !#authorization.expression('hasAuthority(''ADMIN'')')}"
-                                   th:href="@{/mvc/profile}"
-                                   class="fw-bold text-primary"
-                                   th:text="${post.author}">Author Name</a>
-
-                                <!-- If the user is neither Admin nor the author, display the name without a link -->
-                                <span th:if="${#authentication.name != post.author and !#authorization.expression('hasAuthority(''ADMIN'')')}"
-                                      class="fw-bold"
-                                      th:text="${post.author}">Author Name</span>
-                            </p>
-                        </div>
-
-                        <!-- Tags -->
-                        <div class="mb-3" th:if="${not #lists.isEmpty(post.tags)}">
-                            <span class="fw-bold fs-5" th:text="#{post.tags}">Tags:</span>
-                            <div class="d-flex flex-wrap gap-2 mt-2">
-                                <span th:each="tagName : ${post.tags}">
-                                    <a class="badge bg-primary text-white text-decoration-none px-3 py-2 fs-6"
-                                       style="border-radius: 8px; display: inline-block;"
-                                       th:text="${tagName}" href="#"
-                                       th:href="@{/mvc/posts?tag={tagText}(tagText=${tagName})}">Tag</a></span>
+                                <!-- Likes, Dislikes, Comments -->
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <ul class="list-inline m-0 d-flex align-items-center">
+                                        <!-- Likes -->
+                                        <li class="list-inline-item me-2">
+                                            <span class="fw-bold" th:text="${post.likes} + '👍'">25 👍</span>
+                                        </li>
+                                        <!-- Dislikes -->
+                                        <li class="list-inline-item me-2">
+                                            <span class="fw-bold" th:text="${post.dislikes} + '👎'">25 👎</span>
+                                        </li>
+                                        <!-- Comments -->
+                                        <li class="list-inline-item">
+                                            <span class="fw-bold" th:text="${post.comments.size()} + '💬'">25 💬</span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <!-- Reactions -->
-                        <ul class="list-inline">
-                            <!-- Likes Button -->
-                            <button class="btn btn-outline-success" disabled>
-                                <i class="fas fa-thumbs-up"></i>
-                                <span class="fw-bold" th:text="|👍 ${post.likes} Likes|">25 Likes</span>
-                            </button>
 
-                            <!-- Dislikes Button -->
-                            <button class="btn btn-outline-danger" disabled>
-                                <i class="fas fa-thumbs-down"></i>
-                                <span class="fw-bold" th:text="|👎 ${post.dislikes} Dislikes|">25 Dislikes</span>
-                            </button>
-                        </ul>
-                        <!-- Comments -->
-                        <button class="btn btn-outline-primary" disabled>
-                            <i class="fas fa-comment"></i>
-                            <span class="fw-bold" th:text="|💬 ${post.comments.size()} Comments|">25 Comments</span>
-                        </button>
-                        <!-- Read More Button -->
-                        <a class="btn btn-primary" th:href="@{/mvc/posts/{id}(id=${post.getPost_id()})}">Read more →</a>
+                        <!--TAGS-->
+                        <div class="mb-0" th:if="${not #lists.isEmpty(post.tags)}">
+                            <div class="d-flex flex-wrap gap-1 small-tags-container align-items-center">
+                                <span class=" fw-bold fs-6" th:text="#{post.tags}">Tags:</span>
+                                <span th:each="tagName : ${post.tags}">
+                                     <a class="bg-primary text-white text-decoration-none px-2 py-1 fs-7"
+                                        style="border-radius: 8px; display: inline-block;"
+                                        th:text="${tagName}"
+                                        th:href="@{/mvc/posts?tag={tagText}(tagText=${tagName})}">Tag</a>
+                               </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
                 <!-- Divider -->
                 <hr class="my-4"/>
             </div>
 
+            <!--  MORE POSTS BUTTON-->
             <div class="card mb-3 shadow-sm text-center">
                 <div class="card-body">
-                    <a href="/mvc/posts">
-                        <h1>More Posts→</h1>
+                    <a href="/mvc/posts" class="text-decoration-none">
+                        <h1 th:text="'More Posts→'">More Posts→</h1>
                     </a>
                 </div>
             </div>
