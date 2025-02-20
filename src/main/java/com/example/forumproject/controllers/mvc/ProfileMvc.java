@@ -4,10 +4,13 @@ import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
 import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileAdminDto;
 import com.example.forumproject.models.dtos.adminResponceDtos.FullProfileUserDto;
+import com.example.forumproject.models.dtos.userDtos.DeleteAccountRequest;
 import com.example.forumproject.models.dtos.userDtos.RequestUserProfileDto;
 import com.example.forumproject.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -111,4 +114,28 @@ public class ProfileMvc {
         return "redirect:/mvc/profile";
     }
 
+    @GetMapping("/delete")
+    public String getDeleteAccountPage(Model model) {
+        model.addAttribute("request", new DeleteAccountRequest());
+        return "Delete-Account";
+    }
+
+    @PostMapping("/delete")
+    public String executeDeleteAccountRequest(@Valid @ModelAttribute("request") DeleteAccountRequest request, BindingResult errors, HttpSession session) {
+        if (errors.hasErrors()) {
+            return "Delete-Account";
+        }
+        if (!request.getCapcha().equalsIgnoreCase("Delete my account")) {
+            errors.rejectValue("capcha", "capcha.mismatch", "Wrong Capcha");
+            return "Delete-Account";
+        }
+        if (!passwordEncoder.matches(request.getPassword(), userService.getAuthenticatedUser().getPassword())) {
+            errors.rejectValue("password", "password.mismatch", "Wrong Password");
+            return "Delete-Account";
+        }
+        userService.deleteUser();
+        SecurityContextHolder.clearContext();
+        session.invalidate();
+        return "redirect:/mvc/home";
+    }
 }
