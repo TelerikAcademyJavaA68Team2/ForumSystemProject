@@ -16,13 +16,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/")
-public class PublicMvc {
+public class PublicMvcController {
 
     private final UserService userService;
     private final PostService postService;
     private final PostMapper postMapper;
 
-    public PublicMvc(UserService userService, PostService postService, PostMapper postMapper) {
+    public PublicMvcController(UserService userService, PostService postService, PostMapper postMapper) {
         this.userService = userService;
         this.postService = postService;
         this.postMapper = postMapper;

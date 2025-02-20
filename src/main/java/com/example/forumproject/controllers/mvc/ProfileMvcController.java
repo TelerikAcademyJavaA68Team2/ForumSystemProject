@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/mvc/profile")
-public class ProfileMvc {
+public class ProfileMvcController {
 
     private final UserMapper userMapper;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ProfileMvc(UserMapper userMapper, UserService userService, PasswordEncoder passwordEncoder) {
+    public ProfileMvcController(UserMapper userMapper, UserService userService, PasswordEncoder passwordEncoder) {
         this.userMapper = userMapper;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;

@@ -122,12 +122,6 @@ public class PostMvcController {
     public String showCreatePostPage(Model model) {
         User user = userService.getAuthenticatedUser();
 
-        //ToDo what happends when a user is blocked
-//        if(user.isBlocked()){
-//            model.addAttribute("error", "Blocked users can't create posts.");
-//            return "unauthorized";
-//        }
-
         model.addAttribute("author", user.getUsername());
         model.addAttribute("action", "create");
         model.addAttribute("post", new PostInDto());
