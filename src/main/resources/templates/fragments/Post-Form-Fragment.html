@@ -24,6 +24,7 @@
   <!-- Post Title -->
   <div class="card mb-4">
     <div class="card-body">
+      <div class="text-start fw-bold fs-5" th:text="#{post.label.title}">Title</div>
       <h2 class="card-title">
         <input type="text" class="form-control" th:field="*{title}" placeholder="Enter Post Title"
                th:readonly="${action == 'update' and #authentication.principal.username != author}">
@@ -31,6 +32,7 @@
       <small class="text-danger" th:errors="*{title}"></small>
 
       <!-- Post Content -->
+      <div class="text-start fw-bold fs-5" th:text="#{post.label.description}">Description</div>
       <p class="card-text">
         <textarea class="form-control" rows="4" th:field="*{content}" placeholder="Write your post content..."
                   th:readonly="${action == 'update' and #authentication.principal.username != author}"></textarea>
@@ -38,11 +40,12 @@
       <small class="text-danger" th:errors="*{content}"></small>
 
       <!-- Tags -->
+      <div class="text-start fw-bold fs-5" th:text="#{post.label.tags}">Tags</div>
       <div th:if="${action == 'update'}">
-        <label for="tags">Tags:</label>
-        <input type="text" class="form-control" th:field="*{tagNames}" id="tags" placeholder="Add tags">
+        <input type="text" class="form-control" th:field="*{tagNames}" placeholder="Add tags (comma-separated)">
         <small class="text-danger" th:errors="*{tagNames}"></small>
       </div>
+
 
       <!-- Form Buttons -->
       <div class="mt-3">
