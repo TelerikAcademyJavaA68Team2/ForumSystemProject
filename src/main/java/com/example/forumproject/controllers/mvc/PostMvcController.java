@@ -146,9 +146,9 @@ public class PostMvcController {
     }
 
     @GetMapping("/{id}/edit")
-    public String showUpdatePostView(@PathVariable Long id, Model model) {
+    public String showEditPostView(@PathVariable Long id, Model model) {
 
-        User user = userService.getAuthenticatedUser();
+        User user = postService.getById(id).getAuthor();
         Post post = postService.getById(id);
 
         if(!user.isAdmin() && !post.getAuthor().equals(user)) {
@@ -163,14 +163,15 @@ public class PostMvcController {
     }
 
     @PostMapping("/{id}/edit")
-    public String updatePost(@PathVariable int id,
-                             @Valid @ModelAttribute("post") PostUpdateDto updatePostDTO,
-                             BindingResult errors,
-                             Model model){
+    public String editPost(@PathVariable int id,
+                           @Valid @ModelAttribute("post") PostUpdateDto updatePostDTO,
+                           BindingResult errors,
+                           Model model){
         User author = postService.getById(updatePostDTO.getId()).getAuthor();
 
         model.addAttribute("action","update");
-        model.addAttribute("author", postService.getById(updatePostDTO.getId()).getAuthor().getUsername());
+        model.addAttribute("author", author.getUsername());
+
         if (errors.hasErrors()){
             return "Post-Update-View";
         }
