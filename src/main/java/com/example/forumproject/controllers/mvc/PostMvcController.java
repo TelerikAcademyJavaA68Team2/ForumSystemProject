@@ -250,9 +250,9 @@ public class PostMvcController {
 
         List<String> currentTags = tags.isEmpty() ? postTagService.getTagsByPostId(id).stream().map(Tag::getTagName).toList() : tags;
         List<String> currentTags2 = new ArrayList<>(currentTags);
-        model.addAttribute("currentTags", currentTags); // Current tags for the post
-        model.addAttribute("currentTags2", currentTags2); // Current tags for the dto
-        model.addAttribute("newTagDto", new TagInDto(currentTags2)); // option for new tag
+        model.addAttribute("currentTags", currentTags);
+        model.addAttribute("currentTags2", currentTags2);
+        model.addAttribute("newTagDto", new TagInDto(currentTags2));
         StringBuilder queryString = new StringBuilder();
         for (String name : currentTags2) {
             queryString.append(name).append("&tags=");
@@ -263,7 +263,7 @@ public class PostMvcController {
         }
 
 
-        model.addAttribute("query", (queryString.toString())); // option for new tag
+        model.addAttribute("query", (queryString.toString()));
 
         return "Edit-Post-View";
     }
