@@ -74,7 +74,13 @@
                             <!-- Form Buttons -->
                             <div class="mt-3">
                                 <button type="submit" class="btn btn-primary"> Update Post</button>
-                                <button type="button" class="btn btn-secondary" onclick="history.back()">Cancel</button>
+
+                                <a href="#"
+                                   th:href="@{'/mvc/posts/'+${post.id}}"
+                                   class="btn btn-secondary"> <span th:text="'Cansel'">Cancel</span>
+                                </a>
+
+
                             </div>
                         </div>
                     </div>
@@ -83,25 +89,23 @@
                 <!-- Add New Tag -->
 
 
-
-
                 <div class="card mb-4">
                     <div class="card-body">
 
-                            <div class="text-start fw-bold fs-5 mb-1" th:text="#{post.addTag.label}">
-                                <label class="col-sm-3 col-form-label" th:text="#{post.addTag.label}">Title</label>
+                        <div class="text-start fw-bold fs-5 mb-1" th:text="#{post.addTag.label}">
+                            <label class="col-sm-3 col-form-label" th:text="#{post.addTag.label}">Title</label>
+                        </div>
+
+
+                        <form th:action="@{/mvc/posts/{id}/edit/add-tag(id=${post.id})}"
+                              th:object="${newTagDto}" method="POST">
+                            <div class="input-group mb-3">
+                                <input type="hidden" th:field="*{tagsList}" th:value="${currentTags2}">
+                                <input type="text" class="form-control" th:field="*{tagName}"
+                                       placeholder="Enter new tag name"/>
+                                <button class="btn btn-outline-success" type="submit">Add Tag</button>
                             </div>
-
-
-                            <form th:action="@{/mvc/posts/{id}/edit/add-tag(id=${post.id})}"
-                                  th:object="${newTagDto}" method="POST">
-                                <div class="input-group mb-3">
-                                    <input type="hidden" th:field="*{tagsList}" th:value="${currentTags2}">
-                                    <input type="text" class="form-control" th:field="*{tagName}"
-                                           placeholder="Enter new tag name"/>
-                                    <button class="btn btn-outline-success" type="submit">Add Tag</button>
-                                </div>
-                            </form>
+                        </form>
                     </div>
                 </div>
             </div>
