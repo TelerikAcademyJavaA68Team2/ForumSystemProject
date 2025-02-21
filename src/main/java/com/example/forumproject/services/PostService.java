@@ -18,7 +18,7 @@ public interface PostService {
 
     void create(Post beer, User user);
 
-    void update(Post beer, User user);
+    void update(Post post, User user);
 
     void delete(Long id, User user);
 }
