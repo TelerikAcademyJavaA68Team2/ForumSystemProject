@@ -66,7 +66,7 @@ public class TagServiceTests {
         Mockito.when(tagRepository.getTagByName(tag.getTagName())).thenReturn(tag);
 
         // Act
-        Tag resultTag = service.getTagByName(tag.getTagName());
+        Tag resultTag = service.getOrCreateAndGetTagByName(tag.getTagName());
 
         // Assert
         Assertions.assertEquals(tag.getId(), resultTag.getId());
@@ -81,6 +81,6 @@ public class TagServiceTests {
         Mockito.when(tagRepository.getTagByName(tag.getTagName())).thenThrow(EntityNotFoundException.class);
 
         // Act, Assert
-        Assertions.assertThrows(EntityNotFoundException.class, () -> service.getTagByName(tag.getTagName()));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> service.getOrCreateAndGetTagByName(tag.getTagName()));
     }
 }

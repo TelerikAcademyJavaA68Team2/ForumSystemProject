@@ -99,7 +99,7 @@ public class TagController {
     public ResponseEntity<String> updateTagInPostByTagId(@Valid @RequestBody TagInDto tagDTO,
                                                          @PathVariable Long postId, @PathVariable String tagName) {
         try {
-            Tag tag = tagService.getTagByName(tagName);
+            Tag tag = tagService.getOrCreateAndGetTagByName(tagName);
             postTagService.updateTagOnPost(postId, tag.getId(), tagDTO.getTagName());
             return ResponseEntity.status(HttpStatus.CREATED).body("Tag changed successfully!");
         } catch (EntityNotFoundException e) {
@@ -124,7 +124,7 @@ public class TagController {
     public ResponseEntity<String> deleteTagFromPost(@PathVariable Long postId,
                                                     @PathVariable String tagName) {
         try {
-            Tag tag = tagService.getTagByName(tagName);
+            Tag tag = tagService.getOrCreateAndGetTagByName(tagName);
             postTagService.deleteTagFromPost(postId, tag.getId());
             return ResponseEntity.status(HttpStatus.OK).body("Tag deleted successfully!");
         } catch (EntityNotFoundException e) {

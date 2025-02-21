@@ -29,7 +29,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag getTagByName(String tagName) {
+    public Tag getOrCreateAndGetTagByName(String tagName) {
         try {
             return tagRepository.getTagByName(tagName);
         } catch (EntityNotFoundException e) {

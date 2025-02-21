@@ -10,5 +10,5 @@ public interface TagService {
 
     Tag getTagById(Long tag_id);
 
-    Tag getTagByName(String tagName);
+    Tag getOrCreateAndGetTagByName(String tagName);
 }

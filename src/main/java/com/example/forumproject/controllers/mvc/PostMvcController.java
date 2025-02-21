@@ -286,15 +286,13 @@ public class PostMvcController {
             List<Tag> currentTags = postTagService.getTagsByPostId(id);
             currentTags.stream().filter(e -> !tags.contains(e.getTagName())).forEach(e -> postTagService.deleteTagFromPost(id, e.getId()));
 
-            Post updatedPost = postMapper.dtoToObject(updatePostDTO);
-            postService.update(updatedPost, user);
-
-
-            List<Tag> newTags = tags.stream().map(tagService::getTagByName).filter(e -> !currentTags.contains(e)).toList();
-            //add new tags
+            List<Tag> newTags = tags.stream().map(tagService::getOrCreateAndGetTagByName).filter(e -> !currentTags.contains(e)).toList();
             for (Tag tag : newTags) {
                 postTagService.createTagOnPost(id, tag.getTagName());
             }
+
+            Post updatedPost = postMapper.dtoToObject(updatePostDTO);
+            postService.update(updatedPost, user);
 
             return format(REDIRECT, id);
         } catch (IllegalArgumentException i) {
