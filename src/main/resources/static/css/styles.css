@@ -12733,3 +12733,9 @@ textarea.form-control-lg {
     background-color: darkblue !important;
     color: #fff !important;
 }
+
+.badgeRed:hover {
+    background-color: red !important;
+    color: white !important;
+    border-color: red !important;
+}
