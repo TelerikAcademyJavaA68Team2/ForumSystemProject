@@ -1,5 +1,6 @@
 package com.example.forumproject.services.tagService;
 
+import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.models.Tag;
 import com.example.forumproject.repositories.tagsRepository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag getTagByName(String tagName) {
+        try {
+            return tagRepository.getTagByName(tagName);
+        } catch (EntityNotFoundException e) {
+            tagRepository.create(new Tag(tagName));
+        }
         return tagRepository.getTagByName(tagName);
     }
 }
