@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 @ExtendWith(MockitoExtension.class)
 public class TagServiceTests {
 
@@ -35,6 +37,16 @@ public class TagServiceTests {
         Assertions.assertEquals(tag.getId(), resultTag.getId());
         Assertions.assertEquals(tag.getTagName(), resultTag.getTagName());
         Assertions.assertEquals(tag.getClass(), resultTag.getClass());
+    }
+
+    @Test
+    public void getTagAllTags_ShouldReturnAllTag_When_ValidArgs() {
+        // Arrange
+        Tag tag = Helpers.createMockTag();
+        Mockito.when(tagRepository.getAllTags()).thenReturn(List.of(tag));
+
+        // Assert
+        Assertions.assertEquals(List.of(tag),tagRepository.getAllTags());
     }
 
     @Test

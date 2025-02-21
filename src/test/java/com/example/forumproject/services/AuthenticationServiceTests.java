@@ -69,6 +69,29 @@ public class AuthenticationServiceTests {
     }
 
     @Test
+    void registerMvc_ShouldCreateUser_WhenUserIsRegistered() {
+        // Arrange
+        UserRegistrationDto registrationRequest = Helpers.createMockAUserRegistrationDto();
+        User user = Helpers.createMockUser();
+        user.setId(null);
+        Mockito.when(passwordEncoder.encode(registrationRequest.getPassword())).thenReturn("encodedPassword123");
+
+        // Act, Assert
+        Assertions.assertDoesNotThrow(() -> authenticationService.registerForMvc(registrationRequest));
+    }
+
+    @Test
+    void registerMvc_ShouldThrowExc_WhenPasswordConfirmInvalid() {
+        // Arrange
+        UserRegistrationDto registrationRequest = Helpers.createMockAUserRegistrationDto();
+        registrationRequest.setPasswordConfirm("invalid");
+
+
+        // Act, Assert
+        Assertions.assertThrows(InvalidUserInputException.class, () -> authenticationService.register(registrationRequest));
+    }
+
+    @Test
     void authenticate_ShouldReturnToken_WhenCredentialsAreValid() {
         // Arrange
         User user = Helpers.createMockUser();
