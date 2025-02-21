@@ -16,7 +16,7 @@ public interface PostService {
 
     Post getById(Long id);
 
-    void create(Post beer, User user);
+    void create(Post post, User user);
 
     void update(Post post, User user);
 
