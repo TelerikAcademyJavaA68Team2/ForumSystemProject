@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -248,7 +249,7 @@ public class PostMvcController {
         PostUpdateDto updatePostDTO = postMapper.postToPostUpdateDto(id);
         model.addAttribute("post", updatePostDTO);
 
-        List<String> currentTags = tags.isEmpty() ? postTagService.getTagsByPostId(id).stream().map(Tag::getTagName).toList() : tags;
+        List<String> currentTags = tags.isEmpty() ? postTagService.getTagsByPostId(id).stream().map(Tag::getTagName).toList() : tags.stream().filter(e-> !Objects.equals(e, "0")).toList();
         List<String> currentTags2 = new ArrayList<>(currentTags);
         model.addAttribute("currentTags", currentTags);
         model.addAttribute("currentTags2", currentTags2);
@@ -289,10 +290,10 @@ public class PostMvcController {
             postService.update(updatedPost, user);
 
 
-            List<Tag> newTags = tags.stream().map(tagService::getTagByName).filter(e->!currentTags.contains(e)).toList();
+            List<Tag> newTags = tags.stream().map(tagService::getTagByName).filter(e -> !currentTags.contains(e)).toList();
             //add new tags
             for (Tag tag : newTags) {
-                    postTagService.createTagOnPost(id, tag.getTagName());
+                postTagService.createTagOnPost(id, tag.getTagName());
             }
 
             return format(REDIRECT, id);
@@ -325,27 +326,16 @@ public class PostMvcController {
         return String.format("redirect:/mvc/posts/%d/edit?tags=%s", id, String.join("&tags=", updatedTags));
     }
 
-    // Remove a tag
     @GetMapping("/{id}/edit/remove-tag/{tagName}")
     public String removeTagFromPost(@PathVariable Long id,
                                     @PathVariable String tagName,
                                     @RequestParam(required = false, defaultValue = "") List<String> tags) {
 
-        try{
-           Tag tagToRemove = tagService.getTagByName(tagName);
-            postTagService.deleteTagFromPost(id, tagToRemove.getId());
-        } catch (EntityNotFoundException e) {
-            return String.format("redirect:/mvc/posts/%d/edit", id);
-        }
-
         List<String> updatedTags = tags.stream()
                 .filter(existingTag -> !existingTag.equalsIgnoreCase(tagName))
                 .toList();
 
-        if (updatedTags.isEmpty()) {
-            return String.format("redirect:/mvc/posts/%d/edit", id);
-        } else {
-            return String.format("redirect:/mvc/posts/%d/edit?tags=%s", id, String.join("&tags=", updatedTags));
-        }
+        return String.format(
+                "redirect:/mvc/posts/%d/edit%s", id, updatedTags.isEmpty() ? "?tags=0" : "?tags=" + String.join("&tags=", updatedTags));
     }
 }

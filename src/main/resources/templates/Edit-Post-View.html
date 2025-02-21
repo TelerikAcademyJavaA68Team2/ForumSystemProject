@@ -52,7 +52,7 @@
                             <div class="form-group mb-3 align-middle mt-2">
                                 <div class="d-flex flex-wrap gap-2 justify-content-center">
                                     <div class="form-label" th:text="#{post.label.tags}">Tags:</div>
-                                    <span th:if="${not #lists.isEmpty(currentTags)}" th:each="tagName : ${currentTags}">
+                                    <span th:each="tagName : ${currentTags}">
                                          <a href="#"
                                             th:href="@{'/mvc/posts/'+${post.id}+'/edit/remove-tag/'+${tagName}+'?tags='+${query}}"
                                             class="badge badgeRed bg-primary text-white me-2"
