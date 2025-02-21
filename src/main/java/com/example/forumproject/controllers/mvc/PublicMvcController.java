@@ -56,7 +56,6 @@ public class PublicMvcController {
         return "Home-View";
     }
 
-
     @GetMapping("/mvc/about")
     public String showAboutPage() {
         return "About-View";

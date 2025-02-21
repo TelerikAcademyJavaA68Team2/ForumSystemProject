@@ -1,4 +1,4 @@
-package com.example.forumproject.config;
+package com.example.forumproject.controllers;
 
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
@@ -13,9 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 //Implemented for MVC for easy exception handling
-//Todo make one error page on /error
 @ControllerAdvice
-public class GlobalExceptionHandlerConfig {
+public class GlobalExceptionHandler {
 
     // Handle 404 errors (No mapping found)
     @ExceptionHandler(NoHandlerFoundException.class)
@@ -65,7 +64,7 @@ public class GlobalExceptionHandlerConfig {
         return "Forbidden-View";
     }
 
-//ToDo - uncomment when done with project!
+// uncomment when done with project!
 
 //    // Handle all other exceptions
 //    @ExceptionHandler(Exception.class)
