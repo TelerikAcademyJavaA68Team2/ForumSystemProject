@@ -37,11 +37,9 @@ public class PostTagId implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PostTagId postTagId = (PostTagId) o;
-        return Objects.equals(postId, postTagId.postId) &&
-                Objects.equals(tagId, postTagId.tagId);
+        return Objects.equals(postId, postTagId.postId) && Objects.equals(tagId, postTagId.tagId);
     }
 
     @Override
