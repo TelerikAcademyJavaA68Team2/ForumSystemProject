@@ -13,10 +13,12 @@ import com.example.forumproject.models.dtos.postDtos.PostFilterDto;
 import com.example.forumproject.models.dtos.postDtos.PostInDto;
 import com.example.forumproject.models.dtos.postDtos.PostOutDto;
 import com.example.forumproject.models.dtos.postDtos.PostUpdateDto;
+import com.example.forumproject.models.dtos.tagDtos.TagInDto;
 import com.example.forumproject.models.filterOptions.PostFilterOptions;
 import com.example.forumproject.services.PostService;
 import com.example.forumproject.services.UserService;
 import com.example.forumproject.services.commentService.CommentService;
+import com.example.forumproject.services.postTagService.PostTagService;
 import com.example.forumproject.services.reactionService.ReactionService;
 import com.example.forumproject.services.tagService.TagService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +28,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,8 +47,10 @@ public class PostMvcController {
     private final ReactionService reactionService;
     private final CommentMapper commentMapper;
     private final CommentService commentService;
+    private final PostTagService postTagService;
 
-    public PostMvcController(PostService postService, PostMapper postMapper, TagService tagService, UserService userService, ReactionService reactionService, CommentMapper commentMapper, CommentService commentService) {
+
+    public PostMvcController(PostService postService, PostMapper postMapper, TagService tagService, UserService userService, ReactionService reactionService, CommentMapper commentMapper, CommentService commentService, PostTagService postTagService) {
         this.postService = postService;
         this.postMapper = postMapper;
         this.tagService = tagService;
@@ -53,6 +58,7 @@ public class PostMvcController {
         this.reactionService = reactionService;
         this.commentMapper = commentMapper;
         this.commentService = commentService;
+        this.postTagService = postTagService;
     }
 
     @ModelAttribute("requestURI")
@@ -145,49 +151,6 @@ public class PostMvcController {
         return format(REDIRECT, post.getId());
     }
 
-    @GetMapping("/{id}/edit")
-    public String showEditPostView(@PathVariable Long id, Model model) {
-
-        User user = postService.getById(id).getAuthor();
-        Post post = postService.getById(id);
-
-        if(!user.isAdmin() && !post.getAuthor().equals(user)) {
-           return format(REDIRECT, post.getId());
-        }
-
-        PostUpdateDto updatePostDTO = postMapper.postToPostUpdateDto(id);
-        model.addAttribute("post", updatePostDTO);
-        model.addAttribute("action", "update");
-        model.addAttribute("author", user.getUsername());
-        return "Post-Update-View";
-    }
-
-    @PostMapping("/{id}/edit")
-    public String editPost(@PathVariable int id,
-                           @Valid @ModelAttribute("post") PostUpdateDto updatePostDTO,
-                           BindingResult errors,
-                           Model model){
-
-        User author = postService.getById(updatePostDTO.getId()).getAuthor();
-
-        model.addAttribute("action","update");
-        model.addAttribute("author", author.getUsername());
-
-        if (errors.hasErrors()){
-            return "Post-Update-View";
-        }
-
-        try {
-            Post post = postMapper.dtoToObject(updatePostDTO);
-            postService.update(post, author);
-            return format(REDIRECT, id);
-        } catch (DuplicateEntityException e) {
-            return format(REDIRECT, id);
-        } catch (IllegalArgumentException i){
-            errors.rejectValue("tagNames", "tags-invalid", i.getMessage());
-            return "Post-Update-View";
-        }
-    }
 
     @PostMapping("/{id}/delete")
     public String deletePost(@PathVariable Long id,
@@ -220,6 +183,14 @@ public class PostMvcController {
         return format(REDIRECT, id);
     }
 
+    @PostMapping("/{postId}/comments/{commentId}/delete")
+    public String deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
+
+        commentService.delete(postId, commentId);
+
+        return "redirect:/mvc/posts/" + postId;
+    }
+
     @PostMapping("/{id}/comments/{commentId}/edit")
     public String editComment(@PathVariable Long id,
                               @PathVariable Long commentId,
@@ -249,14 +220,6 @@ public class PostMvcController {
         return "redirect:/mvc/posts/" + id;
     }
 
-    @PostMapping("/{postId}/comments/{commentId}/delete")
-    public String deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
-
-        commentService.delete(postId, commentId);
-
-        return "redirect:/mvc/posts/" + postId;
-    }
-
     @PostMapping("/{id}/like")
     public String likePost(@PathVariable Long id) {
         User user = userService.getAuthenticatedUser();
@@ -271,5 +234,138 @@ public class PostMvcController {
         Post post = postService.getById(id);
         reactionService.save(post, user, false);
         return format(REDIRECT, id);
+    }
+
+
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+    // NEWNEWNENWNEWNNENWNEW
+
+
+    @GetMapping("/{id}/edit")
+    public String showEditPostView(@PathVariable Long id, @RequestParam(required = false, defaultValue = "") List<String> tags, Model model) {
+
+        Post post = postService.getById(id);
+        User user = post.getAuthor();
+        if (!user.isAdmin() && !post.getAuthor().equals(userService.getAuthenticatedUser())) {
+            return format(REDIRECT, post.getId());
+        }
+
+        PostUpdateDto updatePostDTO = postMapper.postToPostUpdateDto(id);
+        model.addAttribute("post", updatePostDTO);
+
+        List<String> currentTags = tags.isEmpty() ? postTagService.getTagsByPostId(id).stream().map(Tag::getTagName).toList() : tags;
+        List<String> currentTags2 = new ArrayList<>(currentTags);
+        model.addAttribute("currentTags", currentTags); // Current tags for the post
+        model.addAttribute("currentTags2", currentTags2); // Current tags for the dto
+        model.addAttribute("newTagDto", new TagInDto(currentTags2)); // option for new tag
+        StringBuilder queryString = new StringBuilder();
+        for (String name : currentTags2) {
+            queryString.append(name).append("&tags=");
+        }
+        if (queryString.length() >= 6) {
+
+            queryString = new StringBuilder(queryString.substring(0, queryString.length() - 6));
+        }
+
+
+        model.addAttribute("query", (queryString.toString())); // option for new tag
+
+        return "Edit-Post-View";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String editPost(@PathVariable Long id, @RequestParam(required = false, defaultValue = "") List<String> tags,
+                           @Valid @ModelAttribute("post") PostUpdateDto updatePostDTO, BindingResult errors) {
+        if (errors.hasErrors()) {
+            return "Edit-Post-View"; // Re-render the form with errors
+        }
+
+        try {
+            Post originalPost = postService.getById(id);
+            User user = userService.getAuthenticatedUser();
+            if (!originalPost.getAuthor().equals(user) && !user.isAdmin()) {
+                throw new UnauthorizedAccessException("You do not have permission to edit this post.");
+            }
+
+            // Remove old tags
+            List<Tag> newTags = tags.stream().map(tagService::getTagByName).toList();
+            //add new tags
+            for (Tag tag : newTags) {
+                try {
+                    postTagService.createTagOnPost(id, tag.getTagName());
+                } catch (DuplicateEntityException e) {
+                    return "Not-Found-View";
+                }
+            }
+
+            List<Tag> currentTags = postTagService.getTagsByPostId(id);
+            currentTags.stream().filter(e -> !tags.contains(e.getTagName())).forEach(e -> postTagService.deleteTagFromPost(id, e.getId()));
+
+
+            Post updatedPost = postMapper.dtoToObject(updatePostDTO);
+            postService.update(updatedPost, user);
+
+            return format(REDIRECT, id);
+        } catch (IllegalArgumentException i) {
+            errors.rejectValue("tags", "tags-invalid", i.getMessage());
+            return "Edit-Post-View"; // Re-render the form with errors
+        } catch (UnauthorizedAccessException e) {
+            return "redirect:/mvc/error";
+        }
+    }
+
+    @PostMapping("/{id}/edit/add-tag")
+    public String addTagToPost(@PathVariable Long id,
+                               @Valid @ModelAttribute("newTagDto") TagInDto newTagDto,
+                               BindingResult errors) {
+
+        if (errors.hasErrors()) {
+            return String.format("redirect:/mvc/posts/%d/edit?tags=%s", id, String.join("&tags=", newTagDto.getTagsList()));
+        }
+
+        // Normalize the new tag name
+        String newTagName = newTagDto.getTagName().toLowerCase();
+
+        // Append the new tag to the existing list
+        List<String> updatedTags;
+        if (newTagDto.getTagsList().isEmpty()) {
+            updatedTags = new ArrayList<>();
+        } else {
+            updatedTags = newTagDto.getTagsList();
+        }
+        if (!updatedTags.contains(newTagName)) {
+            updatedTags.add(newTagName); // Add only if it doesn't already exist
+        }
+
+        // Redirect back to the edit page with the updated list of tags
+        return String.format("redirect:/mvc/posts/%d/edit?tags=%s", id, String.join("&tags=", updatedTags));
+    }
+
+    // Remove a tag
+    @GetMapping("/{id}/edit/remove-tag/{tagName}")
+    public String removeTagFromPost(@PathVariable Long id,
+                                    @PathVariable String tagName,
+                                    @RequestParam(required = false, defaultValue = "") List<String> tags) {
+
+        // Remove the specified tag from the list
+        List<String> updatedTags = tags.stream()
+                .filter(existingTag -> !existingTag.equalsIgnoreCase(tagName)) // Case-insensitive comparison
+                .toList();
+
+        // Redirect back to the edit page with the updated list of tags
+        return String.format("redirect:/mvc/posts/%d/edit%s", id, updatedTags.isEmpty() ? "" : "?tags=" + String.join("&tags=", updatedTags));
     }
 }
