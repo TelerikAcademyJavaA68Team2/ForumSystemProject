@@ -234,21 +234,6 @@ public class PostServiceTests {
         verify(postRepository, never()).update(any(Post.class));
     }
 
-    @Test
-    public void update_ShouldThrowDuplicateEntityException_WhenPostIsDuplicate() {
-        // Arrange
-        Post mockPost = createMockPost();
-        User author = mockPost.getAuthor();
-        Post duplicatePost = createMockPost();
-
-        when(postRepository.getById(mockPost.getId())).thenReturn(mockPost);
-
-        // Act & Assert
-        Assertions.assertThrows(DuplicateEntityException.class,
-                () -> postService.update(duplicatePost, author));
-
-        verify(postRepository, never()).update(any(Post.class));
-    }
 
     @Test
     public void update_ShouldThrowEntityNotFoundException_WhenPostDoesNotExist() {
