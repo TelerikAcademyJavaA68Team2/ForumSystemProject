@@ -12734,8 +12734,20 @@ textarea.form-control-lg {
     color: #fff !important;
 }
 
+.badgeRed {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.45em 0.65em !important;
+    font-size: 0.875rem !important;
+    text-decoration: none !important;
+    text-align : center !important;
+}
+
 .badgeRed:hover {
     background-color: red !important;
     color: white !important;
-    border-color: red !important;
+    border-color: #dc3545!important;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+    cursor: pointer !important;
 }

@@ -50,25 +50,20 @@
                                        th:text="${#fields.errors('content')[0]}">Content error placeholder!</small>
                             </div>
 
+
                             <!-- Tags -->
-
                             <div class="form-group mb-3 align-middle mt-2">
-
                                 <div class="d-flex flex-wrap gap-2 justify-content-center">
                                     <div class="form-label" th:text="#{post.label.tags}">Tags</div>
-
                                     <span th:each="tagName : ${currentTags}">
-                                                            <!--"@{'/mvc/posts/'+${post.id}+'/edit?tags='+${query}}"-->
-                                              <a href="#"
-                                                 th:href="@{'/mvc/posts/'+${post.id}+'/edit/remove-tag/'+${tagName}+'?tags='+${query}}"
-                                                 class="badge badgeRed bg-primary text-white me-2"
-                                                 style="--bs-btn-hover-color: red">
-                                                  <span th:text="${tagName}">Tag</span>
-                                              </a>
-                                          </span>
+                                         <a href="#"
+                                            th:href="@{'/mvc/posts/'+${post.id}+'/edit/remove-tag/'+${tagName}+'?tags='+${query}}"
+                                            class="badge badgeRed bg-primary text-white me-2"
+                                            style="--bs-btn-hover-color: red">
+                                             <span th:text="${tagName}">Tag</span>
+                                         </a>
+                                    </span>
                                 </div>
-
-
                             </div>
 
                             <!-- Form Buttons -->
