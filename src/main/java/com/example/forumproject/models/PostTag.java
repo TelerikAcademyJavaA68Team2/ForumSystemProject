@@ -10,12 +10,12 @@ public class PostTag {
     @EmbeddedId
     private PostTagId id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @MapsId("postId")
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @MapsId("tagId")
     @JoinColumn(name = "tag_id")
     private Tag tag;
