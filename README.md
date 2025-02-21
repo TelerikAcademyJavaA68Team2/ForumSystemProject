@@ -27,6 +27,7 @@ The forum is structured around topics, related to **automobiles**, where users c
 - **MariaDB**
 - **Hibernate**
 - **JWT Authentication**
+- **Cloudinary API for Picture Upload**
 - **Swagger API Documentation**
 
 ---

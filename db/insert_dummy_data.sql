@@ -10,20 +10,20 @@ VALUES
 INSERT INTO forum_management_system.users (first_name, last_name, email, username, password, is_admin, is_blocked, profile_photo, phone_number)
 VALUES
     ('Georgi', 'Benchev', 'GeogriBenchev@gmail.com', 'georgi', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQi2Mm5P8j09P4hPKa1B-t9eIOHzHmR7IBkw&s', '123-456-7890'),
-    ('Ivan', 'Ivanov', 'Vankata@gmail.com', 'vankata', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0G6ROpWaqElsf9V0LUgMhhC52ljEwK77eMA&s', '098-765-4321'),
-    ('Stoyanka', 'Karashtranova', 'tancheto@gmail.com', 'tancheto', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDpWYsLSeY1sLvwgFNwBeJGjszUfEofDpwJw&s', '555-555-5555'),
+    ('Ivan', 'Ivanov', 'Vankata@gmail.com', 'vankata', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, 'https://upload.wikimedia.org/wikipedia/commons/a/a1/UAZ-Bus.jpg', '098-765-4321'),
+    ('Stoyanka', 'Karashtranova', 'tancheto@gmail.com', 'tancheto', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, 'https://media.istockphoto.com/id/1471845315/photo/happy-portrait-or-business-woman-taking-a-selfie-in-office-building-for-a-social-media.jpg?s=612x612&w=0&k=20&c=AOylBL01joI0zphCAFr6YVrsOgp_jd2XtVUychLXYho=', '555-555-5555'),
     ('ElitsaUser', 'Savova', 'elitsaUser@gmail.com', 'elitsa_user', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL),
     ('Elitsa', 'Savova', 'elitsa@gmail.com', 'elitsa', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, '/images/default-profile-pic.png', NULL),
     ('StoyankaUser', 'Karashtranova', 'tanchetoUser@gmail.com', 'tancheto_user', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL),
-    ('Nikolai', 'Todorov', 'nikolai.todorov@gmail.com', 'nikolai', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, '/images/default-profile-pic.png', '777-123-4567'),
+    ('Nikolai', 'Todorov', 'nikolai.todorov@gmail.com', 'nikolai', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0G6ROpWaqElsf9V0LUgMhhC52ljEwK77eMA&s', '777-123-4567'),
     ('Petya', 'Petrova', 'petya.petrova@gmail.com', 'petya', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', '555-666-7777'),
-    ('Dimitrov', 'Boris', 'dimitrov.boris@gmail.com', 'dimodinamoto', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, '/images/default-profile-pic.png', '123-123-1234'),
-    ('Petar', 'Petrov', 'petar@example.com', 'petar', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL),
+    ('Dimitrov', 'Boris', 'dimitrov.boris@gmail.com', 'dimodinamoto', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDpWYsLSeY1sLvwgFNwBeJGjszUfEofDpwJw&s', '123-123-1234'),
+    ('Petar', 'Petrov', 'petar@example.com', 'petar', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, 'https://upload.wikimedia.org/wikipedia/commons/3/3c/GAZ_66.jpg', NULL),
     ('Maria', 'Georgieva', 'maria@example.com', 'maria', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL),
     ('Elena', 'Dimitrova', 'elena@example.com', 'elena', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL),
     ('Stefan', 'Kostov', 'stefan@example.com', 'stefan', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 1, '/images/default-profile-pic.png', NULL),
     ('Tanya', 'Ivanova', 'tanya@example.com', 'tanya', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL),
-    ('Boris', 'Dimitrov', 'boris@example.com', 'boris', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, '/images/default-profile-pic.png', NULL),
+    ('Boris', 'Dimitrov', 'boris@example.com', 'boris', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, 'https://media.istockphoto.com/id/1476170969/photo/portrait-of-young-man-ready-for-job-business-concept.jpg?s=612x612&w=0&k=20&c=w8SlKv-4u6xYyU07CXeBRvfW6F0iYx-a7HR2ChM8ZbU=', NULL),
     ('Kristina', 'Vasileva', 'kristina@example.com', 'kristina', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL);
 
 -- Insert dummy data into the 'posts' table (car-related posts, 5x larger dataset)

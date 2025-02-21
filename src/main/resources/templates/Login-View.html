@@ -26,7 +26,8 @@
               <label class="col-sm-3 col-form-label" th:text="#{user.label.username}">Username</label>
               <div class="col-sm-9">
                 <input class="form-control" type="text" th:field="*{username}" placeholder="Username"/>
-                <small class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}">Username error placeholder!</small>
+                <small class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}">
+                  Username error placeholder!</small>
               </div>
             </div>
 
@@ -54,7 +55,7 @@
 <div class="text-center mt-4">
   <p>
     Not a user yet?
-    <a href="/mvc/auth/register" class="small-link">Register</a>
+    <a href="/mvc/auth/register" class="link">Register</a>
   </p>
 </div>
 <footer th:insert="~{fragments/Page-Layout :: footer}"></footer>

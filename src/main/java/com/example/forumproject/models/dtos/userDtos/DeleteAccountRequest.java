@@ -7,8 +7,8 @@ public class DeleteAccountRequest {
     @NotBlank(message = "Wrong Password")
     private String password;
 
-    @NotBlank(message = "Wrong Capcha")
-    private String capcha;
+    @NotBlank(message = "Wrong Captcha")
+    private String captcha;
 
     public DeleteAccountRequest() {
     }
@@ -21,11 +21,11 @@ public class DeleteAccountRequest {
         this.password = password;
     }
 
-    public String getCapcha() {
-        return capcha;
+    public String getCaptcha() {
+        return captcha;
     }
 
-    public void setCapcha(String capcha) {
-        this.capcha = capcha;
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
     }
 }

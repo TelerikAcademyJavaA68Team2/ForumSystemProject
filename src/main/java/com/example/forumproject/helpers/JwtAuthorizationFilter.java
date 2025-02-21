@@ -50,7 +50,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         String token = authorizationHeader.substring(7);
-        String username = null;
+        String username;
         try {
             username = jwtService.extractUsername(token);
         } catch (Exception e) {

@@ -141,7 +141,7 @@ public class User implements UserDetails {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.getId() && email.equals(user.email) && username.equals(user.username);
+        return Objects.equals(id, user.getId()) && email.equals(user.email) && username.equals(user.username);
     }
 
     @Override

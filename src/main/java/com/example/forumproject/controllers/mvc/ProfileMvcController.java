@@ -86,13 +86,11 @@ public class ProfileMvcController {
 
         User user = userService.getAuthenticatedUser();
 
-        // Verify the current password
         if (!passwordEncoder.matches(updateProfileRequest.getCurrentPassword(), user.getPassword())) {
             errors.rejectValue("currentPassword", "password.mismatch", "Wrong password");
             return "Edit-Profile";
         }
 
-        // Check if email is changing and validate it
         if (!user.getEmail().equals(updateProfileRequest.getEmail())) {
             try {
                 userService.getByEmail(updateProfileRequest.getEmail());
@@ -102,7 +100,6 @@ public class ProfileMvcController {
             }
         }
 
-        // Handle password update
         if ((!updateProfileRequest.getNewPassword().isBlank() || !updateProfileRequest.getNewPasswordRepeat().isBlank()) &&
                 !updateProfileRequest.getNewPassword().equals(updateProfileRequest.getNewPasswordRepeat())) {
             errors.rejectValue("newPassword", "password.mismatch", "Password repeat failed");
@@ -112,12 +109,10 @@ public class ProfileMvcController {
             user.setPassword(passwordEncoder.encode(updateProfileRequest.getNewPassword()));
         }
 
-        // Update basic user details
         user.setFirstName(updateProfileRequest.getFirstName());
         user.setLastName(updateProfileRequest.getLastName());
         user.setEmail(updateProfileRequest.getEmail());
 
-        // Upload and update profile picture if provided
         if (profileImage != null && !profileImage.isEmpty()) {
             try {
                 String imageUrl = cloudinaryHelper.uploadUserProfilePhoto(profileImage, user);
@@ -127,7 +122,6 @@ public class ProfileMvcController {
             }
         }
 
-        // Update phone number (for admins)
         if (user.isAdmin() && updateProfileRequest.getPhoneNumber() != null &&
                 !updateProfileRequest.getPhoneNumber().equals("No phone number provided")) {
             user.setPhoneNumber(updateProfileRequest.getPhoneNumber());
@@ -135,24 +129,6 @@ public class ProfileMvcController {
 
         userService.update(user);
         redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully!");
-        return "redirect:/mvc/profile";
-    }
-
-
-    @PostMapping("/upload-photo")
-    public String uploadProfilePhoto(@RequestParam("image") MultipartFile image, RedirectAttributes redirectAttributes) {
-        try {
-
-            User user = userService.getAuthenticatedUser();
-
-            cloudinaryHelper.uploadUserProfilePhoto(image, user);
-
-
-            redirectAttributes.addFlashAttribute("successMessage", "Profile photo updated successfully!");
-        } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error uploading image. Please try again.");
-        }
-
         return "redirect:/mvc/profile";
     }
 
@@ -167,8 +143,8 @@ public class ProfileMvcController {
         if (errors.hasErrors()) {
             return "Delete-Account";
         }
-        if (!request.getCapcha().equalsIgnoreCase("Delete my account")) {
-            errors.rejectValue("capcha", "capcha.mismatch", "Wrong Capcha");
+        if (!request.getCaptcha().equalsIgnoreCase("Delete my account")) {
+            errors.rejectValue("captcha", "captcha.mismatch", "Wrong Captcha");
             return "Delete-Account";
         }
         if (!passwordEncoder.matches(request.getPassword(), userService.getAuthenticatedUser().getPassword())) {

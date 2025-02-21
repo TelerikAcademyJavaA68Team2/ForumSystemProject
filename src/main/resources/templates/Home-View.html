@@ -6,9 +6,26 @@
 <header class="py-2 bg-light border-bottom mb-4">
     <div class="container">
         <div class="text-center my-3">
-            <h1 class="fw-bolder" th:text="#{home.welcome}">Welcome Message</h1>
+            <h1 class="fw-bolder">
+                <!-- If the user is an Admin -->
+                <span th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"
+                      th:text="|#{home.admin.welcome} ${#authentication.name}!|">
+        </span>
+
+                <!-- If the user is Authenticated but NOT an Admin -->
+                <span th:if="${#authorization.expression('isAuthenticated()') and not #authorization.expression('hasAuthority(''ADMIN'')')}"
+                      th:text="|#{home.user.welcome} ${#authentication.name}!|">
+        </span>
+
+                <!-- If the user is NOT authenticated -->
+                <span th:if="${!#authorization.expression('isAuthenticated()')}"
+                      th:text="#{home.anonymous.welcome}">
+        </span>
+            </h1>
+
             <p class="lead mb-0" th:text="#{home.description}">Description</p>
         </div>
+
     </div>
 </header>
 <body>
@@ -16,10 +33,10 @@
     <div class="row gx-2">
         <!-- Left Column for Posts -->
         <div class="col-lg-8">
-            <!--HEADER + POSTS TYPE--> <!--HEADER + POSTS TYPE-->
+            <!--HEADER + POSTS TYPE-->
             <div class="card-header card mb-3 shadow-sm">
                 <h2 class="card-title m-0">
-                    Here is a list of our 10 most
+                    Here is a list of our top 10 most
                     <a href="#"
                        th:href="${currentListType == 'recent' ? '/mvc/home?listType=viral' : '/mvc/home?listType=recent'}"
                        th:text="${currentListType == 'viral' ? 'Viral' : 'Recent'}" >
@@ -28,13 +45,13 @@
                     Posts
                 </h2>
             </div>
-            <!--POSTS -- POSTS -- POSTS -- POSTS-->
+            <!--POSTS-->
             <div th:each="post : ${posts}">
                 <!-- Post -->
                 <div class="card mb-3 shadow-sm">
                     <div class="card-body">
 
-                        <!--DELETE FORM-->    <!--DELETE FORM-->
+                        <!--DELETE FORM-->
                         <form sec:authorize="isAuthenticated()" th:if="${(#authentication.principal.username == post.author)
                                                              or #authorization.expression('hasAuthority(''ADMIN'')')}"
                               th:action="@{/mvc/posts/{id}/delete(id=${post.post_id})}" method="post"

@@ -73,7 +73,7 @@ public class Post {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return id == post.id;
+        return Objects.equals(id, post.id);
     }
 
     @Override

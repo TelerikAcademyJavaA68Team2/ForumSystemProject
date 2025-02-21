@@ -21,10 +21,10 @@
                 <!-- Post -->
                 <div class="card mb-3 shadow-sm">
                     <div class="card-body">
-
-                        <!--DELETE FORM-->    <!--DELETE FORM-->
-                        <form sec:authorize="isAuthenticated()" th:if="${(#authentication.principal.username == post.author)
-                                                             or #authorization.expression('hasAuthority(''ADMIN'')')}"
+                        <!--DELETE FORM-->
+                        <form sec:authorize="isAuthenticated()"
+                              th:if="${(#authentication.principal.username == post.author)
+                              or #authorization.expression('hasAuthority(''ADMIN'')')}"
                               th:action="@{/mvc/posts/{id}/delete(id=${post.post_id})}" method="post"
                               class="position-absolute top-0 end-0 me-2 mt-2"
                               onsubmit="return confirm('Are you sure you want to delete this post?')">
@@ -52,12 +52,14 @@
                                        class="fw-bold text-primary"
                                        th:text="${post.author}">Author Name</a>
                                     <!-- If the user is the author (but not an admin), link to their profile -->
-                                    <a th:if="${#authentication.name == post.author and !#authorization.expression('hasAuthority(''ADMIN'')')}"
+                                    <a th:if="${#authentication.name == post.author and
+                                    !#authorization.expression('hasAuthority(''ADMIN'')')}"
                                        th:href="@{/mvc/profile}"
                                        class="fw-bold text-primary"
                                        th:text="${post.author}">Author Name</a>
                                     <!-- If the user is neither Admin nor the author, display the name without a link -->
-                                    <span th:if="${#authentication.name != post.author and !#authorization.expression('hasAuthority(''ADMIN'')')}"
+                                    <span th:if="${#authentication.name != post.author and
+                                    !#authorization.expression('hasAuthority(''ADMIN'')')}"
                                           class="fw-bold"
                                           th:text="${post.author}">Author Name</span>
                                 </p>
@@ -110,7 +112,8 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <span th:text="${user.first_name} + ' ' + ${user.last_name}"></span>
-                    <img th:src="${user.account_status == 'ACTIVE ACCOUNT'} ? @{/images/activeUserIcon.png} : @{/images/blockedUserIcon.png}"
+                    <img th:src="${user.account_status == 'ACTIVE ACCOUNT'} ?
+                    @{/images/activeUserIcon.png} : @{/images/blockedUserIcon.png}"
                          alt="Account Status Icon" class="img-right">
                     <img th:if="${user.account_type} == 'ADMIN'" th:src="@{/images/adminIcon.png}"
                          alt="Admin Icon" class="img-right">

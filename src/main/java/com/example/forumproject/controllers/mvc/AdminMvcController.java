@@ -121,6 +121,4 @@ public class AdminMvcController {
 
         return String.format("redirect:/mvc/admin/users/%d", id);
     }
-
-
 }
