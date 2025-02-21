@@ -75,13 +75,36 @@ public class PostTagRepositoryImpl implements PostTagRepository {
         }
     }
 
-    @Override
+/*    @Override
     public void create(PostTag postTag) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.persist(postTag);
             session.getTransaction().commit();
         }
+    }*/
+/*
+    @Override
+    public void create(PostTag postTag) {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.createQuery("INSERT INTO PostTag (post, tag) VALUES (:post_id, :tag_id)", PostTag.class)
+                .setParameter("post_id", postTag.getPost().getId())
+                .setParameter("tag_id", postTag.getTag().getId())
+                .executeUpdate();
+        session.close();
+    }*/
+
+    @Override
+    public void create(PostTag postTag) {
+        Session session = sessionFactory.getCurrentSession(); // Use the current session
+
+
+        session.createNativeQuery("INSERT INTO forum_management_system.post_tags (post_id, tag_id) VALUES (:post_id, :tag_id)",PostTag.class)
+                .setParameter("post_id", postTag.getPost().getId())
+                .setParameter("tag_id", postTag.getTag().getId())
+                .executeUpdate();
+        session.close();
     }
 
     @Override
