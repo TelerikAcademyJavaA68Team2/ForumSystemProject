@@ -300,23 +300,24 @@ public class PostMvcController {
                 throw new UnauthorizedAccessException("You do not have permission to edit this post.");
             }
 
-            // Remove old tags
+
+
+            List<Tag> currentTags = postTagService.getTagsByPostId(id);
+            currentTags.stream().filter(e -> !tags.contains(e.getTagName())).forEach(e -> postTagService.deleteTagFromPost(id, e.getId()));
+
+            Post updatedPost = postMapper.dtoToObject(updatePostDTO);
+            postService.update(updatedPost, user);
+
+
             List<Tag> newTags = tags.stream().map(tagService::getTagByName).toList();
             //add new tags
             for (Tag tag : newTags) {
                 try {
                     postTagService.createTagOnPost(id, tag.getTagName());
-                } catch (DuplicateEntityException e) {
-                    return "Not-Found-View";
+                } catch (Exception e) {
+                    return "redirect:/mvc/posts/"+id;
                 }
             }
-
-            List<Tag> currentTags = postTagService.getTagsByPostId(id);
-            currentTags.stream().filter(e -> !tags.contains(e.getTagName())).forEach(e -> postTagService.deleteTagFromPost(id, e.getId()));
-
-
-            Post updatedPost = postMapper.dtoToObject(updatePostDTO);
-            postService.update(updatedPost, user);
 
             return format(REDIRECT, id);
         } catch (IllegalArgumentException i) {
