@@ -236,24 +236,6 @@ public class PostMvcController {
         return format(REDIRECT, id);
     }
 
-
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-    // NEWNEWNENWNEWNNENWNEW
-
-
     @GetMapping("/{id}/edit")
     public String showEditPostView(@PathVariable Long id, @RequestParam(required = false, defaultValue = "") List<String> tags, Model model) {
 
@@ -354,7 +336,6 @@ public class PostMvcController {
                 .filter(existingTag -> !existingTag.equalsIgnoreCase(tagName)) // Case-insensitive comparison
                 .toList();
 
-        // Redirect back to the edit page with the updated list of tags
         return String.format("redirect:/mvc/posts/%d/edit%s", id, updatedTags.isEmpty() ? "" : "?tags=" + String.join("&tags=", updatedTags));
     }
 }

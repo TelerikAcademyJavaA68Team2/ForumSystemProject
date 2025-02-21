@@ -97,7 +97,7 @@
                             <div class="input-group mb-3">
                                 <input type="hidden" th:field="*{tagsList}" th:value="${currentTags2}">
                                 <input type="text" class="form-control" th:field="*{tagName}"
-                                       placeholder="Enter new tag name"/>
+                                       placeholder="Enter new tag name" maxlength="15" minlength="3"/>
                                 <button class="btn btn-outline-success" type="submit">Add Tag</button>
                             </div>
                         </form>
