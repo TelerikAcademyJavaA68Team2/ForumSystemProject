@@ -51,12 +51,13 @@
                                 </div>
 
                                 <!-- Tags -->
-                                <div class="form-group mb-3">
-                                    <label class="form-label" th:text="#{post.label.tags}">Tags</label>
+                                <div class="form-group mb-3 align-middle">
 
                                     <!-- Display Existing Tags -->
-                                    <div class="d-flex flex-wrap gap-2">
-                                          <span th:each="tagName : ${currentTags}">
+                                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                        <div class="form-label" th:text="#{post.label.tags}">Tags</div>
+
+                                        <span th:each="tagName : ${currentTags}">
                                                             <!--"@{'/mvc/posts/'+${post.id}+'/edit?tags='+${query}}"-->
                                               <a href="#" th:href="@{'/mvc/posts/'+${post.id}+'/edit/remove-tag/'+${tagName}+'?tags='+${query}}"
                                                  class="badge bg-primary text-white me-2" style="--bs-btn-hover-color: red">
