@@ -51,7 +51,7 @@
                             <!-- Tags -->
                             <div class="form-group mb-3 align-middle mt-2">
                                 <div class="d-flex flex-wrap gap-2 justify-content-center">
-                                    <div class="form-label" th:text="#{post.label.tags}">Tags:</div>
+                                    <div class="form-label fw-bold fs-5" th:text="#{post.label.tags}">Tags:</div>
                                     <span th:each="tagName : ${currentTags}">
                                          <a href="#"
                                             th:href="@{'/mvc/posts/'+${post.id}+'/edit/remove-tag/'+${tagName}+'?tags='+${query}}"
@@ -82,7 +82,7 @@
                     <div class="card-body">
 
                         <div class="text-start fw-bold fs-5 mb-1" th:text="#{post.addTag.label}">
-                            <label class="col-sm-3 col-form-label" th:text="#{post.addTag.label}">Title</label>
+                            <label class="col-sm-3 col-form-label" th:text="#{post.addTag.label}">Add Tag</label>
                         </div>
 
                         <form th:action="@{/mvc/posts/{id}/edit/add-tag(id=${post.id})}"
