@@ -43,7 +43,8 @@
           <li class="nav-item"><a class="nav-link" href="../About-View.html" th:text="#{navigation.about}"
                                   th:href="@{/mvc/about}">About</a></li>
 
-          <li class="nav-item"><a class="nav-link" href="../Posts-View.html" th:text="#{navigation.all-posts}"
+          <li class="nav-item"><a class="nav-link" href="../Posts-View.html" sec:authorize="isAuthenticated()"
+                                  th:text="#{navigation.all-posts}"
                                   th:href="@{/mvc/posts}">Posts</a></li>
         </ul>
       </div>
