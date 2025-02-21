@@ -1,65 +1,71 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head(title)">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="'MotoForum | ' + ${title}">MotoForum - Title</title>
-  <link href="/static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-  <link rel="icon" th:href="@{/images/favicon.ico}" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'MotoForum | ' + ${title}">MotoForum - Title</title>
+    <link href="/static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/png">
 </head>
 <body>
 <header th:fragment="navigation">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="../Home-View.html" th:text="#{forum.name}" th:href="@{/mvc/home}" >Moto Forum</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
-              class="navbar-toggler-icon"></span></button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="../Users-View.html"
-                                  sec:authorize="isAuthenticated() and hasAnyAuthority('ADMIN')"
-                                  th:href="@{/mvc/admin}" th:text="#{navigation.admin}">Admin Panel</a></li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="../Home-View.html" th:text="#{forum.name}" th:href="@{/mvc/home}">Moto
+                Forum</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                    class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="../Users-View.html"
+                                            sec:authorize="isAuthenticated() and hasAnyAuthority('ADMIN')"
+                                            th:href="@{/mvc/admin}" th:text="#{navigation.admin}">Admin Panel</a></li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="../User-View.html" sec:authorize="isAuthenticated()"
-               th:href="@{/mvc/profile}">
-              <span th:if="${#authentication != null}" th:text="${#authentication.principal.username}">Username</span>
-            </a>
-          </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../User-View.html" sec:authorize="isAuthenticated()"
+                           th:href="@{/mvc/profile}">
+                            <span th:if="${#authentication != null}" th:text="${#authentication.principal.username}">Username</span>
+                        </a>
+                    </li>
 
-          <li class="nav-item"><a class="nav-link" href="../Register-View.html" sec:authorize="!isAuthenticated()"
-                                  th:text="#{navigation.register}" th:href="@{/mvc/auth/register}">Register</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../Register-View.html"
+                                            sec:authorize="!isAuthenticated()"
+                                            th:text="#{navigation.register}"
+                                            th:href="@{/mvc/auth/register}">Register</a></li>
 
-          <li class="nav-item"><a class="nav-link" href="../Home-View.html" sec:authorize="isAuthenticated()"
-                                  th:text="#{navigation.logout}" th:href="@{/mvc/auth/logout}">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../Home-View.html" sec:authorize="isAuthenticated()"
+                                            th:text="#{navigation.logout}" th:href="@{/mvc/auth/logout}">Logout</a></li>
 
-          <li class="nav-item"><a class="nav-link" href="../Login-View.html" sec:authorize="!isAuthenticated()"
-                                  th:text="#{navigation.login}" th:href="@{/mvc/auth/login}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../Login-View.html"
+                                            sec:authorize="!isAuthenticated()"
+                                            th:text="#{navigation.login}" th:href="@{/mvc/auth/login}">Login</a></li>
 
-          <li class="nav-item"><a class="nav-link" href="../Home-View.html" th:text="#{navigation.home}"
-                                  th:href="@{/mvc/home}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../Home-View.html" th:text="#{navigation.home}"
+                                            th:href="@{/mvc/home}">Home</a></li>
 
-          <li class="nav-item"><a class="nav-link" href="../About-View.html" th:text="#{navigation.about}"
-                                  th:href="@{/mvc/about}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../About-View.html" th:text="#{navigation.about}"
+                                            th:href="@{/mvc/about}">About</a></li>
 
-          <li class="nav-item"><a class="nav-link" href="../Posts-View.html"
-                                  th:text="#{navigation.all-posts}"
-                                  th:href="@{/mvc/posts}">Posts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../Posts-View.html" sec:authorize="isAuthenticated()"
+                                            th:text="#{navigation.all-posts}"
+                                            th:href="@{/mvc/posts}">Posts</a></li>
 
-        </ul>
-      </div>
-    </div>
-  </nav>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </header>
 <footer th:fragment="footer" class="py-5 bg-dark mt-auto">
-  <div class="container text-center">
-    <p class="m-0 text-white">
-      Copyright &copy; <span th:text="${#dates.year(#dates.createNow())}"></span> <span th:text="#{forum.name}"></span>
-    </p>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/scripts.js"></script>
+    <div class="container text-center">
+        <p class="m-0 text-white">
+            Copyright &copy; <span th:text="${#dates.year(#dates.createNow())}"></span> <span
+                th:text="#{forum.name}"></span>
+        </p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/scripts.js"></script>
 </footer>
 </body>
 </html>
