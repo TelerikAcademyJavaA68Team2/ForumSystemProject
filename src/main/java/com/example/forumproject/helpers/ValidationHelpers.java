@@ -8,7 +8,9 @@ import com.example.forumproject.models.dtos.userDtos.RequestUserProfileDto;
 import com.example.forumproject.repositories.UserRepository;
 import com.example.forumproject.services.UserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +23,8 @@ public class ValidationHelpers {
     public static final String UNAUTHORIZED_MESSAGE_COMMENT_DELETE = "Only admins, the post creator or the " +
             "comment's creator can delete comments!";
 
-    public static String ValidateUpdate(RequestUserProfileDto userUpdateDto, User user, UserService service) {
+    public static String ValidateUpdate(RequestUserProfileDto userUpdateDto, User user, UserService service,
+                                        MultipartFile profileImage, CloudinaryHelper cloudinaryHelper) throws IOException {
 
         StringBuilder sb = new StringBuilder();
 
@@ -61,11 +64,12 @@ public class ValidationHelpers {
         }
         if (userUpdateDto.getProfilePhoto() != null) {
             noChanges = false;
-            if (user.getPhoto().equals(userUpdateDto.getProfilePhoto())) {
-                throw new DuplicateEntityException("Your Profile Photo is already set to " + user.getPhoto());
+
+            if (!isValidImageFile(profileImage)) {
+                throw new InvalidUserInputException("Invalid image file. Only JPEG, PNG, or GIF files are allowed.");
             }
+            cloudinaryHelper.uploadUserProfilePhoto(profileImage, user);
             sb.append("Profile photo updated successfully!").append(System.lineSeparator());
-            user.setPhoto(userUpdateDto.getProfilePhoto());
         }
         if (userUpdateDto.getPhoneNumber() != null) {
             noChanges = false;
@@ -115,6 +119,12 @@ public class ValidationHelpers {
         if (!matcher.matches()) {
             throw new InvalidEmailFormatException(email);
         }
+    }
+
+    public static boolean isValidImageFile(MultipartFile file) {
+        String contentType = file.getContentType();
+        return contentType != null && (contentType.equals("image/jpeg")
+                || contentType.equals("image/png") || contentType.equals("image/gif"));
     }
 
     public static void validateUserIsAdminOrPostAuthor(Post post, User user) {

@@ -27,7 +27,8 @@
                                 profilePhoto : '/images/default-profile-pic.png'}"
                                      alt="Profile Picture" class="rounded-circle img-thumbnail"
                                      width="400" height="150">
-
+                                <small class="text-danger" th:if="${#fields.hasErrors('profilePhoto')}"
+                                       th:errors="*{profilePhoto}">Password error!</small>
                                 <!-- Upload Profile Picture -->
                                 <input type="file" name="profileImage" class="form-control mt-2">
                             </div>

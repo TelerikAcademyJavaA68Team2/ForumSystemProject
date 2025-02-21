@@ -1,5 +1,6 @@
 package com.example.forumproject.controllers.mvc;
 
+import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.helpers.CloudinaryHelper;
 import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
@@ -21,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+
+import static com.example.forumproject.helpers.ValidationHelpers.isValidImageFile;
 
 @Controller
 @RequestMapping("/mvc/profile")
@@ -115,10 +118,14 @@ public class ProfileMvcController {
 
         if (profileImage != null && !profileImage.isEmpty()) {
             try {
+                if (!isValidImageFile(profileImage)) {
+                    throw new InvalidUserInputException("Invalid image file. Only JPEG, PNG, or GIF files are allowed.");
+                }
                 String imageUrl = cloudinaryHelper.uploadUserProfilePhoto(profileImage, user);
                 user.setPhoto(imageUrl);
-            } catch (IOException e) {
-                redirectAttributes.addFlashAttribute("errorMessage", "Error uploading profile picture.");
+            } catch (IOException | InvalidUserInputException e) {
+                errors.rejectValue("profilePhoto", "profilePhoto.mismatch", "Invalid image file. Only JPEG, PNG, or GIF files are allowed.");
+                return "Edit-Profile";
             }
         }
 

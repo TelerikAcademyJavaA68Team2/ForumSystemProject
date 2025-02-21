@@ -3,6 +3,7 @@ package com.example.forumproject.controllers.rest;
 import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.InvalidUserInputException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
+import com.example.forumproject.helpers.CloudinaryHelper;
 import com.example.forumproject.helpers.ValidationHelpers;
 import com.example.forumproject.mappers.UserMapper;
 import com.example.forumproject.models.User;
@@ -18,7 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/profile")
@@ -30,12 +34,14 @@ public class ProfileController {
     private final UserMapper userMapper;
     private final UserService userService;
     private final AuthenticationService authService;
+    private final CloudinaryHelper cloudinaryHelper;
 
     @Autowired
-    public ProfileController(UserMapper userMapper, UserService userService, AuthenticationService authService) {
+    public ProfileController(UserMapper userMapper, UserService userService, AuthenticationService authService, CloudinaryHelper cloudinaryHelper) {
         this.userMapper = userMapper;
         this.userService = userService;
         this.authService = authService;
+        this.cloudinaryHelper = cloudinaryHelper;
     }
 
     @Operation(
@@ -78,17 +84,18 @@ public class ProfileController {
             }
     )
     @PatchMapping
-    public ResponseEntity<String> updateProfile(@Valid @RequestBody RequestUserProfileDto userUpdateDto) {
+    public ResponseEntity<String> updateProfile(@Valid @RequestBody RequestUserProfileDto userUpdateDto,
+                                                @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) {
         try {
             User user = userService.getAuthenticatedUser();
-            String result = ValidationHelpers.ValidateUpdate(userUpdateDto, user,userService);
+            String result = ValidationHelpers.ValidateUpdate(userUpdateDto, user,userService, profileImage, cloudinaryHelper);
             userService.update(user);
             return ResponseEntity.ok(result);
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (UnauthorizedAccessException e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
-        } catch (InvalidUserInputException e) {
+        } catch (InvalidUserInputException | IOException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
