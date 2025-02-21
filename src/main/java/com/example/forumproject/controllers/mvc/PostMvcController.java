@@ -301,7 +301,6 @@ public class PostMvcController {
             }
 
 
-
             List<Tag> currentTags = postTagService.getTagsByPostId(id);
             currentTags.stream().filter(e -> !tags.contains(e.getTagName())).forEach(e -> postTagService.deleteTagFromPost(id, e.getId()));
 
@@ -309,14 +308,10 @@ public class PostMvcController {
             postService.update(updatedPost, user);
 
 
-            List<Tag> newTags = tags.stream().map(tagService::getTagByName).toList();
+            List<Tag> newTags = tags.stream().map(tagService::getTagByName).filter(e->!currentTags.contains(e)).toList();
             //add new tags
             for (Tag tag : newTags) {
-                try {
                     postTagService.createTagOnPost(id, tag.getTagName());
-                } catch (Exception e) {
-                    return "redirect:/mvc/posts/"+id;
-                }
             }
 
             return format(REDIRECT, id);
