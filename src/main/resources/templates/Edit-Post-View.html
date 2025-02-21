@@ -1,0 +1,96 @@
+    <!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:insert="~{fragments/Page-Layout :: head('Edit Post')}">Edit Post</head>
+    <header th:insert="~{fragments/Page-Layout :: navigation}"></header>
+
+    <header class="py-2 bg-light border-bottom mb-4">
+        <div class="container">
+            <div class="text-center my-3">
+                <h1 class="fw-bolder" th:text="#{post.label.edit}">Page info</h1>
+            </div>
+        </div>
+    </header>
+
+
+    <body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="p-5">
+
+                    <form th:action="@{'/mvc/posts/'+${post.id}+'/edit?tags='+${query}}"
+                          th:object="${post}" method="POST">
+
+                        <!-- Post -->
+                        <div class="card mb-4">
+                            <div class="card-body">
+
+                                <!-- Post Title -->
+                                <div class="text-start fw-bold fs-5" th:text="#{post.label.title}">
+                                    <label class="col-sm-3 col-form-label" th:text="#{post.label.title}">Title</label>
+                                </div>
+                                <div class="card-title">
+                                    <input type="text" class="form-control" th:field="*{title}"
+                                           placeholder="Write New Title">
+                                    <small class="text-danger" th:if="${#fields.hasErrors('title')}"
+                                           th:text="${#fields.errors('title')[0]}">Title error placeholder!</small>
+                                </div>
+
+                                <!-- Post Content -->
+                                <div class="text-start fw-bold fs-5">
+                                    <label class="col-sm-3 col-form-label"
+                                           th:text="#{post.label.description}">Description</label>
+                                </div>
+                                <div>
+                                    <p class="card-text">
+                                    <textarea type="text" class="form-control" rows="4" th:field="*{content}"
+                                              placeholder="Write your post content..."></textarea>
+                                    </p>
+                                    <small class="text-danger" th:if="${#fields.hasErrors('content')}"
+                                           th:text="${#fields.errors('content')[0]}">Content error placeholder!</small>
+                                </div>
+
+                                <!-- Tags -->
+                                <div class="form-group mb-3">
+                                    <label class="form-label" th:text="#{post.label.tags}">Tags</label>
+
+                                    <!-- Display Existing Tags -->
+                                    <div class="d-flex flex-wrap gap-2">
+                                          <span th:each="tagName : ${currentTags}">
+                                              <a href="#"
+                                                 th:href="@{/mvc/posts/{id}/edit/remove-tag/{tagName}(id=${post.id}, tagName=${tagName})}"
+                                                 class="badge bg-primary text-white me-2">
+                                                  <span th:text="${tagName}">Tag</span>
+                                              </a>
+                                          </span>
+                                    </div>
+
+
+                                </div>
+
+                                <!-- Form Buttons -->
+                                <div class="mt-3">
+                                    <button type="submit" class="btn btn-primary"> Update Post</button>
+                                    <button type="button" class="btn btn-secondary" onclick="history.back()">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    <!-- Add New Tag -->
+                    <form th:action="@{/mvc/posts/{id}/edit/add-tag(id=${post.id})}"
+                          th:object="${newTagDto}" method="POST">
+                        <div class="input-group mb-3">
+                            <input type="hidden" th:field="*{tagsList}" th:value="${currentTags2}">
+                            <input type="text" class="form-control" th:field="*{tagName}"
+                                   placeholder="Enter new tag name"/>
+                            <button class="btn btn-outline-success" type="submit">Add Tag</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:insert="~{fragments/Page-Layout :: footer}"></footer>
+    </body>
+    </html>
