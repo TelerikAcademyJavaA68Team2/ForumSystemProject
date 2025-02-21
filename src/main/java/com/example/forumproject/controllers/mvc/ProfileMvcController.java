@@ -143,8 +143,8 @@ public class ProfileMvcController {
         if (errors.hasErrors()) {
             return "Delete-Account";
         }
-        if (!request.getCapcha().equalsIgnoreCase("Delete my account")) {
-            errors.rejectValue("capcha", "capcha.mismatch", "Wrong Capcha");
+        if (!request.getCaptcha().equalsIgnoreCase("Delete my account")) {
+            errors.rejectValue("captcha", "captcha.mismatch", "Wrong Captcha");
             return "Delete-Account";
         }
         if (!passwordEncoder.matches(request.getPassword(), userService.getAuthenticatedUser().getPassword())) {

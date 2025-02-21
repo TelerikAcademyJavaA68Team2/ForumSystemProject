@@ -23,12 +23,12 @@
 
                         <div class="form-group row mb-3">
                             <label class="col-sm-3 col-form-label"
-                                   th:text="#{user.label.deleteAccount.capcha}">Capcha</label>
+                                   th:text="#{user.label.deleteAccount.captcha}">Captcha</label>
                             <div class="col-sm-9">
-                                <input class="form-control" type="text" th:field="*{capcha}"
+                                <input class="form-control" type="text" th:field="*{captcha}"
                                        placeholder="Delete my account"/>
-                                <small class="text-danger" th:if="${#fields.hasErrors('capcha')}"
-                                       th:errors="*{capcha}">Capcha
+                                <small class="text-danger" th:if="${#fields.hasErrors('captcha')}"
+                                       th:errors="*{captcha}">Captcha
                                     error placeholder!</small>
                             </div>
                         </div>
@@ -40,7 +40,7 @@
                                 <input class="form-control" type="password" th:field="*{password}"
                                        placeholder="Password"/>
                                 <small class="text-danger" th:if="${#fields.hasErrors('password')}"
-                                       th:errors="*{password}">Capcha error placeholder!</small>
+                                       th:errors="*{password}">Captcha error placeholder!</small>
                             </div>
                         </div>
 
