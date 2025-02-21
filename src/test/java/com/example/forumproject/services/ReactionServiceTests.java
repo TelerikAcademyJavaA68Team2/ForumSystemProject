@@ -2,6 +2,7 @@ package com.example.forumproject.services;
 
 import com.example.forumproject.Helpers;
 import com.example.forumproject.models.Post;
+import com.example.forumproject.models.Reaction;
 import com.example.forumproject.models.Tag;
 import com.example.forumproject.models.User;
 import com.example.forumproject.repositories.reactionRepository.ReactionRepository;
@@ -35,6 +36,25 @@ public class ReactionServiceTests {
         // Assert
         Assertions.assertEquals(0L, result);
     }
+
+    @Test
+    public void checkIfLikeExists_returnsTrue_whenValid() {
+        // Arrange
+       Mockito.when(repository.checkIfLikeExists(Mockito.any(),Mockito.any())).thenReturn(true);
+
+        // Assert
+        Assertions.assertTrue(service.checkIfLikeExists(1L,2L));
+    }
+
+    @Test
+    public void checkIfDislikeExists_returnsTrue_whenValid() {
+        // Arrange
+       Mockito.when(repository.checkIfDislikeExists(Mockito.any(),Mockito.any())).thenReturn(true);
+
+        // Assert
+        Assertions.assertTrue(service.checkIfDislikeExists(1L,2L));
+    }
+
 
     @Test
     public void getLikesByPostId_ShouldReturnLong_When_ValidArgs() {
