@@ -88,7 +88,7 @@ public class AuthenticationServiceTests {
 
 
         // Act, Assert
-        Assertions.assertThrows(InvalidUserInputException.class, () -> authenticationService.register(registrationRequest));
+        Assertions.assertThrows(InvalidUserInputException.class, () -> authenticationService.registerForMvc(registrationRequest));
     }
 
     @Test
