@@ -167,6 +167,7 @@ public class PostMvcController {
                            @Valid @ModelAttribute("post") PostUpdateDto updatePostDTO,
                            BindingResult errors,
                            Model model){
+
         User author = postService.getById(updatePostDTO.getId()).getAuthor();
 
         model.addAttribute("action","update");

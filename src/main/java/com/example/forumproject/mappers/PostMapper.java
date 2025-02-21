@@ -80,13 +80,13 @@ public class PostMapper {
 
         if (updatePostDTO.getTagNames()
                 .stream()
-                .anyMatch(tag -> !tag.matches("[a-z0-9]+") || tag.length() > 15 || tag.length() < 2)){
-            throw new IllegalArgumentException("Tags should be between 2 and 15 symbols (numbers or lowercase letters)!");
+                .anyMatch(tag -> !tag.matches("[a-z0-9 ]+") || tag.length() > 30 || tag.length() < 2)){
+            throw new IllegalArgumentException("Tags should be between 2 and 30 symbols (numbers or lowercase letters)!");
         }
 
-        for (int i = 0; i < updatePostDTO.getTagNames().size(); i++) {
-            postTagService.createTagOnPost(post.getId(), updatePostDTO.getTagNames().get(i));
-        }
+//        for (int i = 0; i < updatePostDTO.getTagNames().size(); i++) {
+//            postTagService.createTagOnPost(post.getId(), updatePostDTO.getTagNames().get(i));
+//        }
 
         return post;
     }
