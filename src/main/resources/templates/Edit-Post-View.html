@@ -46,8 +46,8 @@
                                     <textarea type="text" class="form-control" rows="4" th:field="*{content}"
                                               placeholder="Write your post content..."></textarea>
                                 </p>
-                                <small class="text-danger" th:if="${#fields.hasErrors('content')}"
-                                       th:text="${#fields.errors('content')[0]}">Content error placeholder!</small>
+                                <small class="text-danger"
+                                       th:if="${#fields.hasErrors('content')}" th:text="${#fields.errors('content')[0]}">Content error placeholder!</small>
                             </div>
 
 

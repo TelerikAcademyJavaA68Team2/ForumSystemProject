@@ -25,7 +25,7 @@
                 <input type="text" class="form-control" th:field="*{title}" placeholder="Enter Post Title"
                        th:readonly="${action == 'update' and #authentication.principal.username != author}">
             </h2>
-            <small class="text-danger" th:errors="*{title}"></small>
+            <small class="text-danger" th:if="${#fields.hasErrors('title')}" th:text="${#fields.errors('title')[0]}" ></small>
 
             <!-- Post Content -->
             <div class="text-start fw-bold fs-5" th:text="#{post.label.description}">Description</div>
@@ -33,7 +33,7 @@
         <textarea class="form-control" rows="4" th:field="*{content}" placeholder="Write your post content..."
                   th:readonly="${action == 'update' and #authentication.principal.username != author}"></textarea>
             </p>
-            <small class="text-danger" th:errors="*{content}"></small>
+            <small class="text-danger" th:if="${#fields.hasErrors('content')}" th:text="${#fields.errors('content')[0]}"></small>
 
             <!-- Tags -->
             <div th:if="${action == 'update'}">
