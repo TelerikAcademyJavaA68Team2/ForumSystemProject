@@ -1,6 +1,7 @@
 package com.example.forumproject.controllers.mvc;
 
 import com.example.forumproject.exceptions.DuplicateEntityException;
+import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.mappers.CommentMapper;
 import com.example.forumproject.mappers.PostMapper;
@@ -151,7 +152,6 @@ public class PostMvcController {
         return format(REDIRECT, post.getId());
     }
 
-
     @PostMapping("/{id}/delete")
     public String deletePost(@PathVariable Long id,
                              @RequestHeader(value = "referer", required = false) String referer) {
@@ -272,7 +272,7 @@ public class PostMvcController {
     public String editPost(@PathVariable Long id, @RequestParam(required = false, defaultValue = "") List<String> tags,
                            @Valid @ModelAttribute("post") PostUpdateDto updatePostDTO, BindingResult errors) {
         if (errors.hasErrors()) {
-            return "Edit-Post-View"; // Re-render the form with errors
+            return "Edit-Post-View";
         }
 
         try {
@@ -281,7 +281,6 @@ public class PostMvcController {
             if (!originalPost.getAuthor().equals(user) && !user.isAdmin()) {
                 throw new UnauthorizedAccessException("You do not have permission to edit this post.");
             }
-
 
             List<Tag> currentTags = postTagService.getTagsByPostId(id);
             currentTags.stream().filter(e -> !tags.contains(e.getTagName())).forEach(e -> postTagService.deleteTagFromPost(id, e.getId()));
@@ -299,9 +298,9 @@ public class PostMvcController {
             return format(REDIRECT, id);
         } catch (IllegalArgumentException i) {
             errors.rejectValue("tags", "tags-invalid", i.getMessage());
-            return "Edit-Post-View"; // Re-render the form with errors
+            return "Edit-Post-View";
         } catch (UnauthorizedAccessException e) {
-            return "redirect:/mvc/error";
+            return "Forbidden-View";
         }
     }
 
@@ -332,10 +331,21 @@ public class PostMvcController {
                                     @PathVariable String tagName,
                                     @RequestParam(required = false, defaultValue = "") List<String> tags) {
 
+        try{
+           Tag tagToRemove = tagService.getTagByName(tagName);
+            postTagService.deleteTagFromPost(id, tagToRemove.getId());
+        } catch (EntityNotFoundException e) {
+            return String.format("redirect:/mvc/posts/%d/edit", id);
+        }
+
         List<String> updatedTags = tags.stream()
-                .filter(existingTag -> !existingTag.equalsIgnoreCase(tagName)) // Case-insensitive comparison
+                .filter(existingTag -> !existingTag.equalsIgnoreCase(tagName))
                 .toList();
 
-        return String.format("redirect:/mvc/posts/%d/edit%s", id, updatedTags.isEmpty() ? "" : "?tags=" + String.join("&tags=", updatedTags));
+        if (updatedTags.isEmpty()) {
+            return String.format("redirect:/mvc/posts/%d/edit", id);
+        } else {
+            return String.format("redirect:/mvc/posts/%d/edit?tags=%s", id, String.join("&tags=", updatedTags));
+        }
     }
 }
