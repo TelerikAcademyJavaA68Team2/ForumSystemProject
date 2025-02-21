@@ -46,7 +46,7 @@ public class TagServiceTests {
         Mockito.when(tagRepository.getAllTags()).thenReturn(List.of(tag));
 
         // Assert
-        Assertions.assertEquals(List.of(tag),tagRepository.getAllTags());
+        Assertions.assertEquals(List.of(tag),service.getAllTags());
     }
 
     @Test
