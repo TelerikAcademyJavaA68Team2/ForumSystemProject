@@ -57,9 +57,9 @@
                                     <!-- Display Existing Tags -->
                                     <div class="d-flex flex-wrap gap-2">
                                           <span th:each="tagName : ${currentTags}">
-                                              <a href="#"
-                                                 th:href="@{/mvc/posts/{id}/edit/remove-tag/{tagName}(id=${post.id}, tagName=${tagName})}"
-                                                 class="badge bg-primary text-white me-2">
+                                                            <!--"@{'/mvc/posts/'+${post.id}+'/edit?tags='+${query}}"-->
+                                              <a href="#" th:href="@{'/mvc/posts/'+${post.id}+'/edit/remove-tag/'+${tagName}+'?tags='+${query}}"
+                                                 class="badge bg-primary text-white me-2" style="--bs-btn-hover-color: red">
                                                   <span th:text="${tagName}">Tag</span>
                                               </a>
                                           </span>
