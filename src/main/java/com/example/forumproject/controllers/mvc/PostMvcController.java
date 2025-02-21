@@ -331,15 +331,10 @@ public class PostMvcController {
     public String addTagToPost(@PathVariable Long id,
                                @Valid @ModelAttribute("newTagDto") TagInDto newTagDto,
                                BindingResult errors) {
-
         if (errors.hasErrors()) {
             return String.format("redirect:/mvc/posts/%d/edit?tags=%s", id, String.join("&tags=", newTagDto.getTagsList()));
         }
-
-        // Normalize the new tag name
         String newTagName = newTagDto.getTagName().toLowerCase();
-
-        // Append the new tag to the existing list
         List<String> updatedTags;
         if (newTagDto.getTagsList().isEmpty()) {
             updatedTags = new ArrayList<>();
@@ -347,10 +342,9 @@ public class PostMvcController {
             updatedTags = newTagDto.getTagsList();
         }
         if (!updatedTags.contains(newTagName)) {
-            updatedTags.add(newTagName); // Add only if it doesn't already exist
+            updatedTags.add(newTagName);
         }
 
-        // Redirect back to the edit page with the updated list of tags
         return String.format("redirect:/mvc/posts/%d/edit?tags=%s", id, String.join("&tags=", updatedTags));
     }
 
@@ -360,7 +354,6 @@ public class PostMvcController {
                                     @PathVariable String tagName,
                                     @RequestParam(required = false, defaultValue = "") List<String> tags) {
 
-        // Remove the specified tag from the list
         List<String> updatedTags = tags.stream()
                 .filter(existingTag -> !existingTag.equalsIgnoreCase(tagName)) // Case-insensitive comparison
                 .toList();
