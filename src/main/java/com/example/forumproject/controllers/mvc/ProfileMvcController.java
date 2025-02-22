@@ -19,7 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
@@ -33,6 +32,8 @@ public class ProfileMvcController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final CloudinaryHelper cloudinaryHelper;
+
+    final long MAX_FILE_SIZE = 5 * 1024 * 1024;
 
     @Autowired
     public ProfileMvcController(UserMapper userMapper, UserService userService, PasswordEncoder passwordEncoder, CloudinaryHelper cloudinaryHelper) {
@@ -81,7 +82,8 @@ public class ProfileMvcController {
     public String updateProfile(
             @Valid @ModelAttribute("updateRequest") RequestUserProfileDto updateProfileRequest,
             @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
-            BindingResult errors, RedirectAttributes redirectAttributes) {
+            @RequestParam(value = "removeProfile", required = false, defaultValue = "false") boolean removeProfile,
+            BindingResult errors) {
 
         if (errors.hasErrors()) {
             return "Edit-Profile";
@@ -115,11 +117,18 @@ public class ProfileMvcController {
         user.setFirstName(updateProfileRequest.getFirstName());
         user.setLastName(updateProfileRequest.getLastName());
         user.setEmail(updateProfileRequest.getEmail());
-
-        if (profileImage != null && !profileImage.isEmpty()) {
+        if (removeProfile) {
+            user.setPhoto("/images/default-profile-pic.png");
+        } else if (profileImage != null && !profileImage.isEmpty()) {
             try {
                 if (!isValidImageFile(profileImage)) {
-                    throw new InvalidUserInputException("Invalid image file. Only JPEG, PNG, or GIF files are allowed.");
+                    errors.rejectValue("profilePhoto", "profilePhoto.invalid", "Invalid image file. Only JPG, PNG, or GIF files are allowed.");
+                    return "Edit-Profile";
+                }
+                if (profileImage.getSize() > MAX_FILE_SIZE) {
+
+                    errors.rejectValue("profilePhoto", "profilePhoto.tooLarge", "File is too large! Max size is 5MB.");
+                    return "Edit-Profile";
                 }
                 String imageUrl = cloudinaryHelper.uploadUserProfilePhoto(profileImage, user);
                 user.setPhoto(imageUrl);
@@ -135,7 +144,6 @@ public class ProfileMvcController {
         }
 
         userService.update(user);
-        redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully!");
         return "redirect:/mvc/profile";
     }
 

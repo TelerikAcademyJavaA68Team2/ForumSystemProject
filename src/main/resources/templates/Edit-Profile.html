@@ -21,16 +21,35 @@
                     <form th:action="@{/mvc/profile/update}" th:object="${updateRequest}"
                           method="POST" enctype="multipart/form-data">
                         <div class="form-group row mb-3">
-                            <!-- Profile Picture Upload -->
-                            <div class="text-center mb-3">
-                                <img th:src="${profilePhoto != '/images/default-profile-pic.png' ?
-                                profilePhoto : '/images/default-profile-pic.png'}"
-                                     alt="Profile Picture" class="rounded-circle img-thumbnail"
-                                     width="400" height="150">
-                                <small class="text-danger" th:if="${#fields.hasErrors('profilePhoto')}"
-                                       th:errors="*{profilePhoto}">Password error!</small>
-                                <!-- Upload Profile Picture -->
-                                <input type="file" name="profileImage" class="form-control mt-2">
+                            <!-- Profile Picture Preview -->
+                            <div class="text-center">
+                                <img id="profilePreview"
+                                     th:src="${profilePhoto != '/images/default-profile-pic.png' ? profilePhoto : '/images/default-profile-pic.png'}"
+                                     alt="Profile Picture"
+                                     class="profile-pic rounded-circle"
+                                     style="width: 200px; height: 200px; object-fit: cover; border: 3px solid #ddd;">
+                            </div>
+
+                            <!-- Error Messages (Backend Validation) -->
+                            <small class="text-danger d-block mt-2"
+                                   th:if="${#fields.hasErrors('profilePhoto')}"
+                                   th:errors="*{profilePhoto}">
+                                Profile Picture error!
+                            </small>
+
+                            <!-- Upload Profile Picture -->
+                            <input type="file" name="profileImage" id="profileImageInput"
+                                   class="form-control mt-3"
+                                   accept="image/png, image/jpeg, image/jpg, image/gif">
+
+                            <!-- Hidden Field to Track Profile Picture Reset -->
+                            <input type="hidden" name="removeProfile" id="removeProfile" value="false">
+
+                            <!-- Buttons -->
+                            <div class="d-flex justify-content-center gap-2 mt-3">
+                                <button type="button" class="btn btn-danger" id="removeProfilePicture">
+                                    Remove Picture
+                                </button>
                             </div>
 
                             <!-- Full Name -->
@@ -122,6 +141,58 @@
         </div>
     </div>
 </div>
-<footer th:insert="~{fragments/Page-Layout :: footer}"></footer>
+<footer th:insert="~{fragments/Page-Layout :: footer}">
+</footer>
+<script>
+    document.getElementById('profileImageInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const fileError = document.getElementById('fileError');
+        const sizeError = document.getElementById('sizeError');
+        const preview = document.getElementById('profilePreview');
+
+        // Hide errors initially
+
+        if (file) {
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+
+            // Check file type
+            if (!validTypes.includes(file.type)) {
+                fileError.style.display = 'block';
+                this.value = ""; // Reset file input
+                return;
+            }
+
+            // Check file size
+            if (file.size > maxSize) {
+                sizeError.style.display = 'block';
+                this.value = ""; // Reset file input
+                return;
+            }
+
+            // Display selected image
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            document.getElementById('removeProfile').value = "false"; // Ensure reset is disabled
+        }
+    });
+
+    document.getElementById('removeProfilePicture').addEventListener('click', function () {
+        document.getElementById('profilePreview').src = "/images/default-profile-pic.png";
+        document.getElementById('profileImageInput').value = ""; // Clear file input
+        document.getElementById('removeProfile').value = "true"; // Mark for reset
+
+        // Hide error messages
+        document.getElementById('fileError').style.display = 'none';
+        document.getElementById('sizeError').style.display = 'none';
+    });
+</script>
+
+
+
+
 </body>
 </html>

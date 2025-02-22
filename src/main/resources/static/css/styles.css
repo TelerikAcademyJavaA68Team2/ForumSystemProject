@@ -639,6 +639,10 @@ progress {
     height: auto;
 }
 
+#removeProfilePicture {
+    margin-bottom: 15px; /* Adds space below button */
+}
+
 .figure {
     display: inline-block;
 }
