@@ -334,6 +334,7 @@ public class PostMvcController {
                 .toList();
 
         return String.format(
-                "redirect:/mvc/posts/%d/edit%s", id, updatedTags.isEmpty() ? "?tags=0" : "?tags=" + String.join("&tags=", updatedTags));
+                "redirect:/mvc/posts/%d/edit%s", id, updatedTags.isEmpty() ? "?tags=0" : "?tags=" +
+                        String.join("&tags=", updatedTags));
     }
 }

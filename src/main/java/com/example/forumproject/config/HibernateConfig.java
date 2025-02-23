@@ -14,6 +14,7 @@ import java.util.Properties;
 @Configuration
 @PropertySource("classpath:application.properties")
 public class HibernateConfig {
+
     private final String dbUrl;
     private final String dbUsername;
     private final String dbPassword;
