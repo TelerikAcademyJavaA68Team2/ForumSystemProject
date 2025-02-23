@@ -1,5 +1,5 @@
 -- Insert dummy data into the 'tags' table (expanded)
-INSERT INTO forum_management_system.tags (name)
+INSERT INTO tags (name)
 VALUES
     ('sports cars'), ('classic cars'), ('electric vehicles'), ('car maintenance'), ('luxury cars'),
     ('motorcycles'), ('car modifications'), ('tuning'), ('formula 1'), ('electric car industry'),
@@ -7,7 +7,7 @@ VALUES
     ('muscle cars'), ('supercars'), ('road trips'), ('car insurance'), ('drifting'), ('bmw'), ('e60'), ('uaz'), ('moskvich');
 
 -- for testing with the dummy data the PASSWORD is encoded so for logIn use any username and 12345678 as password or feel free to register!
-INSERT INTO forum_management_system.users (first_name, last_name, email, username, password, is_admin, is_blocked, profile_photo, phone_number)
+INSERT INTO users (first_name, last_name, email, username, password, is_admin, is_blocked, profile_photo, phone_number)
 VALUES
     ('Georgi', 'Benchev', 'GeogriBenchev@gmail.com', 'georgi', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQi2Mm5P8j09P4hPKa1B-t9eIOHzHmR7IBkw&s', '123-456-7890'),
     ('Ivan', 'Ivanov', 'Vankata@gmail.com', 'vankata', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 1, 0, 'https://upload.wikimedia.org/wikipedia/commons/a/a1/UAZ-Bus.jpg', '098-765-4321'),
@@ -27,7 +27,7 @@ VALUES
     ('Kristina', 'Vasileva', 'kristina@example.com', 'kristina', '$2a$10$ML33hI.7hTPKXMV1s35D/udMXQtjFpOdYIGfu/IQ4GqqITPCP088m', 0, 0, '/images/default-profile-pic.png', NULL);
 
 -- Insert dummy data into the 'posts' table (car-related posts, 5x larger dataset)
-INSERT INTO forum_management_system.posts (user_id, title, content)
+INSERT INTO posts (user_id, title, content)
 VALUES
     (2, 'Top 10 Sports Cars of 2025', CONCAT('Sports cars are constantly evolving. Here are the top 10 sports cars of 2025 that every car enthusiast should check out. ', 'In this post, we cover the most iconic sports cars for 2025 including the Porsche 911 Turbo, Ferrari 488 GTB, and Lamborghini Huracán.')),
     (2, 'Electric Cars vs Gasoline Cars: Which is Better?', CONCAT('Electric vehicles are becoming more popular, but how do they compare to traditional gasoline-powered cars? ', 'We dive deep into the pros and cons of electric cars, covering aspects such as range, charging infrastructure, and environmental impact.')),
@@ -64,7 +64,7 @@ VALUES
     (10, 5, 9, 'Off-roading is my favorite hobby!');
 
 -- Insert dummy data into the 'post_likes_dislikes' table (likes and dislikes limited to posts 1-5)
-INSERT INTO forum_management_system.post_likes_dislikes (post_id, user_id, is_like)
+INSERT INTO post_likes_dislikes (post_id, user_id, is_like)
 VALUES
     (1, 2, 1), (2, 1, 1),
     (3, 4, 1), (4, 3, 1), (5, 5, 1),
@@ -76,7 +76,7 @@ VALUES
 
 
 -- Insert dummy data into the 'post_tags' table (tags limited to posts 1-5, all tags used)
-INSERT INTO forum_management_system.post_tags (post_id, tag_id)
+INSERT INTO post_tags (post_id, tag_id)
 VALUES
     (1, 1), (1, 2), (1, 3),
     (1, 4), (1, 5), (1, 6),
