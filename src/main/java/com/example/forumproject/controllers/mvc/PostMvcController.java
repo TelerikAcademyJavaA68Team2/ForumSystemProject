@@ -188,7 +188,6 @@ public class PostMvcController {
     public String deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
 
         commentService.delete(postId, commentId);
-
         return "redirect:/mvc/posts/" + postId;
     }
 
@@ -198,19 +197,16 @@ public class PostMvcController {
                               @Valid @ModelAttribute("comment") CommentOutDto commentDto,
                               BindingResult errors,
                               Model model) {
-
-        User user = userService.getAuthenticatedUser();
-        model.addAttribute("author", user.getUsername());
-
         if (errors.hasErrors()) {
             return "Post-View";
         }
-
+        User user = userService.getAuthenticatedUser();
         Comment comment = commentService.getById(id, commentId);
 
         if (!comment.getAuthor().equals(user)) {
             return "redirect:/mvc/posts/" + id;
         }
+        model.addAttribute("author", user.getUsername());
 
         comment.setContent(commentDto.getContent());
         try {
@@ -262,10 +258,7 @@ public class PostMvcController {
 
             queryString = new StringBuilder(queryString.substring(0, queryString.length() - 6));
         }
-
-
         model.addAttribute("query", (queryString.toString()));
-
         return "Edit-Post-View";
     }
 
