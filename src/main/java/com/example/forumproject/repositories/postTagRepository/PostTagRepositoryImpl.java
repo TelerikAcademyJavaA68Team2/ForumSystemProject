@@ -25,8 +25,8 @@ public class PostTagRepositoryImpl implements PostTagRepository {
     @Override
     public List<Tag> getTagsByPostId(Long post_id) {
         try (Session session = sessionFactory.openSession()) {
-            String sql = "SELECT t.* FROM forum_management_system.post_tags pt " +
-                    "JOIN forum_management_system.tags t ON pt.tag_id = t.id " +
+            String sql = "SELECT t.* FROM post_tags pt " +
+                    "JOIN tags t ON pt.tag_id = t.id " +
                     "WHERE pt.post_id = :post_id";
             Query<Tag> query = session.createNativeQuery(sql, Tag.class);
             query.setParameter("post_id", post_id);
@@ -38,8 +38,8 @@ public class PostTagRepositoryImpl implements PostTagRepository {
     @Override
     public List<Post> getAllPostsByTagId(Long tag_id) {
         try (Session session = sessionFactory.openSession()) {
-            String sql = "SELECT p.* FROM forum_management_system.post_tags pt " +
-                    "JOIN forum_management_system.posts p ON pt.post_id = p.id " +
+            String sql = "SELECT p.* FROM post_tags pt " +
+                    "JOIN posts p ON pt.post_id = p.id " +
                     "WHERE pt.tag_id = :tag_id";
             Query<Post> query = session.createNativeQuery(sql, Post.class);
             query.setParameter("tag_id", tag_id);
@@ -51,7 +51,7 @@ public class PostTagRepositoryImpl implements PostTagRepository {
     @Override
     public boolean checkIfPostIsTagged(Long post_id, Long tag_id) {
         try (Session session = sessionFactory.openSession()) {
-            String sql = "SELECT COUNT(*) FROM forum_management_system.post_tags WHERE post_id = :post_id AND tag_id = :tag_id";
+            String sql = "SELECT COUNT(*) FROM post_tags WHERE post_id = :post_id AND tag_id = :tag_id";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("post_id", post_id);
             query.setParameter("tag_id", tag_id);
@@ -78,7 +78,7 @@ public class PostTagRepositoryImpl implements PostTagRepository {
     @Override
     public void create(PostTag postTag) {
         Session session = sessionFactory.getCurrentSession();
-        session.createNativeQuery("INSERT INTO forum_management_system.post_tags (post_id, tag_id) VALUES (:post_id, :tag_id)", PostTag.class)
+        session.createNativeQuery("INSERT INTO post_tags (post_id, tag_id) VALUES (:post_id, :tag_id)", PostTag.class)
                 .setParameter("post_id", postTag.getPost().getId())
                 .setParameter("tag_id", postTag.getTag().getId())
                 .executeUpdate();

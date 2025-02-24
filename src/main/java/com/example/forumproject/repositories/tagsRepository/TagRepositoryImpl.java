@@ -31,7 +31,7 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public Tag getTagById(Long tagId) {
         try (Session session = sessionFactory.openSession()) {
-            String sql = "SELECT * FROM forum_management_system.tags t WHERE id = :tagId";
+            String sql = "SELECT * FROM tags t WHERE id = :tagId";
             Query<Tag> query = session.createNativeQuery(sql, Tag.class);
             query.setParameter("tagId", tagId);
             return query.uniqueResultOptional().orElseThrow(() ->
@@ -42,7 +42,7 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public Tag getTagByName(String tagName) {
         try (Session session = sessionFactory.openSession()) {
-            String sql = "SELECT * FROM forum_management_system.tags WHERE name = :tagName";
+            String sql = "SELECT * FROM tags WHERE name = :tagName";
             Query<Tag> query = session.createNativeQuery(sql, Tag.class);
             query.setParameter("tagName", tagName.toLowerCase());
             return query.uniqueResultOptional().orElseThrow(() ->
