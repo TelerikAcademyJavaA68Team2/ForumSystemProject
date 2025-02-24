@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{fragments/Page-Layout :: head('New Post')}">New Post</head>
-<header th:insert="~{fragments/Page-Layout :: navigation}"></header>
+<head th:insert="~{fragments/Page-Layout :: head('New Post')}">
+    <title>New Post</title>
+</head>
 <body>
-<header th:replace="/fragments/Post-Form-Fragment.html :: post-header"></header>
+<!-- Insert the navigation fragment -->
+<header th:insert="~{fragments/Page-Layout :: navigation}"></header>
+
+<!-- Replace the post-header fragment -->
+<header th:replace="~{fragments/Post-Form-Fragment :: post-header}"></header>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-7">
             <div class="p-5">
-                <!-- Post content-->
+                <!-- Post content -->
                 <div class="text-center">
                     <h1 class="fw-bolder mb-1" th:text="#{post.label.new}">New</h1>
                     <br/>
                     <div class="text-center">
                         <article>
-                            <form th:replace="/fragments/Post-Form-Fragment.html :: post-form"></form>
+                            <!-- Replace the post-form fragment -->
+                            <form th:replace="~{fragments/Post-Form-Fragment :: post-form}"></form>
                         </article>
                     </div>
                 </div>
@@ -22,6 +29,8 @@
         </div>
     </div>
 </div>
+
+<!-- Insert the footer fragment -->
 <footer th:insert="~{fragments/Page-Layout :: footer}"></footer>
 </body>
 </html>
