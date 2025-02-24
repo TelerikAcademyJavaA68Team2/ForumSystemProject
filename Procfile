@@ -1,1 +1,1 @@
-web: java -jar build/libs/spring-demo-0.0.1-SNAPSHOT.jar
+web: java -jar build/libs/ForumProject-0.0.1-SNAPSHOT.jar
