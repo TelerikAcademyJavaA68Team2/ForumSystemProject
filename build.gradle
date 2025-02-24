@@ -32,6 +32,7 @@ dependencies {
 
     // MariaDB/JDBC driver
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 
     // Spring Boot DevTools (for development)
     implementation 'org.springframework.boot:spring-boot-devtools'
