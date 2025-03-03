@@ -54,7 +54,6 @@ public class User implements UserDetails {
         this.isBlocked = false;
     }
 
-
     public Long getId() {
         return id;
     }

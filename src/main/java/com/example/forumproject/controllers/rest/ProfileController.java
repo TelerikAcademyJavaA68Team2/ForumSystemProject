@@ -67,7 +67,7 @@ public class ProfileController {
             }
     )
     @DeleteMapping
-    public ResponseEntity<String> getProfile(@Valid @RequestBody LoginDto request) {
+    public ResponseEntity<String> deleteProfile(@Valid @RequestBody LoginDto request) {
         authService.authenticate(request);
         userService.deleteUser();
         return ResponseEntity.ok(ACCOUNT_DELETED_SUCCESSFULLY);

@@ -30,7 +30,7 @@ public class HibernateConfig {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("com.example.forumproject.models");
-        sessionFactory.setHibernateProperties(hibernateProperties());
+       // sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
 
