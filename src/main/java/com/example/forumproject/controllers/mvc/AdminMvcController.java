@@ -40,7 +40,8 @@ public class AdminMvcController {
     }
 
     @GetMapping("/users")
-    public String showAllPosts(@Valid @ModelAttribute("filterOptions") RequestUserFilterOptions filterOptionsRequest, BindingResult errors, Model model) {
+    public String showAllUsers(@Valid @ModelAttribute("filterOptions") RequestUserFilterOptions filterOptionsRequest,
+                               BindingResult errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("hasErrors", true);
         }
