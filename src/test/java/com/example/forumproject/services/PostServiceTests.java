@@ -1,6 +1,5 @@
 package com.example.forumproject.services;
 
-import com.example.forumproject.exceptions.DuplicateEntityException;
 import com.example.forumproject.exceptions.EntityNotFoundException;
 import com.example.forumproject.exceptions.UnauthorizedAccessException;
 import com.example.forumproject.models.Post;
