@@ -34,6 +34,10 @@ import org.springframework.context.annotation.Configuration;
                 @Server(
                         description = "Local ENV",
                         url = "http://localhost:8080"
+                ),
+                @Server(
+                        description = "Heroku Deployment",
+                        url = "https://your-heroku-app.herokuapp.com"
                 )
         }
 )
