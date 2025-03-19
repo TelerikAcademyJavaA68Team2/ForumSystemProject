@@ -1,4 +1,4 @@
-# Spring Boot Project (Automobile Forum Management System) - Team 2
+# MotoForum - Automobile Forum Management System (Spring Boot Project) - Team 2
 
 ## Overview
 
