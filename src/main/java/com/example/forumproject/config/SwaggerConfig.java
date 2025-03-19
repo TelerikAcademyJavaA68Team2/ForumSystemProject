@@ -19,14 +19,16 @@ import org.springframework.context.annotation.Configuration;
                         name = "Georgi Benchev and Ivan Ivanov",
                         email = "gega4321@gmail.com ; ivanovivanbusiness@gmail.com"
                 ),
-                description = "This is an **Automobile Forum Management System** developed using the **Spring Boot** framework. The forum allows users to:\n" +
-                        "- **Create posts** related to automobiles.\n" +
-                        "- **Add comments** on posts.\n" +
-                        "- **Add tags** on posts for better filtering.\n" +
-                        "- **Search filtering** on posts based on different attributes.\n" +
-                        "- **React** to posts with likes and dislikes.\n" +
-                        "- **Register and authenticate** using JWT authentication.\n" +
-                        "- **Admins** moderate content to maintain quality.",
+                description = """
+                        This is an **Automobile Forum Management System** developed using the **Spring Boot** framework.
+                         The forum allows users to:
+                        - **Create posts** related to automobiles.
+                        - **Add comments** on posts.
+                        - **Add tags** on posts for better filtering.
+                        - **Search filtering** on posts based on different attributes.
+                        - **React** to posts with likes and dislikes.
+                        - **Register and authenticate** using JWT authentication.
+                        - **Admins** moderate content to maintain quality.""",
                 title = "Automobile Forum Management System API",
                 version = "1.0"
         ),
