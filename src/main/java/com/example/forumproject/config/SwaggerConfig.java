@@ -46,13 +46,12 @@ import org.springframework.context.annotation.Configuration;
                 )
         },
         externalDocs = @ExternalDocumentation(
-                description = "📘 GitHub Repository",
-                url = "https://github.com/TelerikAcademyJavaA68Team2/ForumSystemProject"
+                description = """
+            📘 [GitHub Repository](https://github.com/TelerikAcademyJavaA68Team2/ForumSystemProject)
+
+            📦 [Deployment Link (Heroku)](https://moto-forum-23b2887c6d95.herokuapp.com/mvc/home)
+        """
         )
-)
-@ExternalDocumentation(
-        description = "📦 Deployment Link (Heroku)",
-        url = "https://moto-forum-23b2887c6d95.herokuapp.com/mvc/home"
 )
 @SecurityScheme(
         name = "Bearer Authentication",
