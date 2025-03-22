@@ -39,7 +39,7 @@ import org.springframework.context.annotation.Configuration;
                 ),
                 @Server(
                         description = "Heroku Deployment",
-                        url = "https://your-heroku-app.herokuapp.com"
+                        url = "https://moto-forum-23b2887c6d95.herokuapp.com/mvc/home"
                 )
         }
 )
