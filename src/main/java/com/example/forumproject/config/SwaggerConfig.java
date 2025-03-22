@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -16,16 +17,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         info = @Info(
-                title = "Automobile Forum Management System API",
+                title = "MotoForum - Automobile Forum Management System API",
                 version = "1.0",
                 contact = @Contact(
                         name = "Georgi Benchev and Ivan Ivanov",
                         email = "gega4321@gmail.com, ivanovivanbusiness@gmail.com"
                 ),
                 description = """
-            This is an **Automobile Forum Management System** developed using the **Spring Boot** framework.
+            This is an Automobile Forum Management System developed using the Spring Boot framework.
 
-            🔧 **Features include**:
+            🔧 Features include:
             - 📝 Create posts related to automobiles
             - 💬 Add comments to posts
             - 🏷️ Tag posts for better filtering
@@ -33,8 +34,6 @@ import org.springframework.context.annotation.Configuration;
             - 👍👎 React to posts (likes/dislikes)
             - 🔐 JWT-based registration and authentication
             - 🛡️ Admin moderation tools for posts and users
-
-            🌐 **Live App**: [Visit the app here](https://moto-forum-23b2887c6d95.herokuapp.com/mvc/home)
         """
         ),
         servers = {
@@ -44,12 +43,20 @@ import org.springframework.context.annotation.Configuration;
                 ),
                 @Server(
                         description = "Heroku Deployment",
-                        url = "https://moto-forum-23b2887c6d95.herokuapp.com/mvc/home"
+                        url = "https://moto-forum-23b2887c6d95.herokuapp.com"
                 )
         },
         externalDocs = @ExternalDocumentation(
-                description = "GitHub Repository / Additional Docs",
+                description = "📘 GitHub Repository",
                 url = "https://github.com/TelerikAcademyJavaA68Team2/ForumSystemProject"
+        )
+)
+@Tag(
+        name = "🌐 Live Application",
+        description = "Deployed app on Heroku",
+        externalDocs = @ExternalDocumentation(
+                description = "Click to open the live application",
+                url = "https://moto-forum-23b2887c6d95.herokuapp.com/mvc/home"
         )
 )
 @SecurityScheme(
