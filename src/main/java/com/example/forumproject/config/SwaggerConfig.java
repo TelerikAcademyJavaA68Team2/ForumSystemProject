@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -45,22 +44,10 @@ import org.springframework.context.annotation.Configuration;
                         description = "Heroku Deployment",
                         url = "https://moto-forum-23b2887c6d95.herokuapp.com"
                 )
-        }
-)
-@Tag(
-        name = "📘 GitHub Repository",
-        description = "Link to the project's GitHub repository.",
+        },
         externalDocs = @ExternalDocumentation(
-                description = "View source code on GitHub",
+                description = "📘 GitHub Repository",
                 url = "https://github.com/TelerikAcademyJavaA68Team2/ForumSystemProject"
-        )
-)
-@Tag(
-        name = "📦 Deployment Link",
-        description = "Link to the live deployed application.",
-        externalDocs = @ExternalDocumentation(
-                description = "View deployed application on Heroku",
-                url = "https://moto-forum-23b2887c6d95.herokuapp.com/mvc/home"
         )
 )
 @SecurityScheme(
