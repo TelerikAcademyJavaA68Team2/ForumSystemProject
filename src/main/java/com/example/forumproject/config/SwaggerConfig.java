@@ -51,13 +51,9 @@ import org.springframework.context.annotation.Configuration;
                 url = "https://github.com/TelerikAcademyJavaA68Team2/ForumSystemProject"
         )
 )
-@Tag(
-        name = "🌐 Live Application",
-        description = "Deployed app on Heroku",
-        externalDocs = @ExternalDocumentation(
-                description = "Click to open the live application",
-                url = "https://moto-forum-23b2887c6d95.herokuapp.com/mvc/home"
-        )
+@ExternalDocumentation(
+        description = "📦 Deployment Link (Heroku)",
+        url = "https://moto-forum-23b2887c6d95.herokuapp.com/mvc/home"
 )
 @SecurityScheme(
         name = "Bearer Authentication",
