@@ -50,7 +50,7 @@ import org.springframework.context.annotation.Configuration;
             📘 [GitHub Repository](https://github.com/TelerikAcademyJavaA68Team2/ForumSystemProject)
 
             📦 [Deployment Link (Heroku)](https://moto-forum-23b2887c6d95.herokuapp.com/mvc/home)
-        """
+        """, url = "https://github.com/TelerikAcademyJavaA68Team2/ForumSystemProject"
         )
 )
 @SecurityScheme(
