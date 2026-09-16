@@ -1,11 +1,10 @@
 # MotoForum - Automobile Forum Management System (Spring Boot Project)
 
-## Access Our Project!
+## About Our Project
 
-We have deployed our project using **Heroku**. Also, we provide **Swagger API Documentation** to facilitate testing and exploration of the app’s REST API's endpoints.
+We had our project deployed using **Heroku**. Also, we provided **Swagger API Documentation** to facilitate testing and exploration of the app’s REST API's endpoints.
 
-- **App URL**: [`https://moto-forum-23b2887c6d95.herokuapp.com/mvc/home`](https://moto-forum-23b2887c6d95.herokuapp.com/mvc/home)  
-- **Swagger URL**: [`https://moto-forum-23b2887c6d95.herokuapp.com/swagger-ui/index.html`](https://moto-forum-23b2887c6d95.herokuapp.com/swagger-ui/index.html)
+Since our graduation and employment, we have discontinued hosting.
 
 ## Overview
 
